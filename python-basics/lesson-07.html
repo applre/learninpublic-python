@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSON 07 · 解包语法 **</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a href="lesson-06.html">← 第6课</a>
+  <span class="nav-center">LESSON 07 / 8</span>
+  <a href="../index.html">课程首页 →</a>
+</nav>
+
+<!-- Header -->
+<header class="lesson-header">
+  <div class="lesson-number">LESSON 07 / 解包语法 **</div>
+  <h1>最后一块拼图：字典解包、动态函数调用、agent_loop 完全理解</h1>
+  <p class="desc">学完这课，agent_loop 代码你就 100% 看懂了</p>
+</header>
+
+<!-- Legend -->
+<div class="legend">
+  <span class="legend-hint">点击可高亮筛选 →</span>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div><span>关键字 kw（def, class, if, for, in, return）</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div><span>函数名 fn</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div><span>字符串 st</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div><span>数字 nm</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div><span>运算符 op（** = != ==）</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--ink)"></div><span>变量 vr</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#9a6b28"></div><span>参数 pa</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--ink-lighter)"></div><span>注释 cm</span></div>
+</div>
+
+<!-- Column headers -->
+<div class="col-headers">
+  <div class="col-header">Python 代码（07_unpack.py）</div>
+  <div class="col-header">结构解释 · 语法注释</div>
+</div>
+
+<div class="lines">
+
+<!-- Line 1: comment -->
+<div class="line-pair" data-tip="整个文件的标题注释，说明本课主题：** 解包语法">
+  <div class="code-side">
+    <span class="line-num">1</span>
+    <span class="line-code"><span class="cm"># === 第7课：解包语法 ** ===</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">文件顶部注释：本课主题</span></span>
+  </div>
+</div>
+
+<!-- Line 2: comment -->
+<div class="line-pair" data-tip="说明学完本课的目标：完全看懂 agent_loop 代码">
+  <div class="code-side">
+    <span class="line-num">2</span>
+    <span class="line-code"><span class="cm"># 学完这课，agent_loop 代码你就 100% 看懂了</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">目标说明注释</span></span>
+  </div>
+</div>
+
+<!-- Line 3: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">3</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Section 1 divider -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">▼ 第一部分：从一个实际问题说起</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">先定义函数，再演示三种不同的调用方式</span></span></div>
+</div>
+
+<!-- Line 4: comment -->
+<div class="line-pair" data-tip="注释：第一部分开始，从一个实际问题引入解包的必要性">
+  <div class="code-side">
+    <span class="line-num">4</span>
+    <span class="line-code"><span class="cm"># ============ 第一部分：从一个实际问题说起 ============</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">第一部分标题注释</span></span>
+  </div>
+</div>
+
+<!-- Line 5: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">5</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 6: comment -->
+<div class="line-pair" data-tip="说明下面要定义一个函数">
+  <div class="code-side">
+    <span class="line-num">6</span>
+    <span class="line-code"><span class="cm"># 1. 假设你有一个函数</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">步骤1注释</span></span>
+  </div>
+</div>
+
+<!-- Line 7: def make_card -->
+<div class="line-pair" data-tip="def 定义函数 make_card，接收三个参数：name（名字）、age（年龄）、job（职业）">
+  <div class="code-side">
+    <span class="line-num">7</span>
+    <span class="line-code"><span class="kw">def</span> <span class="fn">make_card</span>(<span class="pa">name</span>, <span class="pa">age</span>, <span class="pa">job</span>):</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">def</span><span class="arrow">→</span>定义函数
+      <span class="tag tag-fn">make_card</span><span class="arrow">→</span>函数名：制作名片
+      <span class="tag tag-pa">name, age, job</span><span class="arrow">→</span>三个参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 8: print inside make_card -->
+<div class="line-pair" data-tip="print 打印名片内容，f-string 把三个参数的值插入字符串中显示">
+  <div class="code-side">
+    <span class="line-num">8</span>
+    <span class="line-code">    <span class="bi">print</span>(<span class="st">f"【名片】</span><span class="op">{</span><span class="vr">name</span><span class="op">}</span><span class="st"> | </span><span class="op">{</span><span class="vr">age</span><span class="op">}</span><span class="st">岁 | </span><span class="op">{</span><span class="vr">job</span><span class="op">}</span><span class="st">"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-fn">print</span><span class="arrow">→</span>打印输出
+      <span class="tag tag-st">f"..."</span><span class="arrow">→</span>f-string 格式化字符串
+      <span class="tag tag-vr">{name} {age} {job}</span><span class="arrow">→</span>插入三个参数的值
+    </span>
+  </div>
+</div>
+
+<!-- Line 9: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">9</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 10: comment -->
+<div class="line-pair" data-tip="步骤2注释：正常调用方式，一个一个传参数">
+  <div class="code-side">
+    <span class="line-num">10</span>
+    <span class="line-code"><span class="cm"># 正常调用：一个个传参数</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">说明：这是最普通的调用方式</span></span>
+  </div>
+</div>
+
+<!-- Line 11: make_card call -->
+<div class="line-pair" data-tip="正常调用 make_card，直接把三个值一个个写进去传给函数">
+  <div class="code-side">
+    <span class="line-num">11</span>
+    <span class="line-code"><span class="fn">make_card</span>(<span class="st">"小白"</span>, <span class="nm">25</span>, <span class="st">"产品经理"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-fn">make_card</span><span class="arrow">→</span>调用函数
+      <span class="tag tag-st">"小白"</span><span class="arrow">→</span>name 参数
+      <span class="tag tag-nm">25</span><span class="arrow">→</span>age 参数
+      <span class="tag tag-st">"产品经理"</span><span class="arrow">→</span>job 参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 12: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">12</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 13: print("---") -->
+<div class="line-pair" data-tip="打印分隔线，区分不同调用方式的输出">
+  <div class="code-side">
+    <span class="line-num">13</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">打印分隔线</span></span>
+  </div>
+</div>
+
+<!-- Line 14: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">14</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 15: comment -->
+<div class="line-pair" data-tip="步骤2：引出核心问题——参数如果已经存在于字典里怎么办？">
+  <div class="code-side">
+    <span class="line-num">15</span>
+    <span class="line-code"><span class="cm"># 2. 但如果参数已经存在于一个字典里呢？</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">引出实际问题：参数在字典中怎么传？</span></span>
+  </div>
+</div>
+
+<!-- Line 16: info = {...} -->
+<div class="line-pair" data-tip="定义字典 info，key 就是函数的参数名，value 是对应的值。这种情况在实际开发中非常常见">
+  <div class="code-side">
+    <span class="line-num">16</span>
+    <span class="line-code"><span class="vr">info</span> <span class="op">=</span> {<span class="st">"name"</span>: <span class="st">"小白"</span>, <span class="st">"age"</span>: <span class="nm">25</span>, <span class="st">"job"</span>: <span class="st">"产品经理"</span>}</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">info</span><span class="arrow">→</span>变量名
+      <span class="op">=</span> 赋值
+      <span class="tag tag-st">"name"</span><span class="arrow">→</span>key（字符串）
+      <span class="tag tag-st">"小白"</span><span class="arrow">→</span>value（字符串）
+      <span class="note">key 和函数参数名完全一致</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 17: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">17</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 18: comment 笨办法 -->
+<div class="line-pair" data-tip="笨办法注释：每次都要写 info[key] 取值，很麻烦">
+  <div class="code-side">
+    <span class="line-num">18</span>
+    <span class="line-code"><span class="cm"># 笨办法：一个个取出来传</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">对比：笨办法 vs 聪明办法</span></span>
+  </div>
+</div>
+
+<!-- Line 19: make_card(info["name"]...) -->
+<div class="line-pair" data-tip="笨办法：一个个用 info[key] 取出值再传进去，重复且繁琐，如果参数多就更麻烦了">
+  <div class="code-side">
+    <span class="line-num">19</span>
+    <span class="line-code"><span class="fn">make_card</span>(<span class="vr">info</span>[<span class="st">"name"</span>], <span class="vr">info</span>[<span class="st">"age"</span>], <span class="vr">info</span>[<span class="st">"job"</span>])</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">info</span>[<span class="tag tag-st">"name"</span>]<span class="arrow">→</span>用 key 取出 value
+      <span class="note">三个参数各取一次，很繁琐</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 20: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">20</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 21: comment 聪明办法 -->
+<div class="line-pair" data-tip="聪明办法：用 ** 解包，一行搞定！">
+  <div class="code-side">
+    <span class="line-num">21</span>
+    <span class="line-code"><span class="cm"># 聪明办法：用 ** 一次性"解包"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">核心：** 解包运算符</span></span>
+  </div>
+</div>
+
+<!-- Line 22: make_card(**info) -->
+<div class="line-pair" data-tip="**info 就是把字典 info 解包成 name='小白', age=25, job='产品经理'，然后传给函数。** 是运算符，info 是变量">
+  <div class="code-side">
+    <span class="line-num">22</span>
+    <span class="line-code"><span class="fn">make_card</span>(<span class="op">**</span><span class="vr">info</span>)  <span class="cm"># 等价于 make_card(name="小白", age=25, job="产品经理")</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-op">**</span><span class="arrow">→</span>解包运算符（把字典拆成 key=value）
+      <span class="tag tag-vr">info</span><span class="arrow">→</span>要解包的字典变量
+      <span class="note">等价于手动写三个 key=value 参数</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 23: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">23</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 24: comment 三种写法 -->
+<div class="line-pair" data-tip="总结：三种写法完全等价，** 解包是最简洁的">
+  <div class="code-side">
+    <span class="line-num">24</span>
+    <span class="line-code"><span class="cm"># 三种写法，效果完全一样！</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">三种写法：直接传值 / info[key] 取值 / ** 解包，结果完全相同</span></span>
+  </div>
+</div>
+
+<!-- Line 25: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">25</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 26: print("---") -->
+<div class="line-pair" data-tip="打印分隔线">
+  <div class="code-side">
+    <span class="line-num">26</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">分隔线</span></span>
+  </div>
+</div>
+
+<!-- Line 27: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">27</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Section 2 divider -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">▼ 第二部分：** 到底做了什么？</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">用多个例子说明 ** 的原理，以及 key 必须匹配参数名</span></span></div>
+</div>
+
+<!-- Line 28: comment part 2 -->
+<div class="line-pair" data-tip="第二部分标题注释：深入解释 ** 的工作原理">
+  <div class="code-side">
+    <span class="line-num">28</span>
+    <span class="line-code"><span class="cm"># ============ 第二部分：** 到底做了什么？ ============</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">第二部分标题注释</span></span>
+  </div>
+</div>
+
+<!-- Line 29: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">29</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 30: comment ** explanation -->
+<div class="line-pair" data-tip="** 的核心定义：把字典拆开，变成 key=value 的形式">
+  <div class="code-side">
+    <span class="line-num">30</span>
+    <span class="line-code"><span class="cm"># 3. ** 就是"把字典拆开，变成 key=value 的形式"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">** 的本质定义</span></span>
+  </div>
+</div>
+
+<!-- Line 31: comment dict -->
+<div class="line-pair" data-tip="原始字典，有三个 key-value 对">
+  <div class="code-side">
+    <span class="line-num">31</span>
+    <span class="line-code"><span class="cm">#</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"></span>
+  </div>
+</div>
+
+<!-- Line 32: comment 原始字典 -->
+<div class="line-pair" data-tip="这就是解包之前的原始字典，三个 key-value 打包在一起">
+  <div class="code-side">
+    <span class="line-num">32</span>
+    <span class="line-code"><span class="cm"># 原始字典：{"name": "小白", "age": 25, "job": "产品经理"}</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">解包前：三个 key-value 打包在字典里</span></span>
+  </div>
+</div>
+
+<!-- Line 33: comment -->
+<div class="line-pair" data-tip="** 运算符把字典拆开，变成三个独立的 key=value 参数">
+  <div class="code-side">
+    <span class="line-num">33</span>
+    <span class="line-code"><span class="cm">#</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"></span>
+  </div>
+</div>
+
+<!-- Line 34: comment **字典 → -->
+<div class="line-pair" data-tip="**字典 解包之后变成的形式：每个 key=value 独立出来">
+  <div class="code-side">
+    <span class="line-num">34</span>
+    <span class="line-code"><span class="cm"># **字典 → name="小白", age=25, job="产品经理"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">解包后：每个 key=value 变成独立的具名参数</span></span>
+  </div>
+</div>
+
+<!-- Line 35: comment -->
+<div class="line-pair" data-tip="用快递类比帮助理解解包的概念">
+  <div class="code-side">
+    <span class="line-num">35</span>
+    <span class="line-code"><span class="cm">#</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"></span>
+  </div>
+</div>
+
+<!-- Line 36: comment 就像拆快递 -->
+<div class="line-pair" data-tip="类比：字典像快递盒，** 就是拆快递，把里面的东西取出来">
+  <div class="code-side">
+    <span class="line-num">36</span>
+    <span class="line-code"><span class="cm"># 就像拆快递：</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">类比：字典 = 快递盒，** = 拆开</span></span>
+  </div>
+</div>
+
+<!-- Line 37: comment 📦 -->
+<div class="line-pair" data-tip="字典就像打包好的快递，里面装着多个值">
+  <div class="code-side">
+    <span class="line-num">37</span>
+    <span class="line-code"><span class="cm">#   📦 {"name": "小白", "age": 25}  ← 打包的字典</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">📦 字典 = 打包好的快递盒</span></span>
+  </div>
+</div>
+
+<!-- Line 38: comment ** 拆开 -->
+<div class="line-pair" data-tip="** 就是拆快递，把字典里的每一个 key=value 拆出来成为独立参数">
+  <div class="code-side">
+    <span class="line-num">38</span>
+    <span class="line-code"><span class="cm">#   ** 拆开 →  name="小白", age=25   ← 拆成一个个参数</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">** 拆开 → 每个 key=value 变成独立参数</span></span>
+  </div>
+</div>
+
+<!-- Line 39: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">39</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 40: comment 4 -->
+<div class="line-pair" data-tip="步骤4：再看几个例子，加深理解">
+  <div class="code-side">
+    <span class="line-num">40</span>
+    <span class="line-code"><span class="cm"># 4. 再看几个例子</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">步骤4：更多例子</span></span>
+  </div>
+</div>
+
+<!-- Line 41: def greet -->
+<div class="line-pair" data-tip="定义函数 greet，接收两个参数：greeting（问候语）、name（名字）">
+  <div class="code-side">
+    <span class="line-num">41</span>
+    <span class="line-code"><span class="kw">def</span> <span class="fn">greet</span>(<span class="pa">greeting</span>, <span class="pa">name</span>):</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">def</span> 定义函数
+      <span class="tag tag-fn">greet</span><span class="arrow">→</span>函数名：问候
+      <span class="tag tag-pa">greeting, name</span><span class="arrow">→</span>两个参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 42: print inside greet -->
+<div class="line-pair" data-tip="greet 函数内容：打印问候语，格式是「问候语, 名字!」">
+  <div class="code-side">
+    <span class="line-num">42</span>
+    <span class="line-code">    <span class="bi">print</span>(<span class="st">f"</span><span class="op">{</span><span class="vr">greeting</span><span class="op">}</span><span class="st">, </span><span class="op">{</span><span class="vr">name</span><span class="op">}</span><span class="st">!"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-st">f"..."</span><span class="arrow">→</span>f-string 格式化
+      输出：「问候语, 名字!」
+    </span>
+  </div>
+</div>
+
+<!-- Line 43: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">43</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 44: params = {...} -->
+<div class="line-pair" data-tip="定义字典 params，key 名和 greet 函数的参数名完全一致：greeting 和 name">
+  <div class="code-side">
+    <span class="line-num">44</span>
+    <span class="line-code"><span class="vr">params</span> <span class="op">=</span> {<span class="st">"greeting"</span>: <span class="st">"你好"</span>, <span class="st">"name"</span>: <span class="st">"小白"</span>}</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">params</span><span class="arrow">→</span>字典变量
+      <span class="tag tag-st">"greeting"</span><span class="arrow">→</span>key，与函数参数名一致
+      <span class="tag tag-st">"name"</span><span class="arrow">→</span>key，与函数参数名一致
+    </span>
+  </div>
+</div>
+
+<!-- Line 45: greet(**params) -->
+<div class="line-pair" data-tip="**params 把字典解包：greeting='你好', name='小白'，传给 greet 函数。** 是运算符，params 是变量">
+  <div class="code-side">
+    <span class="line-num">45</span>
+    <span class="line-code"><span class="fn">greet</span>(<span class="op">**</span><span class="vr">params</span>)  <span class="cm"># 等价于 greet(greeting="你好", name="小白")</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-op">**</span><span class="arrow">→</span>解包运算符
+      <span class="tag tag-vr">params</span><span class="arrow">→</span>被解包的字典变量
+      <span class="note">等价于 greet(greeting="你好", name="小白")</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 46: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">46</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 47: print("---") -->
+<div class="line-pair" data-tip="分隔线">
+  <div class="code-side">
+    <span class="line-num">47</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">分隔线</span></span>
+  </div>
+</div>
+
+<!-- Line 48: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">48</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 49: comment 5 -->
+<div class="line-pair" data-tip="步骤5：重要规则——字典的 key 必须和函数参数名完全对得上">
+  <div class="code-side">
+    <span class="line-num">49</span>
+    <span class="line-code"><span class="cm"># 5. 字典的 key 必须和函数参数名对得上</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">重要规则：key 必须与参数名一致</span></span>
+  </div>
+</div>
+
+<!-- Line 50: def add -->
+<div class="line-pair" data-tip="定义函数 add，接收两个参数 a 和 b，返回它们的和">
+  <div class="code-side">
+    <span class="line-num">50</span>
+    <span class="line-code"><span class="kw">def</span> <span class="fn">add</span>(<span class="pa">a</span>, <span class="pa">b</span>):</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">def</span> 定义函数
+      <span class="tag tag-fn">add</span><span class="arrow">→</span>函数名：相加
+      <span class="tag tag-pa">a, b</span><span class="arrow">→</span>两个参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 51: return a + b -->
+<div class="line-pair" data-tip="return 返回 a + b 的计算结果，结束函数">
+  <div class="code-side">
+    <span class="line-num">51</span>
+    <span class="line-code">    <span class="kw">return</span> <span class="vr">a</span> <span class="op">+</span> <span class="vr">b</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">return</span><span class="arrow">→</span>返回计算结果
+      <span class="tag tag-vr">a</span> <span class="tag tag-op">+</span> <span class="tag tag-vr">b</span><span class="arrow">→</span>两数相加
+    </span>
+  </div>
+</div>
+
+<!-- Line 52: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">52</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 53: numbers = {...} -->
+<div class="line-pair" data-tip="字典 numbers，key 是 'a' 和 'b'，和 add 函数的参数名完全对得上">
+  <div class="code-side">
+    <span class="line-num">53</span>
+    <span class="line-code"><span class="vr">numbers</span> <span class="op">=</span> {<span class="st">"a"</span>: <span class="nm">10</span>, <span class="st">"b"</span>: <span class="nm">20</span>}</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">numbers</span><span class="arrow">→</span>字典变量
+      <span class="tag tag-st">"a"</span>: <span class="tag tag-nm">10</span>，<span class="tag tag-st">"b"</span>: <span class="tag tag-nm">20</span>
+      <span class="note">key 与函数参数 a, b 完全对应</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 54: result = add(**numbers) -->
+<div class="line-pair" data-tip="**numbers 解包为 a=10, b=20 传给 add 函数，结果赋值给 result。** 是运算符，numbers 是变量">
+  <div class="code-side">
+    <span class="line-num">54</span>
+    <span class="line-code"><span class="vr">result</span> <span class="op">=</span> <span class="fn">add</span>(<span class="op">**</span><span class="vr">numbers</span>)  <span class="cm"># 等价于 add(a=10, b=20)</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">result</span><span class="arrow">→</span>接收返回值的变量
+      <span class="tag tag-op">**</span><span class="arrow">→</span>解包
+      <span class="tag tag-vr">numbers</span><span class="arrow">→</span>被解包的字典
+      <span class="note">等价于 add(a=10, b=20)</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 55: print result -->
+<div class="line-pair" data-tip="打印计算结果：10 + 20 = 30">
+  <div class="code-side">
+    <span class="line-num">55</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">f"10 + 20 = </span><span class="op">{</span><span class="vr">result</span><span class="op">}</span><span class="st">"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-fn">print</span> 打印结果
+      输出：<span class="highlight">10 + 20 = 30</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 56: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">56</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 57: comment key 对不上 -->
+<div class="line-pair" data-tip="如果 key 对不上参数名会报错，这是常见错误，要注意">
+  <div class="code-side">
+    <span class="line-num">57</span>
+    <span class="line-code"><span class="cm"># 如果 key 对不上会报错：</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">陷阱：key 必须和参数名一致，否则报错</span></span>
+  </div>
+</div>
+
+<!-- Line 58: comment wrong = -->
+<div class="line-pair" data-tip="wrong 字典的 key 是 x 和 y，但 add 函数要的是 a 和 b，不一致会报错">
+  <div class="code-side">
+    <span class="line-num">58</span>
+    <span class="line-code"><span class="cm"># wrong = {"x": 10, "y": 20}</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">被注释掉的错误例子：key 是 x/y，不是 a/b</span></span>
+  </div>
+</div>
+
+<!-- Line 59: comment add(**wrong) -->
+<div class="line-pair" data-tip="这行被注释掉是因为它会报错：add 函数要 a 和 b，但字典 key 是 x 和 y，不匹配">
+  <div class="code-side">
+    <span class="line-num">59</span>
+    <span class="line-code"><span class="cm"># add(**wrong)  # 报错！函数要的是 a 和 b，不是 x 和 y</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">注释掉防止报错：key x/y 与参数 a/b 不匹配 → TypeError</span></span>
+  </div>
+</div>
+
+<!-- Line 60: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">60</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 61: print("---") -->
+<div class="line-pair" data-tip="分隔线">
+  <div class="code-side">
+    <span class="line-num">61</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">分隔线</span></span>
+  </div>
+</div>
+
+<!-- Line 62: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">62</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Section 3 divider -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">▼ 第三部分：回看 agent_loop</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">用工具函数表 + ToolBlock 模拟 agent_loop 的工具调用流程</span></span></div>
+</div>
+
+<!-- Line 63: comment part 3 -->
+<div class="line-pair" data-tip="第三部分标题注释：把前两部分学的内容应用到 agent_loop 代码中">
+  <div class="code-side">
+    <span class="line-num">63</span>
+    <span class="line-code"><span class="cm"># ============ 第三部分：回看 agent_loop ============</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">第三部分标题注释</span></span>
+  </div>
+</div>
+
+<!-- Line 64: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">64</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 65: comment 6 模拟 -->
+<div class="line-pair" data-tip="步骤6：模拟 agent_loop 中的工具调用机制">
+  <div class="code-side">
+    <span class="line-num">65</span>
+    <span class="line-code"><span class="cm"># 6. 模拟 agent_loop 中的工具调用</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">步骤6：模拟 agent_loop 工具调用</span></span>
+  </div>
+</div>
+
+<!-- Line 66: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">66</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 67: comment 工具函数表 -->
+<div class="line-pair" data-tip="工具函数表：一个字典，key 是工具名（字符串），value 是对应的函数对象。这是 agent_loop 的核心数据结构">
+  <div class="code-side">
+    <span class="line-num">67</span>
+    <span class="line-code"><span class="cm"># 这是"工具函数表"——每个工具名对应一个函数</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">工具函数表：字典存函数，key=工具名，value=函数对象</span></span>
+  </div>
+</div>
+
+<!-- Line 68: def get_weather -->
+<div class="line-pair" data-tip="定义工具函数 get_weather，接收城市名，返回天气信息字符串">
+  <div class="code-side">
+    <span class="line-num">68</span>
+    <span class="line-code"><span class="kw">def</span> <span class="fn">get_weather</span>(<span class="pa">city</span>):</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">def</span> 定义工具函数
+      <span class="tag tag-fn">get_weather</span><span class="arrow">→</span>函数名：获取天气
+      <span class="tag tag-pa">city</span><span class="arrow">→</span>参数：城市名
+    </span>
+  </div>
+</div>
+
+<!-- Line 69: return weather -->
+<div class="line-pair" data-tip="返回模拟的天气信息字符串，格式是「城市：温度」">
+  <div class="code-side">
+    <span class="line-num">69</span>
+    <span class="line-code">    <span class="kw">return</span> <span class="st">f"</span><span class="op">{</span><span class="vr">city</span><span class="op">}</span><span class="st">：32°C 晴"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">return</span><span class="arrow">→</span>返回天气信息字符串
+      <span class="note">f-string 把 city 插入结果</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 70: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">70</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 71: def search -->
+<div class="line-pair" data-tip="定义工具函数 search，接收搜索词和结果数量限制（limit 默认值为 3）">
+  <div class="code-side">
+    <span class="line-num">71</span>
+    <span class="line-code"><span class="kw">def</span> <span class="fn">search</span>(<span class="pa">query</span>, <span class="pa">limit</span><span class="op">=</span><span class="nm">3</span>):</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-fn">search</span><span class="arrow">→</span>函数名：搜索
+      <span class="tag tag-pa">query</span><span class="arrow">→</span>搜索词参数
+      <span class="tag tag-pa">limit</span><span class="tag tag-op">=</span><span class="tag tag-nm">3</span><span class="arrow">→</span>默认值参数（返回前3条）
+    </span>
+  </div>
+</div>
+
+<!-- Line 72: return search result -->
+<div class="line-pair" data-tip="返回模拟的搜索结果描述字符串">
+  <div class="code-side">
+    <span class="line-num">72</span>
+    <span class="line-code">    <span class="kw">return</span> <span class="st">f"搜索「</span><span class="op">{</span><span class="vr">query</span><span class="op">}</span><span class="st">」，返回前</span><span class="op">{</span><span class="vr">limit</span><span class="op">}</span><span class="st">条结果"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">return</span><span class="arrow">→</span>返回搜索结果描述
+      <span class="tag tag-vr">query</span> 和 <span class="tag tag-vr">limit</span> 插入 f-string
+    </span>
+  </div>
+</div>
+
+<!-- Line 73: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">73</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 74: TOOL_HANDLERS = {...} -->
+<div class="line-pair" data-tip="TOOL_HANDLERS 是字典变量（不是类，不是函数），存着「工具名 → 函数」的映射关系。全大写表示它是常量">
+  <div class="code-side">
+    <span class="line-num">74</span>
+    <span class="line-code"><span class="vr">TOOL_HANDLERS</span> <span class="op">=</span> {</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">TOOL_HANDLERS</span><span class="arrow">→</span>字典变量（全大写=常量约定）
+      <span class="op">=</span> 赋值，右边是字典 <span class="note">{...}</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 75: "get_weather": get_weather -->
+<div class="line-pair" data-tip="key 是字符串 'get_weather'（工具名），value 是 get_weather 函数对象本身（不加括号！）">
+  <div class="code-side">
+    <span class="line-num">75</span>
+    <span class="line-code">    <span class="st">"get_weather"</span>: <span class="vr">get_weather</span>,</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-st">"get_weather"</span><span class="arrow">→</span>key：工具名字符串
+      <span class="tag tag-vr">get_weather</span><span class="arrow">→</span>value：函数对象（不加括号）
+    </span>
+  </div>
+</div>
+
+<!-- Line 76: "search": search -->
+<div class="line-pair" data-tip="key 是字符串 'search'，value 是 search 函数对象。注意不加括号 —— 加了括号就是调用函数了">
+  <div class="code-side">
+    <span class="line-num">76</span>
+    <span class="line-code">    <span class="st">"search"</span>: <span class="vr">search</span>,</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-st">"search"</span><span class="arrow">→</span>key：工具名字符串
+      <span class="tag tag-vr">search</span><span class="arrow">→</span>value：函数对象（不加括号）
+    </span>
+  </div>
+</div>
+
+<!-- Line 77: } -->
+<div class="line-pair" data-tip="字典结束的右花括号">
+  <div class="code-side">
+    <span class="line-num">77</span>
+    <span class="line-code">}</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">} 字典结束</span></span>
+  </div>
+</div>
+
+<!-- Line 78: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">78</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 79: comment 模拟 Claude 返回 -->
+<div class="line-pair" data-tip="接下来模拟 Claude 返回工具调用请求的数据结构">
+  <div class="code-side">
+    <span class="line-num">79</span>
+    <span class="line-code"><span class="cm"># 模拟 Claude 返回的工具调用请求</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">接下来模拟 Claude API 返回的数据结构</span></span>
+  </div>
+</div>
+
+<!-- Line 80: class ToolBlock -->
+<div class="line-pair" data-tip="class 定义类 ToolBlock，模拟 Claude API 返回的工具调用块。class 是关键字，ToolBlock 是类名（也充当函数名使用）">
+  <div class="code-side">
+    <span class="line-num">80</span>
+    <span class="line-code"><span class="kw">class</span> <span class="fn">ToolBlock</span>:</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">class</span><span class="arrow">→</span>定义类的关键字
+      <span class="tag tag-fn">ToolBlock</span><span class="arrow">→</span>类名（模拟 Claude 返回的数据结构）
+    </span>
+  </div>
+</div>
+
+<!-- Line 81: def __init__ -->
+<div class="line-pair" data-tip="__init__ 是类的初始化方法（构造函数），每次创建 ToolBlock 对象时自动调用。self 代表对象自身">
+  <div class="code-side">
+    <span class="line-num">81</span>
+    <span class="line-code">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="pa">self</span>, <span class="pa">name</span>, <span class="pa">input_data</span>):</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-kw">def</span> 定义方法
+      <span class="tag tag-fn">__init__</span><span class="arrow">→</span>初始化方法（构造函数）
+      <span class="tag tag-pa">self</span><span class="arrow">→</span>对象自身
+      <span class="tag tag-pa">name, input_data</span><span class="arrow">→</span>初始化参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 82: self.name = name -->
+<div class="line-pair" data-tip="self.name 把传入的 name 参数保存为对象的属性。工具名，比如 'get_weather'">
+  <div class="code-side">
+    <span class="line-num">82</span>
+    <span class="line-code">        <span class="vr">self</span>.<span class="vr">name</span> <span class="op">=</span> <span class="vr">name</span>      <span class="cm"># 工具名</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">self</span>.<span class="tag tag-vr">name</span><span class="arrow">→</span>对象的 name 属性
+      <span class="op">=</span> <span class="tag tag-vr">name</span><span class="arrow">→</span>赋值为传入的 name 参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 83: self.input = input_data -->
+<div class="line-pair" data-tip="self.input 把传入的 input_data 保存为对象的 input 属性。参数字典，比如 {'city': '北京'}">
+  <div class="code-side">
+    <span class="line-num">83</span>
+    <span class="line-code">        <span class="vr">self</span>.<span class="vr">input</span> <span class="op">=</span> <span class="vr">input_data</span>  <span class="cm"># 参数（字典）</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">self</span>.<span class="tag tag-vr">input</span><span class="arrow">→</span>对象的 input 属性
+      <span class="op">=</span> <span class="tag tag-vr">input_data</span><span class="arrow">→</span>赋值为传入的字典参数
+    </span>
+  </div>
+</div>
+
+<!-- Line 84: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">84</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 85: comment Claude 说 -->
+<div class="line-pair" data-tip="注释：模拟 Claude 说「我要用 get_weather 工具，参数是 city=北京」">
+  <div class="code-side">
+    <span class="line-num">85</span>
+    <span class="line-code"><span class="cm"># Claude 说："我要用 get_weather 工具，参数是 city=北京"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">模拟 Claude 的工具调用请求</span></span>
+  </div>
+</div>
+
+<!-- Line 86: block = ToolBlock(...) -->
+<div class="line-pair" data-tip="创建 ToolBlock 对象，模拟 Claude 返回的工具调用请求：工具名是 'get_weather'，参数是 {'city': '北京'}">
+  <div class="code-side">
+    <span class="line-num">86</span>
+    <span class="line-code"><span class="vr">block</span> <span class="op">=</span> <span class="fn">ToolBlock</span>(<span class="st">"get_weather"</span>, {<span class="st">"city"</span>: <span class="st">"北京"</span>})</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">block</span><span class="arrow">→</span>变量，存 ToolBlock 对象
+      <span class="tag tag-fn">ToolBlock</span>(<span class="tag tag-st">"get_weather"</span>, {<span class="tag tag-st">"city"</span>: <span class="tag tag-st">"北京"</span>})<span class="arrow">→</span>创建对象
+    </span>
+  </div>
+</div>
+
+<!-- Line 87: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">87</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 88: comment 代码怎么执行的 -->
+<div class="line-pair" data-tip="接下来逐步拆解 agent_loop 的执行过程">
+  <div class="code-side">
+    <span class="line-num">88</span>
+    <span class="line-code"><span class="cm"># 代码怎么执行的：</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">接下来逐步拆解执行过程</span></span>
+  </div>
+</div>
+
+<!-- Line 89: print 一步步拆解 -->
+<div class="line-pair" data-tip="打印标题：一步步拆解">
+  <div class="code-side">
+    <span class="line-num">89</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"一步步拆解："</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">打印「一步步拆解：」标题</span></span>
+  </div>
+</div>
+
+<!-- Line 90: print block.name -->
+<div class="line-pair" data-tip="block.name 访问 block 对象的 name 属性，得到 'get_weather'。block 是变量，name 是属性">
+  <div class="code-side">
+    <span class="line-num">90</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">f"  block.name  = </span><span class="op">{</span><span class="vr">block</span>.<span class="vr">name</span><span class="op">}</span><span class="st">"</span>)       <span class="cm"># "get_weather"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">block</span>.<span class="tag tag-vr">name</span><span class="arrow">→</span>访问对象属性
+      输出：<span class="highlight">"get_weather"</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 91: print block.input -->
+<div class="line-pair" data-tip="block.input 访问 block 对象的 input 属性，得到字典 {'city': '北京'}。block 是变量，input 是属性">
+  <div class="code-side">
+    <span class="line-num">91</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">f"  block.input = </span><span class="op">{</span><span class="vr">block</span>.<span class="vr">input</span><span class="op">}</span><span class="st">"</span>)      <span class="cm"># {"city": "北京"}</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">block</span>.<span class="tag tag-vr">input</span><span class="arrow">→</span>访问对象属性
+      输出：<span class="highlight">{"city": "北京"}</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 92: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">92</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 93: comment TOOL_HANDLERS[block.name] -->
+<div class="line-pair" data-tip="注释解释：TOOL_HANDLERS[block.name] 就是用 'get_weather' 去字典里找对应的函数">
+  <div class="code-side">
+    <span class="line-num">93</span>
+    <span class="line-code"><span class="cm"># TOOL_HANDLERS[block.name] → TOOL_HANDLERS["get_weather"] → get_weather 函数</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">查找路径：工具名 → 字典查找 → 找到函数对象</span></span>
+  </div>
+</div>
+
+<!-- Line 94: handler = TOOL_HANDLERS[block.name] -->
+<div class="line-pair" data-tip="用 block.name（'get_weather'）作为 key，从 TOOL_HANDLERS 字典里取出对应的函数，赋值给 handler">
+  <div class="code-side">
+    <span class="line-num">94</span>
+    <span class="line-code"><span class="vr">handler</span> <span class="op">=</span> <span class="vr">TOOL_HANDLERS</span>[<span class="vr">block</span>.<span class="vr">name</span>]</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">handler</span><span class="arrow">→</span>变量，存找到的函数
+      <span class="tag tag-vr">TOOL_HANDLERS</span>[<span class="tag tag-vr">block</span>.<span class="tag tag-vr">name</span>]<span class="arrow">→</span>用工具名查字典取函数
+    </span>
+  </div>
+</div>
+
+<!-- Line 95: print handler.__name__ -->
+<div class="line-pair" data-tip="handler.__name__ 访问函数对象的 __name__ 属性，得到函数名字符串。handler 是变量，__name__ 是内置属性">
+  <div class="code-side">
+    <span class="line-num">95</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">f"  找到函数    = </span><span class="op">{</span><span class="vr">handler</span>.<span class="vr">__name__</span><span class="op">}</span><span class="st">"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">handler</span>.<span class="tag tag-vr">__name__</span><span class="arrow">→</span>函数的名字属性（内置特殊属性）
+      输出：<span class="highlight">get_weather</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 96: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">96</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 97: comment **block.input -->
+<div class="line-pair" data-tip="注释解释：**block.input 把字典解包成 city='北京' 传给函数">
+  <div class="code-side">
+    <span class="line-num">97</span>
+    <span class="line-code"><span class="cm"># **block.input → **{"city": "北京"} → city="北京"</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">解包路径：**block.input → **字典 → city="北京"</span></span>
+  </div>
+</div>
+
+<!-- Line 98: output = handler(**block.input) -->
+<div class="line-pair" data-tip="核心代码！handler 是 get_weather 函数，**block.input 把 {'city':'北京'} 解包成 city='北京'，等价于 get_weather(city='北京')">
+  <div class="code-side">
+    <span class="line-num">98</span>
+    <span class="line-code"><span class="vr">output</span> <span class="op">=</span> <span class="vr">handler</span>(<span class="op">**</span><span class="vr">block</span>.<span class="vr">input</span>)  <span class="cm"># 等价于 get_weather(city="北京")</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">handler</span>(<span class="tag tag-op">**</span><span class="tag tag-vr">block</span>.<span class="tag tag-vr">input</span>)<span class="arrow">→</span>动态调用函数 + 解包参数
+      <span class="note">等价于 get_weather(city="北京")</span>
+      <span class="highlight">这就是 agent_loop 第16-17行！</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 99: print output -->
+<div class="line-pair" data-tip="打印工具执行结果">
+  <div class="code-side">
+    <span class="line-num">99</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">f"  执行结果    = </span><span class="op">{</span><span class="vr">output</span><span class="op">}</span><span class="st">"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      打印 <span class="tag tag-vr">output</span> 的值
+      输出：<span class="highlight">北京：32°C 晴</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 100: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">100</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 101: print("---") -->
+<div class="line-pair" data-tip="分隔线">
+  <div class="code-side">
+    <span class="line-num">101</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">分隔线</span></span>
+  </div>
+</div>
+
+<!-- Line 102: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">102</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 103: comment 再试一个 -->
+<div class="line-pair" data-tip="再换一个工具试试，用搜索工具验证同样的机制">
+  <div class="code-side">
+    <span class="line-num">103</span>
+    <span class="line-code"><span class="cm"># 再试一个：搜索工具</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">换用 search 工具再演示一遍</span></span>
+  </div>
+</div>
+
+<!-- Line 104: block2 = ToolBlock(...) -->
+<div class="line-pair" data-tip="创建第二个 ToolBlock，工具名是 'search'，参数有两个：query 和 limit">
+  <div class="code-side">
+    <span class="line-num">104</span>
+    <span class="line-code"><span class="vr">block2</span> <span class="op">=</span> <span class="fn">ToolBlock</span>(<span class="st">"search"</span>, {<span class="st">"query"</span>: <span class="st">"Python教程"</span>, <span class="st">"limit"</span>: <span class="nm">5</span>})</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">block2</span><span class="arrow">→</span>第二个工具调用对象
+      工具名：<span class="tag tag-st">"search"</span>
+      参数：<span class="tag tag-st">"query"</span>: <span class="tag tag-st">"Python教程"</span>, <span class="tag tag-st">"limit"</span>: <span class="tag tag-nm">5</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 105: handler2 = TOOL_HANDLERS[block2.name] -->
+<div class="line-pair" data-tip="同样的方式：用 block2.name（'search'）从字典里找到 search 函数">
+  <div class="code-side">
+    <span class="line-num">105</span>
+    <span class="line-code"><span class="vr">handler2</span> <span class="op">=</span> <span class="vr">TOOL_HANDLERS</span>[<span class="vr">block2</span>.<span class="vr">name</span>]</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-vr">handler2</span><span class="arrow">→</span>找到的 search 函数
+      <span class="tag tag-vr">TOOL_HANDLERS</span>[<span class="tag tag-vr">block2</span>.<span class="tag tag-vr">name</span>]<span class="arrow">→</span>字典查找
+    </span>
+  </div>
+</div>
+
+<!-- Line 106: output2 = handler2(**block2.input) -->
+<div class="line-pair" data-tip="**block2.input 把 {'query':'Python教程','limit':5} 解包成 query='Python教程', limit=5，等价于 search(query='Python教程', limit=5)">
+  <div class="code-side">
+    <span class="line-num">106</span>
+    <span class="line-code"><span class="vr">output2</span> <span class="op">=</span> <span class="vr">handler2</span>(<span class="op">**</span><span class="vr">block2</span>.<span class="vr">input</span>)  <span class="cm"># 等价于 search(query="Python教程", limit=5)</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      <span class="tag tag-op">**</span><span class="tag tag-vr">block2</span>.<span class="tag tag-vr">input</span><span class="arrow">→</span>解包两个参数 query + limit
+      <span class="note">等价于 search(query="Python教程", limit=5)</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 107: print output2 -->
+<div class="line-pair" data-tip="打印搜索工具的执行结果">
+  <div class="code-side">
+    <span class="line-num">107</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">f"搜索结果：</span><span class="op">{</span><span class="vr">output2</span><span class="op">}</span><span class="st">"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain">
+      打印 <span class="tag tag-vr">output2</span> 的值
+      输出：<span class="highlight">搜索「Python教程」，返回前5条结果</span>
+    </span>
+  </div>
+</div>
+
+<!-- Line 108: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">108</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 109: print("---") -->
+<div class="line-pair" data-tip="分隔线">
+  <div class="code-side">
+    <span class="line-num">109</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">分隔线</span></span>
+  </div>
+</div>
+
+<!-- Line 110: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">110</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Section 4 divider -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">▼ 第四部分：完整翻译</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">逐行翻译 agent_loop 第16-17行，总结全课核心</span></span></div>
+</div>
+
+<!-- Line 111: comment part 4 -->
+<div class="line-pair" data-tip="第四部分标题注释：完整翻译 agent_loop 核心代码">
+  <div class="code-side">
+    <span class="line-num">111</span>
+    <span class="line-code"><span class="cm"># ============ 第四部分：完整翻译 ============</span></span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">第四部分标题注释</span></span>
+  </div>
+</div>
+
+<!-- Line 112: blank -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">112</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- Line 113: print === agent_loop === -->
+<div class="line-pair" data-tip="打印第四部分标题">
+  <div class="code-side">
+    <span class="line-num">113</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"=== agent_loop 第16-17行完整翻译 ==="</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">打印标题：agent_loop 核心代码翻译</span></span>
+  </div>
+</div>
+
+<!-- Line 114: print() -->
+<div class="line-pair" data-tip="打印空行">
+  <div class="code-side">
+    <span class="line-num">114</span>
+    <span class="line-code"><span class="bi">print</span>()</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">print() 不传参数 → 打印空行</span></span>
+  </div>
+</div>
+
+<!-- Line 115: print 代码 -->
+<div class="line-pair" data-tip="打印 agent_loop 的核心代码原文">
+  <div class="code-side">
+    <span class="line-num">115</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"代码：output = TOOL_HANDLERS[block.name](**block.input)"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">打印 agent_loop 核心代码原文</span></span>
+  </div>
+</div>
+
+<!-- Line 116: print() -->
+<div class="line-pair" data-tip="空行">
+  <div class="code-side">
+    <span class="line-num">116</span>
+    <span class="line-code"><span class="bi">print</span>()</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">空行</span></span>
+  </div>
+</div>
+
+<!-- Line 117: print 拆解 -->
+<div class="line-pair" data-tip="打印「拆解：」标题">
+  <div class="code-side">
+    <span class="line-num">117</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"拆解："</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">打印「拆解：」</span></span>
+  </div>
+</div>
+
+<!-- Line 118: print TOOL_HANDLERS[block.name] -->
+<div class="line-pair" data-tip="拆解第一部分：TOOL_HANDLERS[block.name] = 根据工具名找到对应的函数">
+  <div class="code-side">
+    <span class="line-num">118</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"  TOOL_HANDLERS[block.name]  → 根据工具名，找到对应的函数"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">第一步：字典查找 → 找到函数</span></span>
+  </div>
+</div>
+
+<!-- Line 119: print **block.input -->
+<div class="line-pair" data-tip="拆解第二部分：**block.input = 把参数字典拆开">
+  <div class="code-side">
+    <span class="line-num">119</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"  **block.input              → 把参数字典拆开"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">第二步：** 解包 → 把字典变成 key=value</span></span>
+  </div>
+</div>
+
+<!-- Line 120: print 函数(**参数) -->
+<div class="line-pair" data-tip="拆解第三部分：函数(**参数) = 调用函数，把解包后的参数传进去">
+  <div class="code-side">
+    <span class="line-num">120</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"  函数(**参数)               → 调用函数"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">第三步：调用函数并传入解包的参数</span></span>
+  </div>
+</div>
+
+<!-- Line 121: print output = -->
+<div class="line-pair" data-tip="拆解第四部分：output = 把执行结果存起来">
+  <div class="code-side">
+    <span class="line-num">121</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"  output =                   → 把结果存起来"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">第四步：接收并存储函数返回值</span></span>
+  </div>
+</div>
+
+<!-- Line 122: print() -->
+<div class="line-pair" data-tip="空行">
+  <div class="code-side">
+    <span class="line-num">122</span>
+    <span class="line-code"><span class="bi">print</span>()</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">空行</span></span>
+  </div>
+</div>
+
+<!-- Line 123: print 翻译成人话 -->
+<div class="line-pair" data-tip="打印「翻译成人话：」标题">
+  <div class="code-side">
+    <span class="line-num">123</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"翻译成人话："</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">打印「翻译成人话：」</span></span>
+  </div>
+</div>
+
+<!-- Line 124: print 根据 Claude 说的工具名 -->
+<div class="line-pair" data-tip="人话翻译第一句：根据 Claude 说的工具名，找到对应的函数">
+  <div class="code-side">
+    <span class="line-num">124</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"  \"根据 Claude 说的工具名，找到对应的函数，"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">人话第一句：根据工具名找函数</span></span>
+  </div>
+</div>
+
+<!-- Line 125: print 把 Claude 给的参数 -->
+<div class="line-pair" data-tip="人话翻译第二句：把 Claude 给的参数传进去执行，拿到结果">
+  <div class="code-side">
+    <span class="line-num">125</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"   把 Claude 给的参数传进去执行，拿到结果\""</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">人话第二句：传参执行，拿到结果</span></span>
+  </div>
+</div>
+
+<!-- Line 126: print() -->
+<div class="line-pair" data-tip="空行">
+  <div class="code-side">
+    <span class="line-num">126</span>
+    <span class="line-code"><span class="bi">print</span>()</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="note">空行</span></span>
+  </div>
+</div>
+
+<!-- Line 127: print 🎉 -->
+<div class="line-pair" data-tip="最后打印祝贺语：学完本课，agent_loop 每一行都能看懂了！">
+  <div class="code-side">
+    <span class="line-num">127</span>
+    <span class="line-code"><span class="bi">print</span>(<span class="st">"🎉 恭喜！agent_loop 的每一行你都能看懂了！"</span>)</span>
+  </div>
+  <div class="explain-side">
+    <span class="line-explain"><span class="highlight">全课完结：恭喜解锁 agent_loop 完整理解！</span></span>
+  </div>
+</div>
+
+</div><!-- end .lines -->
+
+<!-- Tooltip bar -->
+<div class="tip-bar">
+  <span class="tip-icon">💡</span>
+  <span id="tip-text">鼠标悬停在任意一行，这里显示详细解释</span>
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <h2>本课核心总结</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="card-title">**dict → 解包</div>
+      <div class="card-desc"><code>**info</code> 把字典解包成 key=value 形式的具名参数，直接传给函数</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">字典存函数</div>
+      <div class="card-desc"><code>{"name": func}</code> 字典的 value 可以是函数对象，实现动态查找</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">handler(**input)</div>
+      <div class="card-desc">动态调用 + 动态传参：根据运行时数据决定调用哪个函数、传什么参数</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">agent_loop 核心</div>
+      <div class="card-desc"><code>TOOL_HANDLERS[block.name](**block.input)</code> = 查函数 + 解包参数 + 执行</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottomnav">
+  <a href="lesson-06.html">← 第6课：对象和方法</a>
+  <a href="../index.html">回到课程首页 →</a>
+</nav>
+
+<script>
+const pairs = document.querySelectorAll('.line-pair[data-tip]');
+const tipText = document.getElementById('tip-text');
+const defaultTip = '鼠标悬停在任意一行，这里显示详细解释';
+
+pairs.forEach(pair => {
+  pair.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.line-pair').forEach(p => p.classList.remove('active'));
+    pair.classList.add('active');
+    tipText.textContent = pair.dataset.tip;
+  });
+  pair.addEventListener('mouseleave', () => {
+    pair.classList.remove('active');
+    tipText.textContent = defaultTip;
+  });
+});
+</script>
+<script src="legend-filter.js"></script>
+</body>
+</html>

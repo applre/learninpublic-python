@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSON 06 - 对象和方法</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Top navigation -->
+<nav class="topnav">
+  <a href="lesson-05.html">← lesson-05</a>
+  <span class="nav-center">python-basics</span>
+  <a href="lesson-07.html">lesson-07 →</a>
+</nav>
+
+<!-- Header -->
+<header class="lesson-header">
+  <div class="lesson-number">LESSON 06</div>
+  <h1>对象和方法</h1>
+  <p class="desc">点号的秘密：class 定义、属性、方法、链式调用</p>
+</header>
+
+<!-- Legend -->
+<div class="legend">
+  <span class="legend-hint">点击可高亮筛选 →</span>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span> 关键字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span> 函数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> 字符串</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> 数字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9a6b28"></span> 参数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink)"></span> 变量</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> 运算符</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink-lighter)"></span> 注释</div>
+</div>
+
+<!-- Column headers -->
+<div class="col-headers">
+  <div class="col-header">Python 代码</div>
+  <div class="col-header">结构解释 + 语法标注</div>
+</div>
+
+<!-- Lines -->
+<div class="lines">
+
+  <!-- Section 1 -->
+  <div class="section-row">
+    <div class="code-side"><span class="section-label">第一部分：点号 = "的"</span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # === 第6课：对象和方法 === -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">1</span>
+      <span class="line-code"><span class="cm"># === 第6课：对象和方法 ===</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">注释</span> 课程标题行，不执行</span>
+    </div>
+  </div>
+
+  <!-- # "点号"到底是什么意思？ -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">2</span>
+      <span class="line-code"><span class="cm"># "点号"到底是什么意思？为什么到处都是 xxx.yyy？</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">这节课的核心问题</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">3</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # ============ 第一部分 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">4</span>
+      <span class="line-code"><span class="cm"># ============ 第一部分：点号 = "的" ============</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔注释</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">5</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 1. 你其实已经用过点号了 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">6</span>
+      <span class="line-code"><span class="cm"># 1. 你其实已经用过点号了</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">从熟悉的地方开始</span>
+    </div>
+  </div>
+
+  <!-- fruits = [...] -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">7</span>
+      <span class="line-code"><span class="vr">fruits</span> <span class="op">=</span> [<span class="st">"苹果"</span>, <span class="st">"香蕉"</span>]</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">变量</span> <code>fruits</code> 赋值为一个列表，包含两个字符串</span>
+    </div>
+  </div>
+
+  <!-- fruits.append("橘子") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">8</span>
+      <span class="line-code"><span class="vr">fruits</span>.<span class="fn">append</span>(<span class="st">"橘子"</span>)     <span class="cm"># 列表.添加()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">fruits</span> <span class="arrow">.</span> <span class="tag tag-fn">append()</span> &rarr; 对象.方法() — 让列表执行"添加"这个动作</span>
+    </div>
+  </div>
+
+  <!-- # ↑ 读作 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">9</span>
+      <span class="line-code"><span class="cm"># ↑ 读作：fruits 的 append 方法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">点号 = "的"，就这么简单</span>
+    </div>
+  </div>
+
+  <!-- name = "hello world" -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">10</span>
+      <span class="line-code"><span class="vr">name</span> <span class="op">=</span> <span class="st">"hello world"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">变量</span> <code>name</code> 是一个字符串对象</span>
+    </div>
+  </div>
+
+  <!-- print(name.upper()) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">11</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">name</span>.<span class="fn">upper</span>())       <span class="cm"># 字符串.转大写()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">name</span>.<span class="tag tag-fn">upper()</span> &rarr; 输出 <code>HELLO WORLD</code>，字符串的转大写方法</span>
+    </div>
+  </div>
+
+  <!-- print(name.replace(...)) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">12</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">name</span>.<span class="fn">replace</span>(<span class="st">"world"</span>, <span class="st">"小白"</span>))  <span class="cm"># 字符串.替换()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">replace(旧, 新)</span> &rarr; 把 "world" 替换成 "小白"，输出 <code>hello 小白</code></span>
+    </div>
+  </div>
+
+  <!-- print(name.split(" ")) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">13</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">name</span>.<span class="fn">split</span>(<span class="st">" "</span>))    <span class="cm"># 字符串.按空格拆分()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">split(分隔符)</span> &rarr; 输出 <code>['hello', 'world']</code>，按空格把字符串切成列表</span>
+    </div>
+  </div>
+
+  <!-- print("---") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">14</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"---"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">输出分隔线</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">15</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 2. 点号的核心含义 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">16</span>
+      <span class="line-code"><span class="cm"># 2. 点号的核心含义</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">理论总结</span>
+    </div>
+  </div>
+
+  <!-- # xxx.yyy 就是 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">17</span>
+      <span class="line-code"><span class="cm"># xxx.yyy 就是 "xxx 的 yyy"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">属性访问</span>：读取对象的某个属性值</span>
+    </div>
+  </div>
+
+  <!-- # xxx.yyy() 就是 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">18</span>
+      <span class="line-code"><span class="cm"># xxx.yyy() 就是 "让 xxx 执行 yyy 这个动作"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">方法调用</span>：让对象执行某个动作，有括号</span>
+    </div>
+  </div>
+
+  <!-- # 生活类比 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">19</span>
+      <span class="line-code"><span class="cm">#</span></span>
+    </div>
+    <div class="explain-side"></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">20</span>
+      <span class="line-code"><span class="cm"># 生活类比：</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">点号就像汉语的"的"：手机的品牌、手机.打电话()</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">21</span>
+      <span class="line-code"><span class="cm">#   手机.打电话()     → phone.call()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">动作 → 括号，调用方法</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">22</span>
+      <span class="line-code"><span class="cm">#   手机.品牌         → phone.brand</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">属性 → 无括号，只是读值</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">23</span>
+      <span class="line-code"><span class="cm">#   冰箱.打开()       → fridge.open()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">动作</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">24</span>
+      <span class="line-code"><span class="cm">#   冰箱.温度         → fridge.temperature</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">属性</span>
+    </div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section-row">
+    <div class="code-side"><span class="section-label">第二部分：用 class 造自己的对象</span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">25</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # ============ 第二部分 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">26</span>
+      <span class="line-code"><span class="cm"># ============ 第二部分：用 class 造自己的对象 ============</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔注释</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">27</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 3. 最简单的 class -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">28</span>
+      <span class="line-code"><span class="cm"># 3. 最简单的 class —— 造一个"人"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">class = 模板/蓝图，用来批量制造同类对象</span>
+    </div>
+  </div>
+
+  <!-- class Person: -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">29</span>
+      <span class="line-code"><span class="kw">class</span> <span class="fn">Person</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">class</span> 定义一个类，名字 <span class="tag tag-fn">Person</span> 首字母大写（约定俗成），冒号开启类体</span>
+    </div>
+  </div>
+
+  <!-- def __init__ -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">30</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, <span class="pa">name</span>, <span class="pa">age</span>):  <span class="cm"># 初始化，创建时自动调用</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">__init__</span> 是特殊方法，对象被创建时自动执行；<span class="tag tag-kw">self</span> 指代对象自身；<span class="tag tag-pa">name</span> <span class="tag tag-pa">age</span> 是传入参数</span>
+    </div>
+  </div>
+
+  <!-- self.name = name -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">31</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">name</span> <span class="op">=</span> <span class="pa">name</span>  <span class="cm"># self.name = 这个人的名字</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">self</span>.<span class="tag tag-vr">name</span> 把参数 <code>name</code> 存成对象的属性，之后可用 <code>对象.name</code> 访问</span>
+    </div>
+  </div>
+
+  <!-- self.age = age -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">32</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">age</span> <span class="op">=</span> <span class="pa">age</span>    <span class="cm"># self.age = 这个人的年龄</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">同理，<span class="tag tag-kw">self</span>.<span class="tag tag-vr">age</span> 存储年龄属性</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">33</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- def introduce(self): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">34</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">introduce</span>(<span class="kw">self</span>):  <span class="cm"># 方法 = 这个对象能做的事</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">def</span> 在 class 内定义方法；第一个参数永远是 <span class="tag tag-kw">self</span>（调用时不用传）</span>
+    </div>
+  </div>
+
+  <!-- print(f"我叫...") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">35</span>
+      <span class="line-code">        <span class="fn">print</span>(<span class="st">f"我叫{</span><span class="kw">self</span>.<span class="vr">name</span><span class="st">}，今年{</span><span class="kw">self</span>.<span class="vr">age</span><span class="st">}岁"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">方法体：用 <span class="tag tag-kw">self</span>.<span class="tag tag-vr">name</span> 和 <span class="tag tag-kw">self</span>.<span class="tag tag-vr">age</span> 访问对象自己的属性</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">36</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- def is_adult(self): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">37</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">is_adult</span>(<span class="kw">self</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">另一个方法，会返回一个布尔值</span>
+    </div>
+  </div>
+
+  <!-- return self.age >= 18 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">38</span>
+      <span class="line-code">        <span class="kw">return</span> <span class="kw">self</span>.<span class="vr">age</span> <span class="op">>=</span> <span class="nm">18</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">return</span> 返回 <code>True</code> 或 <code>False</code>；<span class="op">&gt;=</span> 比较运算符</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">39</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 创建对象（实例化） -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">40</span>
+      <span class="line-code"><span class="cm"># 创建对象（实例化）</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">实例化 = 用模板制造一个具体对象</span>
+    </div>
+  </div>
+
+  <!-- 小白 = Person("小白", 25) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">41</span>
+      <span class="line-code"><span class="vr">小白</span> <span class="op">=</span> <span class="fn">Person</span>(<span class="st">"小白"</span>, <span class="nm">25</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">Person(...)</span> 调用类创建对象 → 自动执行 <code>__init__</code>；<span class="tag tag-vr">小白</span> 是这个对象的变量名</span>
+    </div>
+  </div>
+
+  <!-- xiaoming = Person("小明", 15) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">42</span>
+      <span class="line-code"><span class="vr">xiaoming</span> <span class="op">=</span> <span class="fn">Person</span>(<span class="st">"小明"</span>, <span class="nm">15</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">用同一个 class 创建第二个不同的对象，各自独立</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">43</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 用点号访问属性和方法 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">44</span>
+      <span class="line-code"><span class="cm"># 用点号访问属性和方法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">造好对象后，用点号使用它</span>
+    </div>
+  </div>
+
+  <!-- print(小白.name) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">45</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">小白</span>.<span class="vr">name</span>)         <span class="cm"># 属性：小白 的 name</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">小白</span>.<span class="tag tag-vr">name</span> &rarr; 读属性，无括号，输出 <code>小白</code></span>
+    </div>
+  </div>
+
+  <!-- print(小白.age) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">46</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">小白</span>.<span class="vr">age</span>)          <span class="cm"># 属性：小白 的 age</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">小白</span>.<span class="tag tag-vr">age</span> &rarr; 输出 <code>25</code></span>
+    </div>
+  </div>
+
+  <!-- 小白.introduce() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">47</span>
+      <span class="line-code"><span class="vr">小白</span>.<span class="fn">introduce</span>()         <span class="cm"># 方法：小白 的 自我介绍()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">小白</span>.<span class="tag tag-fn">introduce()</span> &rarr; 调用方法，有括号；输出 <code>我叫小白，今年25岁</code></span>
+    </div>
+  </div>
+
+  <!-- print(f"成年人？{小白.is_adult()}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">48</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"成年人？{</span><span class="vr">小白</span>.<span class="fn">is_adult</span>()<span class="st">}"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">方法调用结果直接嵌入 f-string；<span class="tag tag-fn">is_adult()</span> 返回 <code>True</code></span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">49</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- xiaoming.introduce() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">50</span>
+      <span class="line-code"><span class="vr">xiaoming</span>.<span class="fn">introduce</span>()</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">同一个方法，不同对象调用 &rarr; 输出 <code>我叫小明，今年15岁</code></span>
+    </div>
+  </div>
+
+  <!-- print(f"成年人？{xiaoming.is_adult()}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">51</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"成年人？{</span><span class="vr">xiaoming</span>.<span class="fn">is_adult</span>()<span class="st">}"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">15 &lt; 18，<span class="tag tag-fn">is_adult()</span> 返回 <code>False</code></span>
+    </div>
+  </div>
+
+  <!-- print("---") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">52</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"---"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔线</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">53</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 4. 链式点号 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">54</span>
+      <span class="line-code"><span class="cm"># 4. 链式点号 —— 一层一层往里找</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">a.b.c → 先找 a 的 b，再找 b 的 c</span>
+    </div>
+  </div>
+
+  <!-- class Phone: -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">55</span>
+      <span class="line-code"><span class="kw">class</span> <span class="fn">Phone</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">class</span> <span class="tag tag-fn">Phone</span> &rarr; 新的类，表示手机</span>
+    </div>
+  </div>
+
+  <!-- def __init__(self, brand, owner): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">56</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, <span class="pa">brand</span>, <span class="pa">owner</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">参数 <span class="tag tag-pa">brand</span> 品牌，<span class="tag tag-pa">owner</span> 主人（将是另一个对象）</span>
+    </div>
+  </div>
+
+  <!-- self.brand = brand -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">57</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">brand</span> <span class="op">=</span> <span class="pa">brand</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">存储品牌属性</span>
+    </div>
+  </div>
+
+  <!-- self.owner = owner -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">58</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">owner</span> <span class="op">=</span> <span class="pa">owner</span>  <span class="cm"># owner 是一个 Person 对象</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">self</span>.<span class="tag tag-vr">owner</span> 存的不是字符串，而是一个 <code>Person</code> 对象 &rarr; 对象可以嵌套</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">59</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- my_phone = Phone("iPhone", 小白) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">60</span>
+      <span class="line-code"><span class="vr">my_phone</span> <span class="op">=</span> <span class="fn">Phone</span>(<span class="st">"iPhone"</span>, <span class="vr">小白</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">创建 Phone 对象，owner 传入之前创建的 <span class="tag tag-vr">小白</span> 对象</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">61</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 链式访问 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">62</span>
+      <span class="line-code"><span class="cm"># 链式访问</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">链式调用：一层层往里找</span>
+    </div>
+  </div>
+
+  <!-- print(my_phone.brand) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">63</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">my_phone</span>.<span class="vr">brand</span>)              <span class="cm"># 手机的品牌</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">一层点号：<span class="tag tag-vr">my_phone</span>.<span class="tag tag-vr">brand</span> &rarr; 输出 <code>iPhone</code></span>
+    </div>
+  </div>
+
+  <!-- print(my_phone.owner.name) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">64</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">my_phone</span>.<span class="vr">owner</span>.<span class="vr">name</span>)         <span class="cm"># 手机的主人的名字</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">两层点号：<span class="tag tag-vr">my_phone</span>.<span class="tag tag-vr">owner</span> 得到 Person 对象，再 .<span class="tag tag-vr">name</span> &rarr; <code>小白</code></span>
+    </div>
+  </div>
+
+  <!-- print(my_phone.owner.age) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">65</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">my_phone</span>.<span class="vr">owner</span>.<span class="vr">age</span>)          <span class="cm"># 手机的主人的年龄</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">同理，链式找到 age &rarr; 输出 <code>25</code></span>
+    </div>
+  </div>
+
+  <!-- my_phone.owner.introduce() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">66</span>
+      <span class="line-code"><span class="vr">my_phone</span>.<span class="vr">owner</span>.<span class="fn">introduce</span>()         <span class="cm"># 手机的主人.自我介绍()</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">链式调用方法：<span class="tag tag-vr">my_phone</span>.<span class="tag tag-vr">owner</span>.<span class="tag tag-fn">introduce()</span> &rarr; 执行 Person 的 introduce 方法</span>
+    </div>
+  </div>
+
+  <!-- print("---") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">67</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"---"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔线</span>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section-row">
+    <div class="code-side"><span class="section-label">第三部分：带方法返回值的对象</span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">68</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # ============ 第三部分 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">69</span>
+      <span class="line-code"><span class="cm"># ============ 第三部分：带方法返回值的对象 ============</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔注释</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">70</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 5. 方法可以返回另一个对象 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">71</span>
+      <span class="line-code"><span class="cm"># 5. 方法可以返回另一个对象</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">方法的返回值可以是任意类型，包括另一个对象</span>
+    </div>
+  </div>
+
+  <!-- class ChatClient: -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">72</span>
+      <span class="line-code"><span class="kw">class</span> <span class="fn">ChatClient</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">class</span> <span class="tag tag-fn">ChatClient</span> &rarr; 模拟 Anthropic API 的 client 对象</span>
+    </div>
+  </div>
+
+  <!-- def __init__(self, name): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">73</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, <span class="pa">name</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">初始化方法，接收 <span class="tag tag-pa">name</span> 参数</span>
+    </div>
+  </div>
+
+  <!-- self.name = name -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">74</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">name</span> <span class="op">=</span> <span class="pa">name</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">存储名字属性</span>
+    </div>
+  </div>
+
+  <!-- self.messages = MessageService() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">75</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">messages</span> <span class="op">=</span> <span class="fn">MessageService</span>()  <span class="cm"># 属性本身是另一个对象</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">self</span>.<span class="tag tag-vr">messages</span> 是一个 <span class="tag tag-fn">MessageService</span> 对象 &rarr; 这就是 <code>client.messages</code> 的来源！</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">76</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- def info(self): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">77</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">info</span>(<span class="kw">self</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">打印客户端信息的方法</span>
+    </div>
+  </div>
+
+  <!-- print(f"客户端：{self.name}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">78</span>
+      <span class="line-code">        <span class="fn">print</span>(<span class="st">f"客户端：{</span><span class="kw">self</span>.<span class="vr">name</span><span class="st">}"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">用 f-string 输出客户端名字</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">79</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- class MessageService: -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">80</span>
+      <span class="line-code"><span class="kw">class</span> <span class="fn">MessageService</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">class</span> <span class="tag tag-fn">MessageService</span> &rarr; 对应 <code>client.messages</code> 这个属性对象</span>
+    </div>
+  </div>
+
+  <!-- def create(self, model, content): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">81</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">create</span>(<span class="kw">self</span>, <span class="pa">model</span>, <span class="pa">content</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">create()</span> 对应真实 API 的 <code>client.messages.create()</code>；参数 <span class="tag tag-pa">model</span> <span class="tag tag-pa">content</span></span>
+    </div>
+  </div>
+
+  <!-- # 返回一个 Response 对象 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">82</span>
+      <span class="line-code">        <span class="cm"># 返回一个 Response 对象</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">方法的返回值是另一个类的实例</span>
+    </div>
+  </div>
+
+  <!-- return Response(...) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">83</span>
+      <span class="line-code">        <span class="kw">return</span> <span class="fn">Response</span>(</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">return</span> 返回一个新建的 <span class="tag tag-fn">Response</span> 对象</span>
+    </div>
+  </div>
+
+  <!-- content=f"..." -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">84</span>
+      <span class="line-code">            <span class="pa">content</span><span class="op">=</span><span class="st">f"[{</span><span class="pa">model</span><span class="st">}] 回复：已收到「{</span><span class="pa">content</span><span class="st">}」"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">关键字参数 <span class="tag tag-pa">content</span>，用 f-string 构建回复内容</span>
+    </div>
+  </div>
+
+  <!-- stop_reason="end_turn", -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">85</span>
+      <span class="line-code">            <span class="pa">stop_reason</span><span class="op">=</span><span class="st">"end_turn"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">关键字参数 <span class="tag tag-pa">stop_reason</span>，对应真实 API 中 response 的停止原因</span>
+    </div>
+  </div>
+
+  <!-- ) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">86</span>
+      <span class="line-code">        )</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">Response() 调用结束，返回给调用者</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">87</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- class Response: -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">88</span>
+      <span class="line-code"><span class="kw">class</span> <span class="fn">Response</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">class</span> <span class="tag tag-fn">Response</span> &rarr; 对应真实 API 返回的 response 对象</span>
+    </div>
+  </div>
+
+  <!-- def __init__(self, content, stop_reason): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">89</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, <span class="pa">content</span>, <span class="pa">stop_reason</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">参数 <span class="tag tag-pa">content</span> 回复内容，<span class="tag tag-pa">stop_reason</span> 停止原因</span>
+    </div>
+  </div>
+
+  <!-- self.content = content -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">90</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">content</span> <span class="op">=</span> <span class="pa">content</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">存储 content 属性 &rarr; 之后可用 <code>response.content</code> 访问</span>
+    </div>
+  </div>
+
+  <!-- self.stop_reason = stop_reason -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">91</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">stop_reason</span> <span class="op">=</span> <span class="pa">stop_reason</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">存储 stop_reason 属性 &rarr; 之后可用 <code>response.stop_reason</code> 访问</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">92</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 使用 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">93</span>
+      <span class="line-code"><span class="cm"># 使用</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">现在演示三个类协作，模拟 API 调用</span>
+    </div>
+  </div>
+
+  <!-- client = ChatClient("我的AI助手") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">94</span>
+      <span class="line-code"><span class="vr">client</span> <span class="op">=</span> <span class="fn">ChatClient</span>(<span class="st">"我的AI助手"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">创建 ChatClient 对象，内部同时创建了 <code>MessageService</code> 存到 <code>client.messages</code></span>
+    </div>
+  </div>
+
+  <!-- client.info() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">95</span>
+      <span class="line-code"><span class="vr">client</span>.<span class="fn">info</span>()</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">调用 info 方法，输出 <code>客户端：我的AI助手</code></span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">96</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 链式调用 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">97</span>
+      <span class="line-code"><span class="cm"># 链式调用：client.messages.create(...)</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">这就是真实 agent_loop 里的写法！</span>
+    </div>
+  </div>
+
+  <!-- # 读作：客户端 的 消息服务 的 创建方法 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">98</span>
+      <span class="line-code"><span class="cm"># 读作：客户端 的 消息服务 的 创建方法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">三层：client → messages（对象）→ create()（方法）</span>
+    </div>
+  </div>
+
+  <!-- response = client.messages.create( -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">99</span>
+      <span class="line-code"><span class="vr">response</span> <span class="op">=</span> <span class="vr">client</span>.<span class="vr">messages</span>.<span class="fn">create</span>(</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">client</span>.<span class="tag tag-vr">messages</span>.<span class="tag tag-fn">create()</span> &rarr; 链式三层；返回值存入 <span class="tag tag-vr">response</span></span>
+    </div>
+  </div>
+
+  <!-- model="claude", -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">100</span>
+      <span class="line-code">    <span class="pa">model</span><span class="op">=</span><span class="st">"claude"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">关键字参数 <span class="tag tag-pa">model</span>，对应真实 API 的模型名称</span>
+    </div>
+  </div>
+
+  <!-- content="你好", -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">101</span>
+      <span class="line-code">    <span class="pa">content</span><span class="op">=</span><span class="st">"你好"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">关键字参数 <span class="tag tag-pa">content</span>，用户消息内容</span>
+    </div>
+  </div>
+
+  <!-- ) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">102</span>
+      <span class="line-code">)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">create() 调用结束，返回 Response 对象给 response</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">103</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- print(f"回复内容：{response.content}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">104</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"回复内容：{</span><span class="vr">response</span>.<span class="vr">content</span><span class="st">}"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">response</span>.<span class="tag tag-vr">content</span> &rarr; 读取 Response 对象的 content 属性</span>
+    </div>
+  </div>
+
+  <!-- print(f"停止原因：{response.stop_reason}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">105</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"停止原因：{</span><span class="vr">response</span>.<span class="vr">stop_reason</span><span class="st">}"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">response</span>.<span class="tag tag-vr">stop_reason</span> &rarr; 读取停止原因属性，输出 <code>end_turn</code></span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">106</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 用点号拿属性来判断 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">107</span>
+      <span class="line-code"><span class="cm"># 用点号拿属性来判断</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">属性可以直接用在 if 条件里</span>
+    </div>
+  </div>
+
+  <!-- if response.stop_reason != "tool_use": -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">108</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">response</span>.<span class="vr">stop_reason</span> <span class="op">!=</span> <span class="st">"tool_use"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> 直接判断属性值；<span class="op">!=</span> 不等于；这行就是 agent_loop 里的真实逻辑</span>
+    </div>
+  </div>
+
+  <!-- print("不需要工具...") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">109</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"不需要工具，直接返回答案"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">stop_reason 是 "end_turn"，不是 "tool_use"，所以条件成立，执行这行</span>
+    </div>
+  </div>
+
+  <!-- print("---") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">110</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"---"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔线</span>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section-row">
+    <div class="code-side"><span class="section-label">第四部分：回看 agent_loop</span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">111</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # ============ 第四部分 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">112</span>
+      <span class="line-code"><span class="cm"># ============ 第四部分：回看 agent_loop ============</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">分隔注释</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">113</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # 6. 现在逐行翻译 agent_loop -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">114</span>
+      <span class="line-code"><span class="cm"># 6. 现在逐行翻译 agent_loop：</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">有了 class 知识，再看 agent_loop 就全懂了</span>
+    </div>
+  </div>
+
+  <!-- print("=== agent_loop 逐行翻译 ===") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">115</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"=== agent_loop 逐行翻译 ==="</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">标题输出</span>
+    </div>
+  </div>
+
+  <!-- print() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">116</span>
+      <span class="line-code"><span class="fn">print</span>()</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">输出空行</span>
+    </div>
+  </div>
+
+  <!-- print("代码：client.messages.create(...)") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">117</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"代码：client.messages.create(model=MODEL, ...)"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">打印代码片段</span>
+    </div>
+  </div>
+
+  <!-- print("翻译：客户端 的 消息服务 的 创建方法") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">118</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"翻译：客户端 的 消息服务 的 创建方法"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">中文翻译：三个点号 = 三层"的"</span>
+    </div>
+  </div>
+
+  <!-- print("意思：向 Claude API 发送请求") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">119</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"意思：向 Claude API 发送请求"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">业务含义</span>
+    </div>
+  </div>
+
+  <!-- print() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">120</span>
+      <span class="line-code"><span class="fn">print</span>()</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">空行</span>
+    </div>
+  </div>
+
+  <!-- print("代码：response.content") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">121</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"代码：response.content"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">response 对象的 content 属性</span>
+    </div>
+  </div>
+
+  <!-- print("翻译：响应 的 内容") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">122</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"翻译：响应 的 内容"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">点号 = 的</span>
+    </div>
+  </div>
+
+  <!-- print("意思：Claude 回复的内容") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">123</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"意思：Claude 回复的内容"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">业务含义</span>
+    </div>
+  </div>
+
+  <!-- print() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">124</span>
+      <span class="line-code"><span class="fn">print</span>()</span>
+    </div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- print("代码：response.stop_reason") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">125</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"代码：response.stop_reason"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">response 对象的 stop_reason 属性</span>
+    </div>
+  </div>
+
+  <!-- print("翻译：响应 的 停止原因") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">126</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"翻译：响应 的 停止原因"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">点号 = 的</span>
+    </div>
+  </div>
+
+  <!-- print("意思：Claude 为什么停下来...") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">127</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"意思：Claude 为什么停下来（说完了？要用工具？）"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">stop_reason 的两种值：end_turn / tool_use</span>
+    </div>
+  </div>
+
+  <!-- print() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">128</span>
+      <span class="line-code"><span class="fn">print</span>()</span>
+    </div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- print("代码：block.type") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">129</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"代码：block.type"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">block 是 response.content 里的每一个内容块对象</span>
+    </div>
+  </div>
+
+  <!-- print("翻译：内容块 的 类型") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">130</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"翻译：内容块 的 类型"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">点号 = 的</span>
+    </div>
+  </div>
+
+  <!-- print("意思：这块内容是文字还是工具调用") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">131</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"意思：这块内容是文字还是工具调用"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">type 值：text / tool_use</span>
+    </div>
+  </div>
+
+  <!-- print() -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">132</span>
+      <span class="line-code"><span class="fn">print</span>()</span>
+    </div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- print("代码：block.name / block.input / block.id") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">133</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"代码：block.name / block.input / block.id"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">工具块的三个属性：名字、输入参数、调用ID</span>
+    </div>
+  </div>
+
+  <!-- print("翻译：工具块 的 名字 / 输入参数 / 编号") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">134</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"翻译：工具块 的 名字 / 输入参数 / 编号"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">点号 = 的，三个属性分别对应三个含义</span>
+    </div>
+  </div>
+
+  <!-- print("意思：要用哪个工具、传什么参数、这次调用的ID") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">135</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"意思：要用哪个工具、传什么参数、这次调用的ID"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">业务含义：agent_loop 靠这三个属性找到并执行工具</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">136</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- # === 练习 === -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">137</span>
+      <span class="line-code"><span class="cm"># === 练习 ===</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain highlight">动手练习：创建自己的 class</span>
+    </div>
+  </div>
+
+  <!-- # 试着创建一个 Product 类 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">138</span>
+      <span class="line-code"><span class="cm"># 试着创建一个 Product 类，描述你负责的产品</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain note">把学到的 class 知识用在真实场景上</span>
+    </div>
+  </div>
+
+  <!-- class Product: -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">139</span>
+      <span class="line-code"><span class="kw">class</span> <span class="fn">Product</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">class</span> <span class="tag tag-fn">Product</span> &rarr; 定义产品类</span>
+    </div>
+  </div>
+
+  <!-- def __init__(self, name, users): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">140</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, <span class="pa">name</span>, <span class="pa">users</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">参数：<span class="tag tag-pa">name</span> 产品名，<span class="tag tag-pa">users</span> 用户数</span>
+    </div>
+  </div>
+
+  <!-- self.name = name -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">141</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">name</span> <span class="op">=</span> <span class="pa">name</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">存储产品名属性</span>
+    </div>
+  </div>
+
+  <!-- self.users = users -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">142</span>
+      <span class="line-code">        <span class="kw">self</span>.<span class="vr">users</span> <span class="op">=</span> <span class="pa">users</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">存储用户数属性</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">143</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- def summary(self): -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">144</span>
+      <span class="line-code">    <span class="kw">def</span> <span class="fn">summary</span>(<span class="kw">self</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">定义 summary 方法，返回一个描述字符串</span>
+    </div>
+  </div>
+
+  <!-- return f"产品..." -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">145</span>
+      <span class="line-code">        <span class="kw">return</span> <span class="st">f"产品「{</span><span class="kw">self</span>.<span class="vr">name</span><span class="st">}」，当前用户数 {</span><span class="kw">self</span>.<span class="vr">users</span><span class="st">}"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">return</span> 返回 f-string；用 <span class="tag tag-kw">self</span>.<span class="tag tag-vr">name</span> 和 <span class="tag tag-kw">self</span>.<span class="tag tag-vr">users</span> 填充</span>
+    </div>
+  </div>
+
+  <!-- blank -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">146</span><span class="line-code"></span></div>
+    <div class="explain-side"></div>
+  </div>
+
+  <!-- my_product = Product("在这里写产品名", 10000) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">147</span>
+      <span class="line-code"><span class="vr">my_product</span> <span class="op">=</span> <span class="fn">Product</span>(<span class="st">"在这里写产品名"</span>, <span class="nm">10000</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">实例化 Product，改成你自己的产品名试试</span>
+    </div>
+  </div>
+
+  <!-- print(f"\n{my_product.summary()}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">148</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"\n{</span><span class="vr">my_product</span>.<span class="fn">summary</span>()<span class="st">}"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><code>\n</code> 先输出换行；<span class="tag tag-vr">my_product</span>.<span class="tag tag-fn">summary()</span> 调用方法拿到字符串并输出</span>
+    </div>
+  </div>
+
+</div>
+<!-- end .lines -->
+
+<!-- Summary cards -->
+<div class="summary">
+  <h2>本课要点</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="card-title">点号 .</div>
+      <div class="card-desc"><code>对象.属性</code> 读值，<code>对象.方法()</code> 执行动作；读作"的"</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">class</div>
+      <div class="card-desc">定义一类对象的模板/蓝图，用类名加括号创建实例</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">self</div>
+      <div class="card-desc">方法第一个参数，指代对象自身；<code>self.x</code> 是对象的属性</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">链式调用</div>
+      <div class="card-desc"><code>a.b.c()</code> 一层层往里找；<code>client.messages.create()</code> 就是三层</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom navigation -->
+<nav class="bottomnav">
+  <a href="lesson-05.html">← lesson-05</a>
+  <a href="lesson-07.html">lesson-07 →</a>
+</nav>
+
+<!-- Tip bar -->
+<div class="tip-bar">
+  <span class="tip-icon">?</span>
+  <span>悬停在任意一行代码上高亮查看；点号 = "的"，括号 = 动作</span>
+</div>
+
+<script src="legend-filter.js"></script>
+</body>
+</html>

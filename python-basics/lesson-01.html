@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1课：Hello World 和变量 | Python 零基础</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="../index.html">← 课程首页</a>
+  <a href="../index.html" class="nav-center">Python 零基础入门</a>
+  <a href="lesson-02.html">第2课 →</a>
+</nav>
+
+<div class="lesson-header">
+  <span class="lesson-number">LESSON 01</span>
+  <h1>Hello World 和变量</h1>
+  <p class="desc">你的第一行代码：打印输出、变量赋值、f-string 格式化</p>
+</div>
+
+<div class="legend">
+  <span class="legend-hint">点击可高亮筛选 →</span>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span> 关键字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span> 函数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> 字符串</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> 数字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9a6b28"></span> 参数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink)"></span> 变量</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> 运算符</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink-lighter)"></span> 注释</div>
+</div>
+
+<div class="col-headers">
+  <div class="col-header">代码 CODE</div>
+  <div class="col-header">逐行解释 EXPLANATION</div>
+</div>
+
+<div class="lines">
+
+  <!-- Line 1: 标题注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">1</span>
+      <span class="line-code"><span class="cm"># === 第1课：Hello World 和变量 ===</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">注释行，用于说明整个文件的主题，运行时被忽略</span></span>
+    </div>
+  </div>
+
+  <!-- Line 2: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">2</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行，用于分隔代码块，提高可读性</span></span>
+    </div>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第一部分：打印输出</span></div>
+    <div class="explain-side"><span class="section-label">你的第一行代码</span></div>
+  </div>
+
+  <!-- Line 3: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">3</span>
+      <span class="line-code"><span class="cm"># 1. 打印输出 —— 你的第一行代码</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">注释：说明这段代码的用途，<code>#</code> 后面的内容不会被执行</span></span>
+    </div>
+  </div>
+
+  <!-- Line 4: print("Hello, World!") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">4</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"Hello, World!"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">print</span> <span class="arrow">→</span> 内置函数，把括号内的内容输出到屏幕 &nbsp; <span class="tag tag-st">"Hello, World!"</span> <span class="arrow">→</span> 字符串参数，双引号包裹的文本</span>
+    </div>
+  </div>
+
+  <!-- Line 5: print("你好，小白！欢迎来到 Python 的世界") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">5</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"你好，小白！欢迎来到 Python 的世界"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">print</span> <span class="arrow">→</span> 同一个函数可以打印中文 &nbsp; <span class="tag tag-st">"你好…"</span> <span class="arrow">→</span> 字符串内可以包含任意文字</span>
+    </div>
+  </div>
+
+  <!-- Line 6: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">6</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第二部分：变量</span></div>
+    <div class="explain-side"><span class="section-label">给数据起名字，像贴标签的盒子</span></div>
+  </div>
+
+  <!-- Line 7: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">7</span>
+      <span class="line-code"><span class="cm"># 2. 变量 —— 给要打印的数据起名字</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">注释：介绍变量的概念</span></span>
+    </div>
+  </div>
+
+  <!-- Line 8: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">8</span>
+      <span class="line-code"><span class="cm"># 变量就像一个盒子，你往里面放东西，以后用名字就能取出来</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">比喻：变量 = 贴了标签的盒子，标签是变量名，盒子里的内容是变量值</span></span>
+    </div>
+  </div>
+
+  <!-- Line 9: name = "小白" -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">9</span>
+      <span class="line-code"><span class="vr">name</span> <span class="op">=</span> <span class="st">"小白"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">name</span> <span class="arrow">→</span> 变量名 &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值运算符（不是"等于"，是"把右边放入左边"） &nbsp; <span class="tag tag-st">"小白"</span> <span class="arrow">→</span> 字符串值</span>
+    </div>
+  </div>
+
+  <!-- Line 10: age = 25 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">10</span>
+      <span class="line-code"><span class="vr">age</span> <span class="op">=</span> <span class="nm">25</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">age</span> <span class="arrow">→</span> 变量名 &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值 &nbsp; <span class="tag tag-nm">25</span> <span class="arrow">→</span> 整数（int），不加引号</span>
+    </div>
+  </div>
+
+  <!-- Line 11: height = 1.75 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">11</span>
+      <span class="line-code"><span class="vr">height</span> <span class="op">=</span> <span class="nm">1.75</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">height</span> <span class="arrow">→</span> 变量名 &nbsp; <span class="tag tag-nm">1.75</span> <span class="arrow">→</span> 浮点数（float），带小数点的数字</span>
+    </div>
+  </div>
+
+  <!-- Line 12: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">12</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Line 13: print(name) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">13</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">name</span>)    <span class="cm"># 输出: 小白</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">print</span> <span class="arrow">→</span> 打印函数 &nbsp; <span class="tag tag-vr">name</span> <span class="arrow">→</span> 变量名，不加引号，Python 会取出变量的值再打印</span>
+    </div>
+  </div>
+
+  <!-- Line 14: print(age) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">14</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">age</span>)     <span class="cm"># 输出: 25</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">print</span> <span class="arrow">→</span> 打印函数 &nbsp; <span class="tag tag-vr">age</span> <span class="arrow">→</span> 整数变量，输出数字 <span class="highlight">25</span></span>
+    </div>
+  </div>
+
+  <!-- Line 15: print(height) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">15</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="vr">height</span>)  <span class="cm"># 输出: 1.75</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">print</span> <span class="arrow">→</span> 打印函数 &nbsp; <span class="tag tag-vr">height</span> <span class="arrow">→</span> 浮点数变量，输出 <span class="highlight">1.75</span></span>
+    </div>
+  </div>
+
+  <!-- Line 16: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">16</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第三部分：字符串拼接</span></div>
+    <div class="explain-side"><span class="section-label">用 + 把字符串和变量粘在一起，两种写法</span></div>
+  </div>
+
+  <!-- Line 17: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">17</span>
+      <span class="line-code"><span class="cm"># 3. 字符串拼接 —— 用 + 把字符串和变量粘在一起</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">注释：介绍字符串拼接的概念</span></span>
+    </div>
+  </div>
+
+  <!-- Line 18: print("我的名字是 " + name) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">18</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">"我的名字是 "</span> <span class="op">+</span> <span class="vr">name</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">"我的名字是 "</span> <span class="arrow">→</span> 字符串字面量 &nbsp; <span class="tag tag-op">+</span> <span class="arrow">→</span> 字符串拼接运算符 &nbsp; <span class="tag tag-vr">name</span> <span class="arrow">→</span> 变量，值为 "小白"</span>
+    </div>
+  </div>
+
+  <!-- Line 19: print(f"我叫{name}，今年{age}岁") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">19</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"我叫{<span class="vr">name</span>}，今年{<span class="vr">age</span>}岁"</span>)  <span class="cm"># f-string，更方便的写法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">f"..."</span> <span class="arrow">→</span> f-string，前缀 <code>f</code> 表示格式化字符串 &nbsp; <code>{name}</code> <span class="arrow">→</span> 花括号内直接嵌入变量，自动替换为变量值</span>
+    </div>
+  </div>
+
+  <!-- Line 20: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">20</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第四部分：基本数学运算</span></div>
+    <div class="explain-side"><span class="section-label">七种算术运算符</span></div>
+  </div>
+
+  <!-- Line 21: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">21</span>
+      <span class="line-code"><span class="cm"># 4. 基本数学运算</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">注释：介绍数学运算符</span></span>
+    </div>
+  </div>
+
+  <!-- Line 22: a = 10 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">22</span>
+      <span class="line-code"><span class="vr">a</span> <span class="op">=</span> <span class="nm">10</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">a</span> <span class="arrow">→</span> 变量名（短变量名，常用于数学示例） &nbsp; <span class="tag tag-nm">10</span> <span class="arrow">→</span> 整数值</span>
+    </div>
+  </div>
+
+  <!-- Line 23: b = 3 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">23</span>
+      <span class="line-code"><span class="vr">b</span> <span class="op">=</span> <span class="nm">3</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">b</span> <span class="arrow">→</span> 变量名 &nbsp; <span class="tag tag-nm">3</span> <span class="arrow">→</span> 整数值，后面用作运算的第二个操作数</span>
+    </div>
+  </div>
+
+  <!-- Line 24: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">24</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Line 25: print(f"{a} + {b} = {a + b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">25</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">+</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">+</span> <span class="vr">b</span>}"</span>)   <span class="cm"># 加法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">+</span> <span class="arrow">→</span> 加法运算符 &nbsp; <code>{a + b}</code> <span class="arrow">→</span> 花括号内可以写表达式，Python 先计算结果再插入字符串 &nbsp; 输出：<span class="highlight">10 + 3 = 13</span></span>
+    </div>
+  </div>
+
+  <!-- Line 26: print(f"{a} - {b} = {a - b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">26</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">-</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">-</span> <span class="vr">b</span>}"</span>)   <span class="cm"># 减法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">-</span> <span class="arrow">→</span> 减法运算符 &nbsp; 输出：<span class="highlight">10 - 3 = 7</span></span>
+    </div>
+  </div>
+
+  <!-- Line 27: print(f"{a} * {b} = {a * b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">27</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">*</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">*</span> <span class="vr">b</span>}"</span>)   <span class="cm"># 乘法</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">*</span> <span class="arrow">→</span> 乘法运算符（用星号而非 ×） &nbsp; 输出：<span class="highlight">10 * 3 = 30</span></span>
+    </div>
+  </div>
+
+  <!-- Line 28: print(f"{a} / {b} = {a / b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">28</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">/</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">/</span> <span class="vr">b</span>}"</span>)   <span class="cm"># 除法（有小数）</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">/</span> <span class="arrow">→</span> 除法，结果始终为浮点数 &nbsp; 输出：<span class="highlight">10 / 3 = 3.3333…</span></span>
+    </div>
+  </div>
+
+  <!-- Line 29: print(f"{a} // {b} = {a // b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">29</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">//</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">//</span> <span class="vr">b</span>}"</span>) <span class="cm"># 整除（去掉小数）</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">//</span> <span class="arrow">→</span> 整除运算符，向下取整，去掉小数部分 &nbsp; 输出：<span class="highlight">10 // 3 = 3</span></span>
+    </div>
+  </div>
+
+  <!-- Line 30: print(f"{a} % {b} = {a % b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">30</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">%</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">%</span> <span class="vr">b</span>}"</span>)   <span class="cm"># 取余数</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">%</span> <span class="arrow">→</span> 取余（模运算），10 除以 3 余 1 &nbsp; 输出：<span class="highlight">10 % 3 = 1</span></span>
+    </div>
+  </div>
+
+  <!-- Line 31: print(f"{a} ** {b} = {a ** b}") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">31</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"{<span class="vr">a</span>} <span class="op">**</span> {<span class="vr">b</span>} = {<span class="vr">a</span> <span class="op">**</span> <span class="vr">b</span>}"</span>) <span class="cm"># 幂运算（10的3次方）</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">**</span> <span class="arrow">→</span> 幂运算符（乘方），10³ = 1000 &nbsp; 输出：<span class="highlight">10 ** 3 = 1000</span></span>
+    </div>
+  </div>
+
+  <!-- Line 32: 空行 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">32</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section 5 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎练习部分</span></div>
+    <div class="explain-side"><span class="section-label">动手试试修改变量再运行</span></div>
+  </div>
+
+  <!-- Line 33: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">33</span>
+      <span class="line-code"><span class="cm"># === 练习 ===</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">练习区域标题注释</span></span>
+    </div>
+  </div>
+
+  <!-- Line 34: 注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">34</span>
+      <span class="line-code"><span class="cm"># 试试修改下面的变量，然后运行这个文件看看效果</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">提示：直接修改下方变量的值，保存后用 <code>python 01_hello.py</code> 运行</span></span>
+    </div>
+  </div>
+
+  <!-- Line 35: my_name = "小白" -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">35</span>
+      <span class="line-code"><span class="vr">my_name</span> <span class="op">=</span> <span class="st">"小白"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">my_name</span> <span class="arrow">→</span> 变量名（下划线命名法，Python 惯用风格） &nbsp; <span class="tag tag-st">"小白"</span> <span class="arrow">→</span> 可以改成你自己的名字</span>
+    </div>
+  </div>
+
+  <!-- Line 36: my_hobby = "coding" -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">36</span>
+      <span class="line-code"><span class="vr">my_hobby</span> <span class="op">=</span> <span class="st">"coding"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">my_hobby</span> <span class="arrow">→</span> 变量名 &nbsp; <span class="tag tag-st">"coding"</span> <span class="arrow">→</span> 可以改成你的爱好，例如 "reading" 或 "gaming"</span>
+    </div>
+  </div>
+
+  <!-- Line 37: print(f"大家好，我是{my_name}，我喜欢{my_hobby}！") -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">37</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"大家好，我是{<span class="vr">my_name</span>}，我喜欢{<span class="vr">my_hobby</span>}！"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">f"…"</span> <span class="arrow">→</span> f-string 综合应用 &nbsp; <code>{my_name}</code> <code>{my_hobby}</code> <span class="arrow">→</span> 两个变量嵌入同一个字符串中，输出完整的自我介绍句子</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="summary">
+  <h2>本课知识点</h2>
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="card-title">print()</div>
+      <div class="card-desc">内置函数，将括号内的内容输出到屏幕。可传入字符串、数字或变量。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">变量赋值</div>
+      <div class="card-desc">用 <code>=</code> 给数据起名字。左边是变量名，右边是值，数字不加引号，文字加引号。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">f-string</div>
+      <div class="card-desc"><code>f"…{变量}…"</code> 格式化字符串，花括号内可嵌入变量或表达式，比 <code>+</code> 拼接更方便。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">运算符</div>
+      <div class="card-desc"><code>+</code> 加 &nbsp; <code>-</code> 减 &nbsp; <code>*</code> 乘 &nbsp; <code>/</code> 除 &nbsp; <code>//</code> 整除 &nbsp; <code>%</code> 取余 &nbsp; <code>**</code> 幂</div>
+    </div>
+
+  </div>
+</div>
+
+<nav class="bottomnav">
+  <span></span>
+  <a href="lesson-02.html">第2课：条件判断 →</a>
+</nav>
+
+<div class="tip-bar">
+  <span class="tip-icon">💡</span>
+  <span>鼠标悬停在任意一行上高亮对照</span>
+</div>
+
+<script src="legend-filter.js"></script>
+</body>
+</html>

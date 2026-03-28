@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LESSON 05 · 列表和字典</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a href="lesson-04.html">← 上一课</a>
+  <span class="nav-center">Python 基础课程</span>
+  <a href="lesson-06.html">下一课 →</a>
+</nav>
+
+<!-- Header -->
+<div class="lesson-header">
+  <div class="lesson-number">LESSON 05</div>
+  <h1>列表和字典</h1>
+  <p class="desc">最常用的数据容器：列表 list、字典 dict、组合使用</p>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <span class="legend-hint">点击可高亮筛选 →</span>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span> 关键字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span> 函数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> 字符串</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> 数字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9a6b28"></span> 参数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink)"></span> 变量</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> 运算符</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink-lighter)"></span> 注释</div>
+</div>
+
+<!-- Column Headers -->
+<div class="col-headers">
+  <div class="col-header">Python 代码</div>
+  <div class="col-header">中文结构说明</div>
+</div>
+
+<!-- Lines -->
+<div class="lines">
+
+<!-- === 第一部分：列表 list === -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">第一部分：列表 list</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">列表 = 有序数据容器，用 [ ] 表示</span></span></div>
+</div>
+
+<!-- line 1: # === 第5课：列表和字典 === -->
+<div class="line-pair" data-tip="注释行，说明本课主题。# 开头的都是注释，Python 不执行。">
+  <div class="code-side"><span class="line-num">1</span><span class="line-code"><span class="cm"># === 第5课：列表和字典 ===</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释：本课标题，Python 不执行这行</span></span></div>
+</div>
+
+<!-- line 2: # 列表 = ... -->
+<div class="line-pair" data-tip="注释说明：列表用中括号 [] 表示，里面的元素有顺序。">
+  <div class="code-side"><span class="line-num">2</span><span class="line-code"><span class="cm"># 列表 = 有序的一组数据（用 []）</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释：列表是有序集合，用方括号包裹</span></span></div>
+</div>
+
+<!-- line 3: # 字典 = ... -->
+<div class="line-pair" data-tip="注释说明：字典用花括号 {} 表示，每个元素是"键: 值"对。">
+  <div class="code-side"><span class="line-num">3</span><span class="line-code"><span class="cm"># 字典 = 一组"键值对"（用 {}）</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释：字典是键值对集合，用花括号包裹</span></span></div>
+</div>
+
+<!-- blank line 4 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">4</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 5: # ============ 第一部分：列表 list ============ -->
+<div class="line-pair" data-tip="分隔注释，标记第一部分的开始。">
+  <div class="code-side"><span class="line-num">5</span><span class="line-code"><span class="cm"># ============ 第一部分：列表 list ============</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释分隔线：第一部分开始</span></span></div>
+</div>
+
+<!-- blank line 6 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">6</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 7: # 1. 创建列表 -->
+<div class="line-pair" data-tip="小节标题注释：创建列表。">
+  <div class="code-side"><span class="line-num">7</span><span class="line-code"><span class="cm"># 1. 创建列表</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第1节：创建列表</span></span></div>
+</div>
+
+<!-- line 8: fruits = ["苹果", "香蕉", "橘子"] -->
+<div class="line-pair" data-tip="创建一个字符串列表。[ ] 内用逗号分隔三个元素，整体赋值给变量 fruits。">
+  <div class="code-side"><span class="line-num">8</span><span class="line-code"><span class="vr">fruits</span> <span class="op">=</span> [<span class="st">"苹果"</span>, <span class="st">"香蕉"</span>, <span class="st">"橘子"</span>]</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits</span> <span class="arrow">→</span> 变量（列表）
+    <span class="arrow"> = </span>
+    <span class="tag tag-st">[ "苹果", "香蕉", "橘子" ]</span> <span class="arrow">→</span> 3个字符串元素
+  </span></div>
+</div>
+
+<!-- line 9: numbers = [1, 2, 3, 4, 5] -->
+<div class="line-pair" data-tip="创建一个数字列表，5个整数元素。">
+  <div class="code-side"><span class="line-num">9</span><span class="line-code"><span class="vr">numbers</span> <span class="op">=</span> [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>]</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">numbers</span> <span class="arrow">→</span> 变量（数字列表）
+    <span class="arrow">=</span>
+    <span class="note">整数 1 到 5，共5个元素</span>
+  </span></div>
+</div>
+
+<!-- line 10: mixed = ["小白", 25, True, 3.14]  # 可以混着放 -->
+<div class="line-pair" data-tip="列表可以混合不同类型：字符串、整数、布尔值、浮点数，全部放在一个列表里。">
+  <div class="code-side"><span class="line-num">10</span><span class="line-code"><span class="vr">mixed</span> <span class="op">=</span> [<span class="st">"小白"</span>, <span class="nm">25</span>, <span class="bl">True</span>, <span class="nm">3.14</span>]  <span class="cm"># 可以混着放</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">mixed</span> <span class="arrow">→</span> 混合类型列表
+    <span class="note">字符串 + 整数 + 布尔值 + 浮点数，列表不限类型</span>
+  </span></div>
+</div>
+
+<!-- blank line 11 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">11</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 12: print(fruits) -->
+<div class="line-pair" data-tip="直接打印整个列表，输出：['苹果', '香蕉', '橘子']">
+  <div class="code-side"><span class="line-num">12</span><span class="line-code"><span class="bi">print</span>(<span class="vr">fruits</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-bi">print</span> <span class="arrow">→</span> 内置函数：打印
+    <span class="tag tag-vr">fruits</span> <span class="arrow">→</span> 输出整个列表
+    <span class="note">输出：['苹果', '香蕉', '橘子']</span>
+  </span></div>
+</div>
+
+<!-- line 13: print(f"列表里有 {len(fruits)} 个元素") -->
+<div class="line-pair" data-tip="len() 是内置函数，返回列表的元素个数。这里 len(fruits) 返回 3。">
+  <div class="code-side"><span class="line-num">13</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"列表里有 </span>{<span class="bi">len</span>(<span class="vr">fruits</span>)}<span class="st"> 个元素"</span>)  <span class="cm"># len() 获取长度</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-bi">len()</span> <span class="arrow">→</span> 内置函数：获取长度
+    <span class="tag tag-vr">fruits</span> <span class="note">共3个元素</span>
+    <span class="arrow">→</span> <span class="highlight">输出：列表里有 3 个元素</span>
+  </span></div>
+</div>
+
+<!-- blank line 14 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">14</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 15: print("---") -->
+<div class="line-pair" data-tip="打印分隔线，让输出更易读。">
+  <div class="code-side"><span class="line-num">15</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 16 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">16</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 17: # 2. 取值 —— 用下标（从0开始！） -->
+<div class="line-pair" data-tip="第2节：通过下标（index）取值。下标从 0 开始，不是 1！">
+  <div class="code-side"><span class="line-num">17</span><span class="line-code"><span class="cm"># 2. 取值 —— 用下标（从0开始！）</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第2节：下标取值，从 0 开始计数</span></span></div>
+</div>
+
+<!-- line 18: print(f"第1个水果：{fruits[0]}") -->
+<div class="line-pair" data-tip="fruits[0] 取第一个元素。下标 0 = 第一个，这是很多编程语言的规则。">
+  <div class="code-side"><span class="line-num">18</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"第1个水果：</span>{<span class="vr">fruits</span>[<span class="nm">0</span>]}<span class="st">"</span>)  <span class="cm"># 0 = 第一个</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits[0]</span> <span class="arrow">→</span> 下标 <span class="tag tag-nm">0</span> = 第一个元素
+    <span class="arrow">→</span> <span class="highlight">"苹果"</span>
+  </span></div>
+</div>
+
+<!-- line 19: print(f"第2个水果：{fruits[1]}") -->
+<div class="line-pair" data-tip="fruits[1] 取第二个元素，下标 1 = 第二个。">
+  <div class="code-side"><span class="line-num">19</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"第2个水果：</span>{<span class="vr">fruits</span>[<span class="nm">1</span>]}<span class="st">"</span>)  <span class="cm"># 1 = 第二个</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits[1]</span> <span class="arrow">→</span> 下标 <span class="tag tag-nm">1</span> = 第二个元素
+    <span class="arrow">→</span> <span class="highlight">"香蕉"</span>
+  </span></div>
+</div>
+
+<!-- line 20: print(f"最后一个：{fruits[-1]}") -->
+<div class="line-pair" data-tip="-1 是特殊下标，表示倒数第一个元素。-2 是倒数第二个，以此类推。不用知道列表长度就能取最后一个！">
+  <div class="code-side"><span class="line-num">20</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"最后一个：</span>{<span class="vr">fruits</span>[<span class="nm">-1</span>]}<span class="st">"</span>)  <span class="cm"># -1 = 倒数第一个</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits[-1]</span> <span class="arrow">→</span> 下标 <span class="tag tag-nm">-1</span> = 倒数第一个
+    <span class="arrow">→</span> <span class="highlight">"橘子"</span>
+    <span class="note">（负数下标从末尾倒数）</span>
+  </span></div>
+</div>
+
+<!-- blank line 21 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">21</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 22: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">22</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 23 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">23</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 24: # 3. 修改、添加、删除 -->
+<div class="line-pair" data-tip="第3节：列表是可变的，可以修改元素、添加元素、删除元素。">
+  <div class="code-side"><span class="line-num">24</span><span class="line-code"><span class="cm"># 3. 修改、添加、删除</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第3节：列表的增删改操作</span></span></div>
+</div>
+
+<!-- line 25: fruits[0] = "草莓" -->
+<div class="line-pair" data-tip="直接给 fruits[0] 赋新值，就能修改第一个元素。原来是"苹果"，现在改成"草莓"。">
+  <div class="code-side"><span class="line-num">25</span><span class="line-code"><span class="vr">fruits</span>[<span class="nm">0</span>] <span class="op">=</span> <span class="st">"草莓"</span>        <span class="cm"># 修改第1个</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits[0]</span> <span class="op">=</span> <span class="tag tag-st">"草莓"</span>
+    <span class="arrow">→</span> 把下标0的元素从 "苹果" 改为 "草莓"
+  </span></div>
+</div>
+
+<!-- line 26: print(f"修改后：{fruits}") -->
+<div class="line-pair" data-tip="打印修改后的列表，验证修改是否生效。">
+  <div class="code-side"><span class="line-num">26</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"修改后：</span>{<span class="vr">fruits</span>}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">输出：修改后：['草莓', '香蕉', '橘子']</span>
+  </span></div>
+</div>
+
+<!-- blank line 27 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">27</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 28: fruits.append("西瓜") -->
+<div class="line-pair" data-tip=".append() 方法把新元素加到列表末尾。这是最常用的列表操作之一，在 agent_loop 里也用了这个！">
+  <div class="code-side"><span class="line-num">28</span><span class="line-code"><span class="vr">fruits</span>.<span class="fn">append</span>(<span class="st">"西瓜"</span>)     <span class="cm"># 末尾添加</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits</span>.<span class="tag tag-fn">append</span>(<span class="tag tag-st">"西瓜"</span>)
+    <span class="arrow">→</span> 方法：末尾追加元素
+    <span class="note">列表变为 4 个元素</span>
+  </span></div>
+</div>
+
+<!-- line 29: print(f"添加后：{fruits}") -->
+<div class="line-pair" data-tip="打印添加后的列表。">
+  <div class="code-side"><span class="line-num">29</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"添加后：</span>{<span class="vr">fruits</span>}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">输出：添加后：['草莓', '香蕉', '橘子', '西瓜']</span>
+  </span></div>
+</div>
+
+<!-- blank line 30 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">30</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 31: fruits.remove("香蕉") -->
+<div class="line-pair" data-tip=".remove() 方法按值删除。填入要删除的元素值，Python 自动找到它并删掉。">
+  <div class="code-side"><span class="line-num">31</span><span class="line-code"><span class="vr">fruits</span>.<span class="fn">remove</span>(<span class="st">"香蕉"</span>)     <span class="cm"># 删除指定元素</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">fruits</span>.<span class="tag tag-fn">remove</span>(<span class="tag tag-st">"香蕉"</span>)
+    <span class="arrow">→</span> 方法：按值删除元素
+    <span class="note">自动找到 "香蕉" 并移除</span>
+  </span></div>
+</div>
+
+<!-- line 32: print(f"删除后：{fruits}") -->
+<div class="line-pair" data-tip="打印删除后的列表。">
+  <div class="code-side"><span class="line-num">32</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"删除后：</span>{<span class="vr">fruits</span>}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">输出：删除后：['草莓', '橘子', '西瓜']</span>
+  </span></div>
+</div>
+
+<!-- blank line 33 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">33</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 34: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">34</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 35 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">35</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 36: # 4. 遍历列表（第3课学的 for 循环） -->
+<div class="line-pair" data-tip="第4节：用 for 循环遍历列表，依次处理每个元素。">
+  <div class="code-side"><span class="line-num">36</span><span class="line-code"><span class="cm"># 4. 遍历列表（第3课学的 for 循环）</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第4节：for 循环遍历列表</span></span></div>
+</div>
+
+<!-- line 37: for fruit in fruits: -->
+<div class="line-pair" data-tip="for...in 循环：每次循环从 fruits 列表取出一个元素，临时命名为 fruit，然后执行缩进的代码块。">
+  <div class="code-side"><span class="line-num">37</span><span class="line-code"><span class="kw">for</span> <span class="vr">fruit</span> <span class="kw">in</span> <span class="vr">fruits</span>:</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-kw">for</span> <span class="tag tag-vr">fruit</span> <span class="tag tag-kw">in</span> <span class="tag tag-vr">fruits</span>:
+    <span class="arrow">→</span> 遍历列表，每次取一个元素给 <span class="tag tag-vr">fruit</span>
+  </span></div>
+</div>
+
+<!-- line 38:     print(f"  我有：{fruit}") -->
+<div class="line-pair" data-tip="循环体，缩进4格表示属于 for 循环。每次循环都执行这行，打印当前 fruit 的值。">
+  <div class="code-side"><span class="line-num">38</span><span class="line-code">    <span class="bi">print</span>(<span class="st">f"  我有：</span>{<span class="vr">fruit</span>}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">缩进4格 = 属于 for 循环体</span>
+    <span class="arrow">→</span> 依次输出：我有：草莓 / 我有：橘子 / 我有：西瓜
+  </span></div>
+</div>
+
+<!-- blank line 39 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">39</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 40: print("---") -->
+<div class="line-pair" data-tip="打印分隔线，不在 for 循环体内（无缩进），只打印一次。">
+  <div class="code-side"><span class="line-num">40</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">无缩进 = 不在循环体内，只执行一次</span>
+  </span></div>
+</div>
+
+<!-- blank line 41 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">41</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- === 第二部分：字典 dict === -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">第二部分：字典 dict</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">字典 = 键值对容器，用 { "键": 值 } 表示</span></span></div>
+</div>
+
+<!-- line 42: # ============ 第二部分：字典 dict ============ -->
+<div class="line-pair" data-tip="分隔注释，标记第二部分的开始。">
+  <div class="code-side"><span class="line-num">42</span><span class="line-code"><span class="cm"># ============ 第二部分：字典 dict ============</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释分隔线：第二部分开始</span></span></div>
+</div>
+
+<!-- blank line 43 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">43</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 44: # 5. 创建字典 —— "键: 值" 的组合 -->
+<div class="line-pair" data-tip="第5节：创建字典。字典的每个元素是一个键值对，格式是 键: 值。">
+  <div class="code-side"><span class="line-num">44</span><span class="line-code"><span class="cm"># 5. 创建字典 —— "键: 值" 的组合</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第5节：创建字典，格式 "键": 值</span></span></div>
+</div>
+
+<!-- line 45: # 就像一本通讯录... -->
+<div class="line-pair" data-tip="类比：字典就像通讯录，用名字（键）查电话（值）。">
+  <div class="code-side"><span class="line-num">45</span><span class="line-code"><span class="cm"># 就像一本通讯录：名字 → 电话号码</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">类比：通讯录 = 用"名字"找"电话"</span></span></div>
+</div>
+
+<!-- line 46: person = { -->
+<div class="line-pair" data-tip="开始创建字典。{ 开头，} 结尾，里面是多个键值对。">
+  <div class="code-side"><span class="line-num">46</span><span class="line-code"><span class="vr">person</span> <span class="op">=</span> {</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">person</span> <span class="arrow">→</span> 变量（字典）
+    <span class="op">=</span> <span class="highlight">{</span> <span class="arrow">→</span> 字典开始
+  </span></div>
+</div>
+
+<!-- line 47:     "name": "小白", -->
+<div class="line-pair" data-tip="键值对：键是字符串 name，值是字符串 小白。键用引号包裹，冒号分隔键和值，逗号分隔不同键值对。">
+  <div class="code-side"><span class="line-num">47</span><span class="line-code">    <span class="st">"name"</span>: <span class="st">"小白"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"name"</span> <span class="arrow">键</span>
+    : <span class="tag tag-st">"小白"</span> <span class="arrow">值</span>
+    <span class="note">逗号分隔下一个键值对</span>
+  </span></div>
+</div>
+
+<!-- line 48:     "age": 25, -->
+<div class="line-pair" data-tip="键是字符串 age，值是数字 25（不加引号）。">
+  <div class="code-side"><span class="line-num">48</span><span class="line-code">    <span class="st">"age"</span>: <span class="nm">25</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"age"</span> <span class="arrow">键</span>
+    : <span class="tag tag-nm">25</span> <span class="arrow">值（数字，不加引号）</span>
+  </span></div>
+</div>
+
+<!-- line 49:     "job": "产品经理", -->
+<div class="line-pair" data-tip="键值对：job 对应 产品经理。">
+  <div class="code-side"><span class="line-num">49</span><span class="line-code">    <span class="st">"job"</span>: <span class="st">"产品经理"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"job"</span> <span class="arrow">键</span>
+    : <span class="tag tag-st">"产品经理"</span> <span class="arrow">值</span>
+  </span></div>
+</div>
+
+<!-- line 50:     "hobby": "coding", -->
+<div class="line-pair" data-tip="键值对：hobby 对应 coding。最后一个键值对也可以加逗号（Python允许）。">
+  <div class="code-side"><span class="line-num">50</span><span class="line-code">    <span class="st">"hobby"</span>: <span class="st">"coding"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"hobby"</span> <span class="arrow">键</span>
+    : <span class="tag tag-st">"coding"</span> <span class="arrow">值</span>
+    <span class="note">末尾逗号 Python 允许（可省略）</span>
+  </span></div>
+</div>
+
+<!-- line 51: } -->
+<div class="line-pair" data-tip="字典定义结束的右花括号。">
+  <div class="code-side"><span class="line-num">51</span><span class="line-code">}</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="highlight">}</span> <span class="arrow">→</span> 字典结束，共4个键值对
+  </span></div>
+</div>
+
+<!-- line 52: print(person) -->
+<div class="line-pair" data-tip="打印整个字典，显示所有键值对。">
+  <div class="code-side"><span class="line-num">52</span><span class="line-code"><span class="bi">print</span>(<span class="vr">person</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-bi">print</span> <span class="arrow">→</span> 打印整个字典
+    <span class="note">输出所有4个键值对</span>
+  </span></div>
+</div>
+
+<!-- blank line 53 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">53</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 54: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">54</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 55 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">55</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 56: # 6. 取值 —— 用"键"来取 -->
+<div class="line-pair" data-tip="第6节：字典用键名取值，格式是 字典变量[键名]。">
+  <div class="code-side"><span class="line-num">56</span><span class="line-code"><span class="cm"># 6. 取值 —— 用"键"来取</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第6节：用键名取值，格式 字典[键名]</span></span></div>
+</div>
+
+<!-- line 57: print(f"名字：{person['name']}") -->
+<div class="line-pair" data-tip="person['name'] 用键 name 查找对应的值，返回 小白。就像通讯录里用名字找电话。">
+  <div class="code-side"><span class="line-num">57</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"名字：</span>{<span class="vr">person</span>[<span class="st">'name'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">person</span>[<span class="tag tag-st">'name'</span>]
+    <span class="arrow">→</span> 用键 'name' 取值
+    <span class="arrow">→</span> <span class="highlight">"小白"</span>
+  </span></div>
+</div>
+
+<!-- line 58: print(f"职业：{person['job']}") -->
+<div class="line-pair" data-tip="person['job'] 用键 job 取值，返回 产品经理。">
+  <div class="code-side"><span class="line-num">58</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"职业：</span>{<span class="vr">person</span>[<span class="st">'job'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">person</span>[<span class="tag tag-st">'job'</span>]
+    <span class="arrow">→</span> 用键 'job' 取值
+    <span class="arrow">→</span> <span class="highlight">"产品经理"</span>
+  </span></div>
+</div>
+
+<!-- blank line 59 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">59</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 60: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">60</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 61 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">61</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 62: # 7. 修改、添加、删除 -->
+<div class="line-pair" data-tip="第7节：字典的增删改操作。">
+  <div class="code-side"><span class="line-num">62</span><span class="line-code"><span class="cm"># 7. 修改、添加、删除</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第7节：字典的增删改操作</span></span></div>
+</div>
+
+<!-- line 63: person["age"] = 26 -->
+<div class="line-pair" data-tip="person['age'] 原来是 25，赋新值 26 就完成了修改。键存在时 = 修改；键不存在时 = 添加。">
+  <div class="code-side"><span class="line-num">63</span><span class="line-code"><span class="vr">person</span>[<span class="st">"age"</span>] <span class="op">=</span> <span class="nm">26</span>             <span class="cm"># 修改</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">person</span>[<span class="tag tag-st">"age"</span>] <span class="op">=</span> <span class="tag tag-nm">26</span>
+    <span class="arrow">→</span> 键已存在 → <span class="highlight">修改</span>旧值（25 → 26）
+  </span></div>
+</div>
+
+<!-- line 64: person["city"] = "北京" -->
+<div class="line-pair" data-tip="city 键原本不存在，赋值后自动新增这个键值对。字典可以随时添加新键！">
+  <div class="code-side"><span class="line-num">64</span><span class="line-code"><span class="vr">person</span>[<span class="st">"city"</span>] <span class="op">=</span> <span class="st">"北京"</span>         <span class="cm"># 添加新的键值对</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">person</span>[<span class="tag tag-st">"city"</span>] <span class="op">=</span> <span class="tag tag-st">"北京"</span>
+    <span class="arrow">→</span> 键不存在 → <span class="highlight">新增</span>键值对
+  </span></div>
+</div>
+
+<!-- line 65: del person["hobby"] -->
+<div class="line-pair" data-tip="del 关键字：删除字典里的某个键值对。del person['hobby'] 把 hobby 整个键值对从字典里删掉。">
+  <div class="code-side"><span class="line-num">65</span><span class="line-code"><span class="kw">del</span> <span class="vr">person</span>[<span class="st">"hobby"</span>]            <span class="cm"># 删除</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-kw">del</span> <span class="arrow">→</span> 关键字：删除
+    <span class="tag tag-vr">person</span>[<span class="tag tag-st">"hobby"</span>] <span class="arrow">→</span> 删除 "hobby" 这个键值对
+  </span></div>
+</div>
+
+<!-- line 66: print(f"更新后：{person}") -->
+<div class="line-pair" data-tip="打印更新后的字典：age 变成26，新增了 city，hobby 被删除了。">
+  <div class="code-side"><span class="line-num">66</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"更新后：</span>{<span class="vr">person</span>}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">验证：age=26，有 city，无 hobby</span>
+  </span></div>
+</div>
+
+<!-- blank line 67 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">67</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 68: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">68</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 69 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">69</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 70: # 8. 遍历字典 -->
+<div class="line-pair" data-tip="第8节：用 for 循环遍历字典的所有键值对。">
+  <div class="code-side"><span class="line-num">70</span><span class="line-code"><span class="cm"># 8. 遍历字典</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第8节：for 循环遍历字典</span></span></div>
+</div>
+
+<!-- line 71: for key, value in person.items(): -->
+<div class="line-pair" data-tip=".items() 方法返回字典所有键值对。for key, value in ... 同时取出键和值，这叫"解包"。">
+  <div class="code-side"><span class="line-num">71</span><span class="line-code"><span class="kw">for</span> <span class="vr">key</span>, <span class="vr">value</span> <span class="kw">in</span> <span class="vr">person</span>.<span class="fn">items</span>():</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-kw">for</span> <span class="tag tag-vr">key</span>, <span class="tag tag-vr">value</span> <span class="tag tag-kw">in</span> <span class="tag tag-vr">person</span>.<span class="tag tag-fn">items</span>()
+    <span class="arrow">→</span> .items() 同时返回键和值
+    <span class="note">每次循环解包为 key + value</span>
+  </span></div>
+</div>
+
+<!-- line 72:     print(f"  {key} → {value}") -->
+<div class="line-pair" data-tip="循环体：打印每个键值对。依次输出 name → 小白 / age → 26 / job → 产品经理 / city → 北京">
+  <div class="code-side"><span class="line-num">72</span><span class="line-code">    <span class="bi">print</span>(<span class="st">f"  </span>{<span class="vr">key</span>}<span class="st"> → </span>{<span class="vr">value</span>}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">依次输出：name → 小白</span>
+    <span class="note">age → 26 / job → 产品经理 / city → 北京</span>
+  </span></div>
+</div>
+
+<!-- blank line 73 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">73</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 74: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">74</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 75 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">75</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- === 第三部分：组合使用 === -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">第三部分：组合使用</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">列表套字典 → 最常见的真实数据结构</span></span></div>
+</div>
+
+<!-- line 76: # ============ 第三部分：组合使用 ============ -->
+<div class="line-pair" data-tip="分隔注释，标记第三部分的开始。">
+  <div class="code-side"><span class="line-num">76</span><span class="line-code"><span class="cm"># ============ 第三部分：组合使用 ============</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释分隔线：第三部分开始</span></span></div>
+</div>
+
+<!-- blank line 77 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">77</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 78: # 9. 列表里套字典 —— 最常见的数据结构！ -->
+<div class="line-pair" data-tip="第9节：列表套字典。这是现实中最常见的数据结构形式，比如 JSON 数据、API 响应都是这样的。">
+  <div class="code-side"><span class="line-num">78</span><span class="line-code"><span class="cm"># 9. 列表里套字典 —— 最常见的数据结构！</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第9节：列表套字典，现实中最常见</span></span></div>
+</div>
+
+<!-- line 79: team = [ -->
+<div class="line-pair" data-tip="创建一个列表 team，里面的每个元素都是字典。列表开始用 [，后面每行一个字典。">
+  <div class="code-side"><span class="line-num">79</span><span class="line-code"><span class="vr">team</span> <span class="op">=</span> [</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">team</span> <span class="op">=</span> <span class="highlight">[</span>
+    <span class="arrow">→</span> 列表开始，每个元素是一个字典
+  </span></div>
+</div>
+
+<!-- line 80:     {"name": "小白", "role": "产品经理"}, -->
+<div class="line-pair" data-tip="第一个元素：一个包含 name 和 role 两个键的字典。">
+  <div class="code-side"><span class="line-num">80</span><span class="line-code">    {<span class="st">"name"</span>: <span class="st">"小白"</span>, <span class="st">"role"</span>: <span class="st">"产品经理"</span>},</span></div>
+  <div class="explain-side"><span class="line-explain">
+    { <span class="tag tag-st">"name"</span>: <span class="tag tag-st">"小白"</span>, <span class="tag tag-st">"role"</span>: <span class="tag tag-st">"产品经理"</span> }
+    <span class="arrow">→</span> 第1个成员字典
+  </span></div>
+</div>
+
+<!-- line 81:     {"name": "小李", "role": "设计师"}, -->
+<div class="line-pair" data-tip="第二个元素：另一个成员字典。">
+  <div class="code-side"><span class="line-num">81</span><span class="line-code">    {<span class="st">"name"</span>: <span class="st">"小李"</span>, <span class="st">"role"</span>: <span class="st">"设计师"</span>},</span></div>
+  <div class="explain-side"><span class="line-explain">
+    { <span class="tag tag-st">"name"</span>: <span class="tag tag-st">"小李"</span>, <span class="tag tag-st">"role"</span>: <span class="tag tag-st">"设计师"</span> }
+    <span class="arrow">→</span> 第2个成员字典
+  </span></div>
+</div>
+
+<!-- line 82:     {"name": "小张", "role": "工程师"}, -->
+<div class="line-pair" data-tip="第三个元素：第三个成员字典。">
+  <div class="code-side"><span class="line-num">82</span><span class="line-code">    {<span class="st">"name"</span>: <span class="st">"小张"</span>, <span class="st">"role"</span>: <span class="st">"工程师"</span>},</span></div>
+  <div class="explain-side"><span class="line-explain">
+    { <span class="tag tag-st">"name"</span>: <span class="tag tag-st">"小张"</span>, <span class="tag tag-st">"role"</span>: <span class="tag tag-st">"工程师"</span> }
+    <span class="arrow">→</span> 第3个成员字典
+  </span></div>
+</div>
+
+<!-- line 83: ] -->
+<div class="line-pair" data-tip="列表结束。team 现在是一个包含3个字典的列表。">
+  <div class="code-side"><span class="line-num">83</span><span class="line-code">]</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="highlight">]</span> <span class="arrow">→</span> 列表结束，共3个字典元素
+  </span></div>
+</div>
+
+<!-- blank line 84 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">84</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 85: for member in team: -->
+<div class="line-pair" data-tip="遍历 team 列表，每次循环取出一个成员字典，赋给 member。">
+  <div class="code-side"><span class="line-num">85</span><span class="line-code"><span class="kw">for</span> <span class="vr">member</span> <span class="kw">in</span> <span class="vr">team</span>:</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-kw">for</span> <span class="tag tag-vr">member</span> <span class="tag tag-kw">in</span> <span class="tag tag-vr">team</span>
+    <span class="arrow">→</span> 每次取出一个成员字典
+  </span></div>
+</div>
+
+<!-- line 86:     print(f"  {member['name']} - {member['role']}") -->
+<div class="line-pair" data-tip="从 member 字典里分别取 name 和 role 的值打印。member 是字典，所以用 member['name'] 取键对应的值。">
+  <div class="code-side"><span class="line-num">86</span><span class="line-code">    <span class="bi">print</span>(<span class="st">f"  </span>{<span class="vr">member</span>[<span class="st">'name'</span>]}<span class="st"> - </span>{<span class="vr">member</span>[<span class="st">'role'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">member</span>[<span class="tag tag-st">'name'</span>] <span class="arrow">→</span> 从字典取 name
+    <span class="tag tag-vr">member</span>[<span class="tag tag-st">'role'</span>] <span class="arrow">→</span> 从字典取 role
+    <span class="note">输出：小白 - 产品经理 / 小李 - 设计师 / 小张 - 工程师</span>
+  </span></div>
+</div>
+
+<!-- blank line 87 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">87</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 88: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">88</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 89 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">89</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 90: # 10. 回看 agent_loop —— 现在你能看懂更多了！ -->
+<div class="line-pair" data-tip="第10节：用本课学到的知识重新理解 agent_loop 里的 messages 结构。">
+  <div class="code-side"><span class="line-num">90</span><span class="line-code"><span class="cm"># 10. 回看 agent_loop —— 现在你能看懂更多了！</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">第10节：用列表套字典理解 agent_loop</span>
+  </span></div>
+</div>
+
+<!-- line 91: # -->
+<div class="line-pair" data-tip="空注释行，作视觉分隔。">
+  <div class="code-side"><span class="line-num">91</span><span class="line-code"><span class="cm">#</span></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 92: # messages 就是一个"列表里套字典"： -->
+<div class="line-pair" data-tip="注释说明：agent_loop 里的 messages 变量就是一个列表，每条消息是一个字典。">
+  <div class="code-side"><span class="line-num">92</span><span class="line-code"><span class="cm"># messages 就是一个"列表里套字典"：</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">messages = 列表套字典，每条对话 = 一个字典</span>
+  </span></div>
+</div>
+
+<!-- line 93: messages = [ -->
+<div class="line-pair" data-tip="创建 messages 列表，就是 agent_loop 里的对话记录。">
+  <div class="code-side"><span class="line-num">93</span><span class="line-code"><span class="vr">messages</span> <span class="op">=</span> [</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">messages</span> <span class="op">=</span> <span class="highlight">[</span>
+    <span class="arrow">→</span> 对话记录列表，结构同 agent_loop
+  </span></div>
+</div>
+
+<!-- line 94:     {"role": "user", "content": "北京天气怎么样？"}, -->
+<div class="line-pair" data-tip="第一条消息：用户说的话。role 是角色，content 是具体内容。">
+  <div class="code-side"><span class="line-num">94</span><span class="line-code">    {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"北京天气怎么样？"</span>},</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"role"</span>: <span class="tag tag-st">"user"</span> <span class="arrow">→</span> 角色：用户
+    <span class="tag tag-st">"content"</span>: <span class="tag tag-st">"北京天气怎么样？"</span> <span class="arrow">→</span> 内容
+  </span></div>
+</div>
+
+<!-- line 95:     {"role": "assistant", "content": "我来帮你查一下"}, -->
+<div class="line-pair" data-tip="第二条消息：AI 助手的回复。role = assistant 代表 AI。">
+  <div class="code-side"><span class="line-num">95</span><span class="line-code">    {<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: <span class="st">"我来帮你查一下"</span>},</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"role"</span>: <span class="tag tag-st">"assistant"</span> <span class="arrow">→</span> 角色：AI
+    <span class="tag tag-st">"content"</span>: <span class="tag tag-st">"我来帮你查一下"</span> <span class="arrow">→</span> 内容
+  </span></div>
+</div>
+
+<!-- line 96: ] -->
+<div class="line-pair" data-tip="列表结束，messages 共2条消息。">
+  <div class="code-side"><span class="line-num">96</span><span class="line-code">]</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="highlight">]</span> <span class="arrow">→</span> 列表结束，初始2条对话
+  </span></div>
+</div>
+
+<!-- blank line 97 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">97</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 98: # messages.append(...) 就是往列表末尾加一条新消息： -->
+<div class="line-pair" data-tip="注释说明 append 的作用：每次用户或 AI 发消息，就用 append 追加到列表末尾。">
+  <div class="code-side"><span class="line-num">98</span><span class="line-code"><span class="cm"># messages.append(...) 就是往列表末尾加一条新消息：</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="note">append = 追加，每条新消息追加到列表末尾</span>
+  </span></div>
+</div>
+
+<!-- line 99: messages.append({"role": "user", "content": "谢谢"}) -->
+<div class="line-pair" data-tip="用 append 追加第三条消息：用户说"谢谢"。这就是 agent_loop 里每次 messages.append(...)  做的事！">
+  <div class="code-side"><span class="line-num">99</span><span class="line-code"><span class="vr">messages</span>.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"谢谢"</span>})</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">messages</span>.<span class="tag tag-fn">append</span>({ ... })
+    <span class="arrow">→</span> 追加第3条消息到列表末尾
+    <span class="note">与 agent_loop 里写法完全一样！</span>
+  </span></div>
+</div>
+
+<!-- blank line 100 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">100</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 101: print("messages 对话记录：") -->
+<div class="line-pair" data-tip="打印标题行。">
+  <div class="code-side"><span class="line-num">101</span><span class="line-code"><span class="bi">print</span>(<span class="st">"messages 对话记录："</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印标题</span></span></div>
+</div>
+
+<!-- line 102: for msg in messages: -->
+<div class="line-pair" data-tip="遍历 messages 列表，每次取出一条消息字典赋给 msg。">
+  <div class="code-side"><span class="line-num">102</span><span class="line-code"><span class="kw">for</span> <span class="vr">msg</span> <span class="kw">in</span> <span class="vr">messages</span>:</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-kw">for</span> <span class="tag tag-vr">msg</span> <span class="tag tag-kw">in</span> <span class="tag tag-vr">messages</span>
+    <span class="arrow">→</span> 遍历所有3条消息
+  </span></div>
+</div>
+
+<!-- line 103:     role = "你" if msg["role"] == "user" else "AI" -->
+<div class="line-pair" data-tip="三元表达式（内联 if）：如果 msg['role'] 是 user 就显示"你"，否则显示"AI"。这是 if/else 的简写形式。">
+  <div class="code-side"><span class="line-num">103</span><span class="line-code">    <span class="vr">role</span> <span class="op">=</span> <span class="st">"你"</span> <span class="kw">if</span> <span class="vr">msg</span>[<span class="st">"role"</span>] <span class="op">==</span> <span class="st">"user"</span> <span class="kw">else</span> <span class="st">"AI"</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">role</span> = <span class="tag tag-st">"你"</span> <span class="tag tag-kw">if</span> ... <span class="tag tag-kw">else</span> <span class="tag tag-st">"AI"</span>
+    <span class="arrow">→</span> 三元表达式：if/else 的简写
+    <span class="note">msg["role"] == "user" → 显示 "你"，否则 "AI"</span>
+  </span></div>
+</div>
+
+<!-- line 104:     print(f"  {role}：{msg['content']}") -->
+<div class="line-pair" data-tip="打印格式化的对话内容：角色 + 消息内容。">
+  <div class="code-side"><span class="line-num">104</span><span class="line-code">    <span class="bi">print</span>(<span class="st">f"  </span>{<span class="vr">role</span>}<span class="st">：</span>{<span class="vr">msg</span>[<span class="st">'content'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">msg</span>[<span class="tag tag-st">'content'</span>] <span class="arrow">→</span> 取消息内容
+    <span class="note">输出：你：北京天气... / AI：我来帮... / 你：谢谢</span>
+  </span></div>
+</div>
+
+<!-- blank line 105 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">105</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 106: print("---") -->
+<div class="line-pair" data-tip="打印分隔线。">
+  <div class="code-side"><span class="line-num">106</span><span class="line-code"><span class="bi">print</span>(<span class="st">"---"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">打印分隔线</span></span></div>
+</div>
+
+<!-- blank line 107 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">107</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 108: # 11. 字典取值的另一种写法 -->
+<div class="line-pair" data-tip="第11节：展示字典取值的标准写法，用在 agent_loop 的工具结果里。">
+  <div class="code-side"><span class="line-num">108</span><span class="line-code"><span class="cm"># 11. 字典取值的另一种写法</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">第11节：字典取值，与 agent_loop 工具结果对比</span></span></div>
+</div>
+
+<!-- line 109: tool_result = { -->
+<div class="line-pair" data-tip="创建一个工具结果字典，结构和 agent_loop 里的 tool_result 完全一样。">
+  <div class="code-side"><span class="line-num">109</span><span class="line-code"><span class="vr">tool_result</span> <span class="op">=</span> {</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">tool_result</span> <span class="op">=</span> <span class="highlight">{</span>
+    <span class="arrow">→</span> 工具结果字典（与 agent_loop 结构一致）
+  </span></div>
+</div>
+
+<!-- line 110:     "type": "tool_result", -->
+<div class="line-pair" data-tip="类型字段：标记这是工具调用的结果。">
+  <div class="code-side"><span class="line-num">110</span><span class="line-code">    <span class="st">"type"</span>: <span class="st">"tool_result"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"type"</span>: <span class="tag tag-st">"tool_result"</span>
+    <span class="arrow">→</span> 类型标记：工具执行结果
+  </span></div>
+</div>
+
+<!-- line 111:     "tool_use_id": "abc123", -->
+<div class="line-pair" data-tip="工具调用的唯一 ID，和 block.id 对应，让 Claude 知道这个结果属于哪次调用。">
+  <div class="code-side"><span class="line-num">111</span><span class="line-code">    <span class="st">"tool_use_id"</span>: <span class="st">"abc123"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"tool_use_id"</span>: <span class="tag tag-st">"abc123"</span>
+    <span class="arrow">→</span> 唯一 ID，配对工具调用与结果
+  </span></div>
+</div>
+
+<!-- line 112:     "content": "北京 32°C 晴", -->
+<div class="line-pair" data-tip="工具实际执行后返回的内容字符串，比如天气 API 返回的数据。">
+  <div class="code-side"><span class="line-num">112</span><span class="line-code">    <span class="st">"content"</span>: <span class="st">"北京 32°C 晴"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"content"</span>: <span class="tag tag-st">"北京 32°C 晴"</span>
+    <span class="arrow">→</span> 工具执行的实际结果内容
+  </span></div>
+</div>
+
+<!-- line 113: } -->
+<div class="line-pair" data-tip="字典结束。">
+  <div class="code-side"><span class="line-num">113</span><span class="line-code">}</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="highlight">}</span> <span class="arrow">→</span> 字典结束，共3个键值对
+  </span></div>
+</div>
+
+<!-- line 114: print(f"类型：{tool_result['type']}") -->
+<div class="line-pair" data-tip="取 type 键的值打印。">
+  <div class="code-side"><span class="line-num">114</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"类型：</span>{<span class="vr">tool_result</span>[<span class="st">'type'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">tool_result</span>[<span class="tag tag-st">'type'</span>]
+    <span class="arrow">→</span> <span class="highlight">输出：类型：tool_result</span>
+  </span></div>
+</div>
+
+<!-- line 115: print(f"内容：{tool_result['content']}") -->
+<div class="line-pair" data-tip="取 content 键的值打印。">
+  <div class="code-side"><span class="line-num">115</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"内容：</span>{<span class="vr">tool_result</span>[<span class="st">'content'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">tool_result</span>[<span class="tag tag-st">'content'</span>]
+    <span class="arrow">→</span> <span class="highlight">输出：内容：北京 32°C 晴</span>
+  </span></div>
+</div>
+
+<!-- blank line 116 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">116</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- === 练习 === -->
+<div class="section-row">
+  <div class="code-side"><span class="line-num"></span><span class="line-code"><span class="section-label">练习：个人资料卡</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="section-label">字典的值也可以是列表，嵌套组合</span></span></div>
+</div>
+
+<!-- line 117: # === 练习 === -->
+<div class="line-pair" data-tip="练习部分开始，用本课学到的列表+字典做一个个人资料卡。">
+  <div class="code-side"><span class="line-num">117</span><span class="line-code"><span class="cm"># === 练习 ===</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">练习区开始</span></span></div>
+</div>
+
+<!-- line 118: # 创建你自己的"个人资料卡" -->
+<div class="line-pair" data-tip="练习说明：把这里的占位内容替换成你自己的信息。">
+  <div class="code-side"><span class="line-num">118</span><span class="line-code"><span class="cm"># 创建你自己的"个人资料卡"</span></span></div>
+  <div class="explain-side"><span class="line-explain"><span class="note">注释：练习目标 - 创建个人资料卡</span></span></div>
+</div>
+
+<!-- line 119: my_profile = { -->
+<div class="line-pair" data-tip="创建 my_profile 字典。">
+  <div class="code-side"><span class="line-num">119</span><span class="line-code"><span class="vr">my_profile</span> <span class="op">=</span> {</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">my_profile</span> <span class="op">=</span> <span class="highlight">{</span>
+    <span class="arrow">→</span> 个人资料字典
+  </span></div>
+</div>
+
+<!-- line 120:     "name": "在这里写你的名字", -->
+<div class="line-pair" data-tip="name 键，值是占位字符串，改成你自己的名字。">
+  <div class="code-side"><span class="line-num">120</span><span class="line-code">    <span class="st">"name"</span>: <span class="st">"在这里写你的名字"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"name"</span> <span class="arrow">→</span> 把值改成你自己的名字
+  </span></div>
+</div>
+
+<!-- line 121:     "job": "在这里写你的职业", -->
+<div class="line-pair" data-tip="job 键，值是占位字符串，改成你的职业。">
+  <div class="code-side"><span class="line-num">121</span><span class="line-code">    <span class="st">"job"</span>: <span class="st">"在这里写你的职业"</span>,</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"job"</span> <span class="arrow">→</span> 把值改成你的职业
+  </span></div>
+</div>
+
+<!-- line 122:     "skills": ["技能1", "技能2", "技能3"],  # 列表也能当值！ -->
+<div class="line-pair" data-tip="字典的值本身也可以是列表！skills 键对应一个包含3个技能的列表。这就是数据结构的嵌套。">
+  <div class="code-side"><span class="line-num">122</span><span class="line-code">    <span class="st">"skills"</span>: [<span class="st">"技能1"</span>, <span class="st">"技能2"</span>, <span class="st">"技能3"</span>],  <span class="cm"># 列表也能当值！</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">"skills"</span>: <span class="highlight">[...]</span>
+    <span class="arrow">→</span> 字典的值可以是列表！
+    <span class="note">把3个技能改成你的真实技能</span>
+  </span></div>
+</div>
+
+<!-- line 123: } -->
+<div class="line-pair" data-tip="my_profile 字典定义结束。">
+  <div class="code-side"><span class="line-num">123</span><span class="line-code">}</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="highlight">}</span> <span class="arrow">→</span> my_profile 字典结束
+  </span></div>
+</div>
+
+<!-- blank line 124 -->
+<div class="line-pair">
+  <div class="code-side"><span class="line-num">124</span><span class="line-code"></span></div>
+  <div class="explain-side"><span class="line-explain"></span></div>
+</div>
+
+<!-- line 125: print(f"\n个人资料：") -->
+<div class="line-pair" data-tip="\n 是换行符，在打印前加一个空行。">
+  <div class="code-side"><span class="line-num">125</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"\n个人资料："</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">\n</span> <span class="arrow">→</span> 换行符（打印前空一行）
+    <span class="note">打印标题"个人资料："</span>
+  </span></div>
+</div>
+
+<!-- line 126: print(f"  姓名：{my_profile['name']}") -->
+<div class="line-pair" data-tip="取 my_profile 字典里 name 键的值打印。">
+  <div class="code-side"><span class="line-num">126</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"  姓名：</span>{<span class="vr">my_profile</span>[<span class="st">'name'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">my_profile</span>[<span class="tag tag-st">'name'</span>]
+    <span class="arrow">→</span> 取 name 键的值
+  </span></div>
+</div>
+
+<!-- line 127: print(f"  职业：{my_profile['job']}") -->
+<div class="line-pair" data-tip="取 job 键的值打印。">
+  <div class="code-side"><span class="line-num">127</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"  职业：</span>{<span class="vr">my_profile</span>[<span class="st">'job'</span>]}<span class="st">"</span>)</span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-vr">my_profile</span>[<span class="tag tag-st">'job'</span>]
+    <span class="arrow">→</span> 取 job 键的值
+  </span></div>
+</div>
+
+<!-- line 128: print(f"  技能：{'、'.join(my_profile['skills'])}") -->
+<div class="line-pair" data-tip="'、'.join(列表) 把列表里的元素用顿号连接成一个字符串。比如 ['技能1', '技能2', '技能3'] 变成 '技能1、技能2、技能3'。">
+  <div class="code-side"><span class="line-num">128</span><span class="line-code"><span class="bi">print</span>(<span class="st">f"  技能：</span>{<span class="st">'、'</span>.<span class="fn">join</span>(<span class="vr">my_profile</span>[<span class="st">'skills'</span>])}<span class="st">"</span>)  <span class="cm"># join 把列表连成字符串</span></span></div>
+  <div class="explain-side"><span class="line-explain">
+    <span class="tag tag-st">'、'</span>.<span class="tag tag-fn">join</span>(<span class="tag tag-vr">my_profile</span>[<span class="tag tag-st">'skills'</span>])
+    <span class="arrow">→</span> .join() 把列表用分隔符连成字符串
+    <span class="note">['技能1','技能2','技能3'] → '技能1、技能2、技能3'</span>
+  </span></div>
+</div>
+
+</div><!-- end .lines -->
+
+<!-- Summary -->
+<div class="summary">
+  <h2>本课要点</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="card-title">列表 []</div>
+      <div class="card-desc">有序数据容器，用下标取值（从0开始），支持 append / remove</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">字典 {}</div>
+      <div class="card-desc">键值对容器，用键名取值，支持随时增删改</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">.append() / .remove()</div>
+      <div class="card-desc">列表末尾添加元素 / 按值删除元素，agent_loop 大量使用 append</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">列表套字典</div>
+      <div class="card-desc">[{"key": "val"}, ...] 最常见结构，messages、team 都是这种形式</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottomnav">
+  <a href="lesson-04.html">← 上一课：函数</a>
+  <a href="lesson-06.html">下一课：对象 →</a>
+</nav>
+
+<!-- Tip Bar -->
+<div class="tip-bar">
+  <span class="tip-icon">💡</span>
+  <span id="tip-text">鼠标悬停在任意一行代码上，这里会显示更详细的解释</span>
+</div>
+
+<script>
+const pairs = document.querySelectorAll('.line-pair[data-tip]');
+const tipText = document.getElementById('tip-text');
+const defaultTip = '鼠标悬停在任意一行代码上，这里会显示更详细的解释';
+
+pairs.forEach(pair => {
+  pair.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.line-pair').forEach(p => p.classList.remove('active'));
+    pair.classList.add('active');
+    tipText.textContent = pair.dataset.tip;
+  });
+  pair.addEventListener('mouseleave', () => {
+    pair.classList.remove('active');
+    tipText.textContent = defaultTip;
+  });
+});
+</script>
+
+<script src="legend-filter.js"></script>
+</body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课：条件判断 if/else | Python 零基础</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="topnav">
+  <a href="lesson-01.html">← 第1课</a>
+  <a href="../index.html" class="nav-center">Python 零基础入门</a>
+  <a href="lesson-03.html">第3课 →</a>
+</nav>
+<div class="lesson-header">
+  <span class="lesson-number">LESSON 02</span>
+  <h1>条件判断 if/else</h1>
+  <p class="desc">让程序学会做选择：比较运算、逻辑判断、多分支</p>
+</div>
+<div class="legend">
+  <span class="legend-hint">点击可高亮筛选 →</span>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span> 关键字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span> 函数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> 字符串</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> 数字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9a6b28"></span> 参数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink)"></span> 变量</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> 运算符</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink-lighter)"></span> 注释</div>
+</div>
+<div class="col-headers">
+  <div class="col-header">代码 CODE</div>
+  <div class="col-header">逐行解释 EXPLANATION</div>
+</div>
+<div class="lines">
+
+  <!-- 文件头注释 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">1</span>
+      <span class="line-code"><span class="cm"># === 第2课：条件判断 if/else ===</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">#</span> <span class="arrow">→</span> 注释行，Python 会忽略 <span class="highlight">#</span> 开头的内容，供人类阅读</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">2</span>
+      <span class="line-code"><span class="cm"># 让程序学会"做选择"，就像人一样根据情况做不同的事</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">本课核心思想：根据条件的真假，走不同的代码分支</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">3</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 第一部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第一部分：最简单的 if</span></div>
+    <div class="explain-side"><span class="section-label">条件为真就执行缩进块</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">4</span>
+      <span class="line-code"><span class="cm"># 1. 最简单的 if</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：第一个知识点开始</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">5</span>
+      <span class="line-code"><span class="vr">age</span> <span class="op">=</span> <span class="nm">18</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">age</span> <span class="arrow">→</span> 变量名（年龄） &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值运算符 &nbsp; <span class="tag tag-nm">18</span> <span class="arrow">→</span> 数字值</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">6</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">7</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">age</span> <span class="op">&gt;=</span> <span class="nm">18</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> <span class="arrow">→</span> 如果（条件判断） &nbsp; <span class="tag tag-vr">age</span> <span class="arrow">→</span> 变量 &nbsp; <span class="tag tag-op">&gt;=</span> <span class="arrow">→</span> 大于等于 &nbsp; <span class="tag tag-nm">18</span> <span class="arrow">→</span> 数字 &nbsp; <span class="highlight">:</span> <span class="arrow">→</span> 冒号表示下面是代码块</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">8</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"你是成年人"</span>)  <span class="cm"># 注意这行前面有4个空格（缩进），表示属于 if 的内容</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="highlight">4空格缩进</span> <span class="arrow">→</span> 表示属于 if 的代码块 &nbsp; <span class="tag tag-fn">print</span> <span class="arrow">→</span> 打印函数 &nbsp; <span class="tag tag-st">"你是成年人"</span> <span class="arrow">→</span> 字符串参数</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">9</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 第二部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第二部分：if/else 二选一</span></div>
+    <div class="explain-side"><span class="section-label">条件成立走 if，否则走 else</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">10</span>
+      <span class="line-code"><span class="cm"># 2. if/else —— 二选一</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：if/else 是最基础的"二选一"结构</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">11</span>
+      <span class="line-code"><span class="vr">score</span> <span class="op">=</span> <span class="nm">75</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">score</span> <span class="arrow">→</span> 变量（分数） &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值 &nbsp; <span class="tag tag-nm">75</span> <span class="arrow">→</span> 数字</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">12</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">13</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">score</span> <span class="op">&gt;=</span> <span class="nm">60</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> <span class="arrow">→</span> 条件判断开始 &nbsp; <span class="tag tag-vr">score</span> <span class="arrow">→</span> 变量 &nbsp; <span class="tag tag-op">&gt;=</span> <span class="arrow">→</span> 大于等于 &nbsp; <span class="tag tag-nm">60</span> <span class="arrow">→</span> 及格线 &nbsp; <span class="highlight">:</span> <span class="arrow">→</span> 冒号</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">14</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"及格了！"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">缩进4格 <span class="arrow">→</span> 属于 if 块 &nbsp; 条件为真时执行：打印及格信息</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">15</span>
+      <span class="line-code"><span class="kw">else</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">else</span> <span class="arrow">→</span> 否则（当 if 条件为假时执行） &nbsp; <span class="highlight">:</span> <span class="arrow">→</span> 冒号，后面接代码块</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">16</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"不及格，继续努力"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">缩进4格 <span class="arrow">→</span> 属于 else 块 &nbsp; 条件为假时执行：打印提示</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">17</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 第三部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第三部分：if/elif/else 多选一</span></div>
+    <div class="explain-side"><span class="section-label">elif = else if，依次检查多个条件</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">18</span>
+      <span class="line-code"><span class="cm"># 3. if/elif/else —— 多选一（elif = else if 的缩写）</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：elif 是 else if 的缩写，用于多个分支</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">19</span>
+      <span class="line-code"><span class="vr">score</span> <span class="op">=</span> <span class="nm">85</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">score</span> <span class="arrow">→</span> 变量重新赋值为 <span class="tag tag-nm">85</span>，覆盖之前的 75</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">20</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">21</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">score</span> <span class="op">&gt;=</span> <span class="nm">90</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> <span class="arrow">→</span> 第一个条件：score &gt;= 90？&nbsp; 85 &lt; 90，为假，跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">22</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"优秀！A"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">if 条件为假，此行跳过不执行</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">23</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">score</span> <span class="op">&gt;=</span> <span class="nm">80</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> <span class="arrow">→</span> 否则如果（第二个条件） &nbsp; score &gt;= 80？&nbsp; 85 &gt;= 80 为真，<span class="highlight">执行此分支</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">24</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"良好！B"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">elif 条件为真，执行此行 <span class="arrow">→</span> 输出"良好！B"，后续 elif/else 全部跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">25</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">score</span> <span class="op">&gt;=</span> <span class="nm">60</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> <span class="arrow">→</span> 第三个条件，因为第二个已匹配，此行不再检查</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">26</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"及格！C"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行（已有分支匹配）</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">27</span>
+      <span class="line-code"><span class="kw">else</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">else</span> <span class="arrow">→</span> 所有条件都不满足时的兜底分支，此处不执行</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">28</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"不及格！D"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行（兜底 else 没有触发）</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">29</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 第四部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第四部分：比较运算符</span></div>
+    <div class="explain-side"><span class="section-label">== != &gt; &lt; &gt;= &lt;= 返回 True 或 False</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">30</span>
+      <span class="line-code"><span class="cm"># 4. 比较运算符</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：介绍 Python 所有比较运算符</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">31</span>
+      <span class="line-code"><span class="vr">a</span> <span class="op">=</span> <span class="nm">10</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">a</span> <span class="arrow">→</span> 变量 &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值 &nbsp; <span class="tag tag-nm">10</span> <span class="arrow">→</span> 数字</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">32</span>
+      <span class="line-code"><span class="vr">b</span> <span class="op">=</span> <span class="nm">20</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">b</span> <span class="arrow">→</span> 变量 &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值 &nbsp; <span class="tag tag-nm">20</span> <span class="arrow">→</span> 数字</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">33</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a=<span class="op">{</span><span class="vr">a</span><span class="op">}</span>, b=<span class="op">{</span><span class="vr">b</span><span class="op">}</span>"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">print</span> &nbsp; <span class="highlight">f"..."</span> <span class="arrow">→</span> f-string，<span class="highlight">{a}</span> 会替换成变量的值 &nbsp; 输出：a=10, b=20</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">34</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a == b ? <span class="op">{</span><span class="vr">a</span> <span class="op">==</span> <span class="vr">b</span><span class="op">}</span>"</span>)   <span class="cm"># 等于（注意是两个等号）</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">==</span> <span class="arrow">→</span> 等于判断（双等号），与赋值 <span class="highlight">=</span> 不同 &nbsp; 10 == 20 为 False</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">35</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a != b ? <span class="op">{</span><span class="vr">a</span> <span class="op">!=</span> <span class="vr">b</span><span class="op">}</span>"</span>)   <span class="cm"># 不等于</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">!=</span> <span class="arrow">→</span> 不等于 &nbsp; 10 != 20 为 True &nbsp; <span class="note">! 在编程中常表示"非/否定"</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">36</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a &gt; b  ? <span class="op">{</span><span class="vr">a</span> <span class="op">&gt;</span> <span class="vr">b</span><span class="op">}</span>"</span>)    <span class="cm"># 大于</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">&gt;</span> <span class="arrow">→</span> 大于 &nbsp; 10 &gt; 20 为 False</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">37</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a &lt; b  ? <span class="op">{</span><span class="vr">a</span> <span class="op">&lt;</span> <span class="vr">b</span><span class="op">}</span>"</span>)    <span class="cm"># 小于</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">&lt;</span> <span class="arrow">→</span> 小于 &nbsp; 10 &lt; 20 为 True</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">38</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a &gt;= b ? <span class="op">{</span><span class="vr">a</span> <span class="op">&gt;=</span> <span class="vr">b</span><span class="op">}</span>"</span>)   <span class="cm"># 大于等于</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">&gt;=</span> <span class="arrow">→</span> 大于等于 &nbsp; 10 &gt;= 20 为 False</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">39</span>
+      <span class="line-code"><span class="fn">print</span>(<span class="st">f"a &lt;= b ? <span class="op">{</span><span class="vr">a</span> <span class="op">&lt;=</span> <span class="vr">b</span><span class="op">}</span>"</span>)   <span class="cm"># 小于等于</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">&lt;=</span> <span class="arrow">→</span> 小于等于 &nbsp; 10 &lt;= 20 为 True &nbsp; <span class="note">六种运算符全部介绍完毕</span></span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">40</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 第五部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第五部分：逻辑运算符</span></div>
+    <div class="explain-side"><span class="section-label">and / or / not 组合多个条件</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">41</span>
+      <span class="line-code"><span class="cm"># 5. 逻辑运算符 —— 组合多个条件</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：用逻辑运算符把多个比较表达式组合在一起</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">42</span>
+      <span class="line-code"><span class="vr">age</span> <span class="op">=</span> <span class="nm">25</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">age</span> <span class="arrow">→</span> 变量重新赋值为 <span class="tag tag-nm">25</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">43</span>
+      <span class="line-code"><span class="vr">has_id</span> <span class="op">=</span> <span class="bl">True</span>  <span class="cm"># True 表示"是"，False 表示"否"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">has_id</span> <span class="arrow">→</span> 布尔变量（有/没有身份证） &nbsp; <span class="tag tag-kw">True</span> <span class="arrow">→</span> 真值，布尔类型只有 True / False 两种值</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">44</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">45</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">age</span> <span class="op">&gt;=</span> <span class="nm">18</span> <span class="kw">and</span> <span class="vr">has_id</span>:          <span class="cm"># and: 两个条件都满足</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">and</span> <span class="arrow">→</span> 且，两边条件都为真才为真 &nbsp; age &gt;= 18（真）and has_id（真）<span class="arrow">→</span> <span class="highlight">真，执行</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">46</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"可以进入酒吧"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">两个条件都满足，输出"可以进入酒吧"</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">47</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">48</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">age</span> <span class="op">&lt;</span> <span class="nm">18</span> <span class="kw">or</span> <span class="vr">has_id</span> <span class="op">==</span> <span class="bl">False</span>:   <span class="cm"># or: 至少一个条件满足</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">or</span> <span class="arrow">→</span> 或，至少一边为真即为真 &nbsp; age &lt; 18（假）or has_id == False（假）<span class="arrow">→</span> 假，跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">49</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"不能进入酒吧"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">or 条件为假，此行不执行</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">50</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">51</span>
+      <span class="line-code"><span class="kw">if</span> <span class="kw">not</span> (<span class="vr">age</span> <span class="op">&lt;</span> <span class="nm">18</span>):                <span class="cm"># not: 取反，把 True 变 False</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">not</span> <span class="arrow">→</span> 取反，把括号内的结果反转 &nbsp; age &lt; 18 为假，not 假 <span class="arrow">→</span> <span class="highlight">真，执行</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">52</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"你不是未成年人"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">not 条件为真，执行：输出"你不是未成年人"</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">53</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 第六部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第六部分：实战小例子——简易计算器</span></div>
+    <div class="explain-side"><span class="section-label">用 if/elif/else 实现运算符分支</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">54</span>
+      <span class="line-code"><span class="cm"># 6. 实战小例子：简易计算器</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：综合运用 if/elif/else 做一个简单计算器</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">55</span>
+      <span class="line-code"><span class="vr">num1</span> <span class="op">=</span> <span class="nm">10</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">num1</span> <span class="arrow">→</span> 第一个操作数，值为 <span class="tag tag-nm">10</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">56</span>
+      <span class="line-code"><span class="vr">num2</span> <span class="op">=</span> <span class="nm">3</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">num2</span> <span class="arrow">→</span> 第二个操作数，值为 <span class="tag tag-nm">3</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">57</span>
+      <span class="line-code"><span class="vr">operator</span> <span class="op">=</span> <span class="st">"+"</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">operator</span> <span class="arrow">→</span> 运算符变量 &nbsp; <span class="tag tag-st">"+"</span> <span class="arrow">→</span> 字符串，存储用户选择的运算符号</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">58</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">59</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">operator</span> <span class="op">==</span> <span class="st">"+"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> &nbsp; <span class="tag tag-op">==</span> <span class="arrow">→</span> 字符串相等判断 &nbsp; operator 是"+"？是，<span class="highlight">执行此分支</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">60</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">f"<span class="op">{</span><span class="vr">num1</span><span class="op">}</span> + <span class="op">{</span><span class="vr">num2</span><span class="op">}</span> = <span class="op">{</span><span class="vr">num1</span> <span class="op">+</span> <span class="vr">num2</span><span class="op">}</span>"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">f-string 内 <span class="highlight">{num1 + num2}</span> <span class="arrow">→</span> 直接在字符串里计算 10+3=13，输出：10 + 3 = 13</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">61</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">operator</span> <span class="op">==</span> <span class="st">"-"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> <span class="arrow">→</span> 否则如果是减法，因上方已匹配，跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">62</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">f"<span class="op">{</span><span class="vr">num1</span><span class="op">}</span> - <span class="op">{</span><span class="vr">num2</span><span class="op">}</span> = <span class="op">{</span><span class="vr">num1</span> <span class="op">-</span> <span class="vr">num2</span><span class="op">}</span>"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行（operator 不是"-"）</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">63</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">operator</span> <span class="op">==</span> <span class="st">"*"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> <span class="arrow">→</span> 否则如果是乘法，跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">64</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">f"<span class="op">{</span><span class="vr">num1</span><span class="op">}</span> * <span class="op">{</span><span class="vr">num2</span><span class="op">}</span> = <span class="op">{</span><span class="vr">num1</span> <span class="op">*</span> <span class="vr">num2</span><span class="op">}</span>"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行（operator 不是"*"）</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">65</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">operator</span> <span class="op">==</span> <span class="st">"/"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> <span class="arrow">→</span> 否则如果是除法，跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">66</span>
+      <span class="line-code">    <span class="kw">if</span> <span class="vr">num2</span> <span class="op">!=</span> <span class="nm">0</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="highlight">if 嵌套在 elif 内</span>：先判断除数不为0，避免"除以0"错误</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">67</span>
+      <span class="line-code">        <span class="fn">print</span>(<span class="st">f"<span class="op">{</span><span class="vr">num1</span><span class="op">}</span> / <span class="op">{</span><span class="vr">num2</span><span class="op">}</span> = <span class="op">{</span><span class="vr">num1</span> <span class="op">/</span> <span class="vr">num2</span><span class="op">}</span>"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">8空格缩进（嵌套两层） <span class="arrow">→</span> 属于内层 if &nbsp; <span class="tag tag-op">/</span> <span class="arrow">→</span> 除法运算符</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">68</span>
+      <span class="line-code">    <span class="kw">else</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">内层 else（4空格缩进） <span class="arrow">→</span> num2 == 0 时执行</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">69</span>
+      <span class="line-code">        <span class="fn">print</span>(<span class="st">"错误：不能除以0！"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">8空格缩进 <span class="arrow">→</span> 内层 else 块，防止除以零崩溃</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">70</span>
+      <span class="line-code"><span class="kw">else</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">外层 else（与第一个 if 对齐） <span class="arrow">→</span> 运算符不在已知范围内时执行</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">71</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">f"不认识的运算符：<span class="op">{</span><span class="vr">operator</span><span class="op">}</span>"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">兜底处理：用 f-string 把未知运算符打印出来</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">72</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <!-- 练习部分 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎练习：温度判断</span></div>
+    <div class="explain-side"><span class="section-label">修改 temperature 的值，观察不同输出</span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">73</span>
+      <span class="line-code"><span class="cm"># === 练习 ===</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">注释：练习区，修改变量值观察不同结果</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">74</span>
+      <span class="line-code"><span class="cm"># 修改下面的变量，看看不同温度会输出什么</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">提示：尝试把 temperature 改成 5、15、30、40 看看效果</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">75</span>
+      <span class="line-code"><span class="vr">temperature</span> <span class="op">=</span> <span class="nm">25</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">temperature</span> <span class="arrow">→</span> 变量（温度） &nbsp; <span class="tag tag-op">=</span> <span class="arrow">→</span> 赋值 &nbsp; <span class="tag tag-nm">25</span> <span class="arrow">→</span> 当前温度值</span>
+    </div>
+  </div>
+
+  <!-- 空行 -->
+  <div class="line-pair">
+    <div class="code-side"><span class="line-num">76</span><span class="line-code"> </span></div>
+    <div class="explain-side"><span class="line-explain"> </span></div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">77</span>
+      <span class="line-code"><span class="kw">if</span> <span class="vr">temperature</span> <span class="op">&gt;=</span> <span class="nm">35</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> &nbsp; temperature &gt;= 35？&nbsp; 25 &lt; 35 为假，跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">78</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"太热了，开空调！"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行（temperature = 25，不超过 35）</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">79</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">temperature</span> <span class="op">&gt;=</span> <span class="nm">25</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> &nbsp; temperature &gt;= 25？&nbsp; 25 &gt;= 25 为真，<span class="highlight">执行此分支</span></span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">80</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"天气不错，出去走走"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">匹配，输出"天气不错，出去走走"，后续分支全部跳过</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">81</span>
+      <span class="line-code"><span class="kw">elif</span> <span class="vr">temperature</span> <span class="op">&gt;=</span> <span class="nm">10</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">elif</span> &nbsp; 已有分支匹配，此行跳过不检查</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">82</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"有点凉，穿件外套"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">83</span>
+      <span class="line-code"><span class="kw">else</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">else</span> <span class="arrow">→</span> 兜底分支，temperature &lt; 10 时执行，此处不执行</span>
+    </div>
+  </div>
+
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">84</span>
+      <span class="line-code">    <span class="fn">print</span>(<span class="st">"太冷了，在家待着吧"</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain">不执行（temperature = 25，不低于 10）</span>
+    </div>
+  </div>
+
+</div><!-- end .lines -->
+
+<div class="summary">
+  <h2>本课知识点</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="card-title">if</div>
+      <div class="card-desc">条件为真时执行代码块，冒号 <strong>:</strong> 后接缩进的语句</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">elif</div>
+      <div class="card-desc">else if 的缩写，用于多条件分支，按顺序逐一检查</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">比较运算符</div>
+      <div class="card-desc"><code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code>，结果为 True 或 False</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-title">逻辑运算符</div>
+      <div class="card-desc"><code>and</code> <code>or</code> <code>not</code> 组合多个条件，构建复杂判断</div>
+    </div>
+  </div>
+</div>
+
+<nav class="bottomnav">
+  <a href="lesson-01.html">← 第1课：Hello World</a>
+  <a href="lesson-03.html">第3课：循环 →</a>
+</nav>
+<div class="tip-bar"><span class="tip-icon">💡</span><span>鼠标悬停在任意一行上高亮对照</span></div>
+<script src="legend-filter.js"></script>
+</body>
+</html>

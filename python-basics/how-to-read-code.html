@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 代码阅读指南</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 40px 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 50px;
+    font-size: 1.1em;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 60px;
+  }
+  .section-title {
+    font-size: 1.4em;
+    margin-bottom: 8px;
+    color: #38bdf8;
+  }
+  .section-desc {
+    color: #94a3b8;
+    margin-bottom: 20px;
+  }
+
+  /* Code area */
+  .code-demo {
+    display: flex;
+    gap: 24px;
+    align-items: stretch;
+  }
+  @media (max-width: 700px) {
+    .code-demo { flex-direction: column; }
+  }
+
+  .code-block {
+    flex: 1;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 24px;
+    font-family: "Fira Code", "SF Mono", "Menlo", monospace;
+    font-size: 14px;
+    line-height: 2;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #334155;
+  }
+
+  .code-line {
+    display: flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+  .code-line:hover {
+    background: #334155;
+  }
+  .code-line.active {
+    background: #1e3a5f;
+    box-shadow: inset 3px 0 0 #38bdf8;
+  }
+  .code-line.skip {
+    opacity: 0.3;
+  }
+  .code-line.skip.active {
+    background: #3b1a1a;
+    box-shadow: inset 3px 0 0 #ef4444;
+    opacity: 1;
+  }
+
+  .line-num {
+    color: #475569;
+    width: 28px;
+    text-align: right;
+    margin-right: 16px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .line-content { flex: 1; white-space: pre; }
+
+  /* Order badge */
+  .order {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #38bdf8;
+    color: #0f172a;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 12px;
+    flex-shrink: 0;
+    font-family: -apple-system, sans-serif;
+  }
+  .order.red {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  /* Explanation panel */
+  .explain-panel {
+    flex: 0 0 280px;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+  }
+  .explain-panel h3 {
+    color: #38bdf8;
+    font-size: 1em;
+    margin-bottom: 12px;
+  }
+  .explain-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .explain-item:hover {
+    border-color: #334155;
+  }
+  .explain-item.active {
+    background: #1e3a5f;
+    border-color: #38bdf8;
+  }
+  .explain-item .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #38bdf8;
+    color: #0f172a;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+    font-family: -apple-system, sans-serif;
+  }
+  .explain-item .step-num.red {
+    background: #ef4444;
+    color: #fff;
+  }
+  .explain-item .step-text {
+    color: #cbd5e1;
+  }
+
+  /* Syntax coloring */
+  .kw { color: #c084fc; }       /* keyword: if, else, elif */
+  .fn { color: #38bdf8; }       /* function: print */
+  .str { color: #4ade80; }      /* string */
+  .num { color: #fb923c; }      /* number */
+  .cmt { color: #475569; font-style: italic; }  /* comment */
+  .op { color: #f472b6; }       /* operator */
+  .var { color: #e2e8f0; }      /* variable */
+  .bool { color: #fb923c; }     /* True/False */
+
+  /* Playback controls */
+  .controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: #334155; }
+  .btn.primary {
+    background: #38bdf8;
+    color: #0f172a;
+    border-color: #38bdf8;
+    font-weight: 600;
+  }
+  .btn.primary:hover { background: #7dd3fc; }
+
+  /* Rules section */
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .rule-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .rule-card .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  .rule-card h4 {
+    color: #38bdf8;
+    margin-bottom: 6px;
+  }
+  .rule-card p {
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
+  .arrow-down {
+    text-align: center;
+    color: #38bdf8;
+    font-size: 24px;
+    margin: 8px 0;
+    animation: bounce 1.5s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Python 代码怎么读？</h1>
+<p class="subtitle">掌握三条规则，再复杂的代码你也能看懂</p>
+
+<!-- 规则总览 -->
+<div class="rules">
+  <div class="rule-card">
+    <div class="icon">⬇️</div>
+    <h4>规则1：从上往下</h4>
+    <p>Python 从第1行开始，一行一行往下执行，就像读书一样</p>
+  </div>
+  <div class="rule-card">
+    <div class="icon">🔀</div>
+    <h4>规则2：遇到 if 走岔路</h4>
+    <p>碰到 if/elif/else，只走一条路，其他路全部跳过</p>
+  </div>
+  <div class="rule-card">
+    <div class="icon">📦</div>
+    <h4>规则3：看缩进认主人</h4>
+    <p>缩进（前面的空格）表示"属于谁"。同样缩进的代码是一组</p>
+  </div>
+</div>
+
+<!-- 示例1：顺序执行 -->
+<div class="section" style="margin-top: 50px;">
+  <h2 class="section-title">示例1：从上往下，逐行执行</h2>
+  <p class="section-desc">点击"下一步"按钮，跟着程序一行一行走</p>
+
+  <div class="code-demo">
+    <div class="code-block" id="demo1-code">
+      <div class="code-line" data-step="1">
+        <span class="line-num">1</span>
+        <span class="line-content"><span class="var">name</span> <span class="op">=</span> <span class="str">"jingyu"</span></span>
+        <span class="order" style="display:none">1</span>
+      </div>
+      <div class="code-line" data-step="2">
+        <span class="line-num">2</span>
+        <span class="line-content"><span class="var">age</span> <span class="op">=</span> <span class="num">25</span></span>
+        <span class="order" style="display:none">2</span>
+      </div>
+      <div class="code-line" data-step="3">
+        <span class="line-num">3</span>
+        <span class="line-content"><span class="var">hobby</span> <span class="op">=</span> <span class="str">"coding"</span></span>
+        <span class="order" style="display:none">3</span>
+      </div>
+      <div class="code-line" data-step="4">
+        <span class="line-num">4</span>
+        <span class="line-content"><span class="fn">print</span>(<span class="str">f"我是</span><span class="var">{name}</span><span class="str">"</span>)</span>
+        <span class="order" style="display:none">4</span>
+      </div>
+      <div class="code-line" data-step="5">
+        <span class="line-num">5</span>
+        <span class="line-content"><span class="fn">print</span>(<span class="str">f"今年</span><span class="var">{age}</span><span class="str">岁"</span>)</span>
+        <span class="order" style="display:none">5</span>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="demo1-explain">
+      <h3>执行顺序</h3>
+      <div class="explain-item" data-step="1">
+        <span class="step-num">1</span>
+        <span class="step-text">把 "jingyu" 存进 name</span>
+      </div>
+      <div class="explain-item" data-step="2">
+        <span class="step-num">2</span>
+        <span class="step-text">把 25 存进 age</span>
+      </div>
+      <div class="explain-item" data-step="3">
+        <span class="step-num">3</span>
+        <span class="step-text">把 "coding" 存进 hobby</span>
+      </div>
+      <div class="explain-item" data-step="4">
+        <span class="step-num">4</span>
+        <span class="step-text">输出：我是jingyu</span>
+      </div>
+      <div class="explain-item" data-step="5">
+        <span class="step-num">5</span>
+        <span class="step-text">输出：今年25岁</span>
+      </div>
+      <p style="color:#475569; font-size:12px; margin-top:auto; padding-top:12px;">就是这么简单，1→2→3→4→5，从上到下</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetDemo('demo1')">重置</button>
+    <button class="btn primary" onclick="nextStep('demo1')">下一步 ▶</button>
+    <button class="btn" onclick="playAll('demo1')">自动播放</button>
+  </div>
+</div>
+
+<!-- 示例2：if/else 分支 -->
+<div class="section">
+  <h2 class="section-title">示例2：if/else 只走一条路</h2>
+  <p class="section-desc">score = 85 时，看看程序怎么"选路"。<span style="color:#ef4444">红色</span> = 被跳过的代码</p>
+
+  <div class="code-demo">
+    <div class="code-block" id="demo2-code">
+      <div class="code-line" data-step="1">
+        <span class="line-num">1</span>
+        <span class="line-content"><span class="var">score</span> <span class="op">=</span> <span class="num">85</span></span>
+        <span class="order" style="display:none">1</span>
+      </div>
+      <div class="code-line" data-step="2">
+        <span class="line-num">2</span>
+        <span class="line-content"></span>
+      </div>
+      <div class="code-line" data-step="3">
+        <span class="line-num">3</span>
+        <span class="line-content"><span class="kw">if</span> score <span class="op">>=</span> <span class="num">90</span>:</span>
+        <span class="order" style="display:none">2</span>
+      </div>
+      <div class="code-line" data-step="4" data-skip="true">
+        <span class="line-num">4</span>
+        <span class="line-content">    <span class="fn">print</span>(<span class="str">"优秀！A"</span>)</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="5">
+        <span class="line-num">5</span>
+        <span class="line-content"><span class="kw">elif</span> score <span class="op">>=</span> <span class="num">80</span>:</span>
+        <span class="order" style="display:none">3</span>
+      </div>
+      <div class="code-line" data-step="6">
+        <span class="line-num">6</span>
+        <span class="line-content">    <span class="fn">print</span>(<span class="str">"良好！B"</span>)</span>
+        <span class="order" style="display:none">4</span>
+      </div>
+      <div class="code-line" data-step="7" data-skip="true">
+        <span class="line-num">7</span>
+        <span class="line-content"><span class="kw">elif</span> score <span class="op">>=</span> <span class="num">60</span>:</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="8" data-skip="true">
+        <span class="line-num">8</span>
+        <span class="line-content">    <span class="fn">print</span>(<span class="str">"及格！C"</span>)</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="9" data-skip="true">
+        <span class="line-num">9</span>
+        <span class="line-content"><span class="kw">else</span>:</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="10" data-skip="true">
+        <span class="line-num">10</span>
+        <span class="line-content">    <span class="fn">print</span>(<span class="str">"不及格！D"</span>)</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="11">
+        <span class="line-num">11</span>
+        <span class="line-content"></span>
+      </div>
+      <div class="code-line" data-step="12">
+        <span class="line-num">12</span>
+        <span class="line-content"><span class="fn">print</span>(<span class="str">"程序继续往下走"</span>)</span>
+        <span class="order" style="display:none">5</span>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="demo2-explain">
+      <h3>执行顺序</h3>
+      <div class="explain-item" data-step="1">
+        <span class="step-num">1</span>
+        <span class="step-text">score 设为 85</span>
+      </div>
+      <div class="explain-item" data-step="3">
+        <span class="step-num">2</span>
+        <span class="step-text">85 >= 90？不满足，跳过</span>
+      </div>
+      <div class="explain-item" data-step="5">
+        <span class="step-num">3</span>
+        <span class="step-text">85 >= 80？满足！进入这条路</span>
+      </div>
+      <div class="explain-item" data-step="6">
+        <span class="step-num">4</span>
+        <span class="step-text">输出：良好！B</span>
+      </div>
+      <div class="explain-item" data-step="12">
+        <span class="step-num">5</span>
+        <span class="step-text">剩下的 elif/else 全跳过，继续往下</span>
+      </div>
+      <p style="color:#475569; font-size:12px; margin-top:auto; padding-top:12px;">关键：找到一条满足的路后，剩下的全部跳过！</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetDemo('demo2')">重置</button>
+    <button class="btn primary" onclick="nextStep('demo2')">下一步 ▶</button>
+    <button class="btn" onclick="playAll('demo2')">自动播放</button>
+  </div>
+</div>
+
+<!-- 示例3：嵌套 if -->
+<div class="section">
+  <h2 class="section-title">示例3：缩进 = 层级关系</h2>
+  <p class="section-desc">缩进越深，"嵌套"越深。就像文件夹里套文件夹</p>
+
+  <div class="code-demo">
+    <div class="code-block" id="demo3-code">
+      <div class="code-line" data-step="1">
+        <span class="line-num">1</span>
+        <span class="line-content"><span class="var">age</span> <span class="op">=</span> <span class="num">20</span></span>
+        <span class="order" style="display:none">1</span>
+      </div>
+      <div class="code-line" data-step="2">
+        <span class="line-num">2</span>
+        <span class="line-content"><span class="var">has_ticket</span> <span class="op">=</span> <span class="bool">True</span></span>
+        <span class="order" style="display:none">2</span>
+      </div>
+      <div class="code-line" data-step="3">
+        <span class="line-num">3</span>
+        <span class="line-content"></span>
+      </div>
+      <div class="code-line" data-step="4">
+        <span class="line-num">4</span>
+        <span class="line-content"><span class="kw">if</span> age <span class="op">>=</span> <span class="num">18</span>:            <span class="cmt"># 第一层判断</span></span>
+        <span class="order" style="display:none">3</span>
+      </div>
+      <div class="code-line" data-step="5">
+        <span class="line-num">5</span>
+        <span class="line-content">    <span class="fn">print</span>(<span class="str">"成年人"</span>)       <span class="cmt"># ← 4个空格，属于外层 if</span></span>
+        <span class="order" style="display:none">4</span>
+      </div>
+      <div class="code-line" data-step="6">
+        <span class="line-num">6</span>
+        <span class="line-content">    <span class="kw">if</span> has_ticket:        <span class="cmt"># 第二层判断（嵌套）</span></span>
+        <span class="order" style="display:none">5</span>
+      </div>
+      <div class="code-line" data-step="7">
+        <span class="line-num">7</span>
+        <span class="line-content">        <span class="fn">print</span>(<span class="str">"有票，请进！"</span>) <span class="cmt"># ← 8个空格，属于内层 if</span></span>
+        <span class="order" style="display:none">6</span>
+      </div>
+      <div class="code-line" data-step="8" data-skip="true">
+        <span class="line-num">8</span>
+        <span class="line-content">    <span class="kw">else</span>:</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="9" data-skip="true">
+        <span class="line-num">9</span>
+        <span class="line-content">        <span class="fn">print</span>(<span class="str">"请先买票"</span>)</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="10" data-skip="true">
+        <span class="line-num">10</span>
+        <span class="line-content"><span class="kw">else</span>:</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="11" data-skip="true">
+        <span class="line-num">11</span>
+        <span class="line-content">    <span class="fn">print</span>(<span class="str">"未成年人不能进入"</span>)</span>
+        <span class="order red" style="display:none">✕</span>
+      </div>
+      <div class="code-line" data-step="12">
+        <span class="line-num">12</span>
+        <span class="line-content"></span>
+      </div>
+      <div class="code-line" data-step="13">
+        <span class="line-num">13</span>
+        <span class="line-content"><span class="fn">print</span>(<span class="str">"结束"</span>)</span>
+        <span class="order" style="display:none">7</span>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="demo3-explain">
+      <h3>执行顺序</h3>
+      <div class="explain-item" data-step="1">
+        <span class="step-num">1</span>
+        <span class="step-text">age = 20</span>
+      </div>
+      <div class="explain-item" data-step="2">
+        <span class="step-num">2</span>
+        <span class="step-text">has_ticket = True</span>
+      </div>
+      <div class="explain-item" data-step="4">
+        <span class="step-num">3</span>
+        <span class="step-text">20 >= 18？满足，进入</span>
+      </div>
+      <div class="explain-item" data-step="5">
+        <span class="step-num">4</span>
+        <span class="step-text">输出：成年人</span>
+      </div>
+      <div class="explain-item" data-step="6">
+        <span class="step-num">5</span>
+        <span class="step-text">has_ticket 是 True？满足</span>
+      </div>
+      <div class="explain-item" data-step="7">
+        <span class="step-num">6</span>
+        <span class="step-text">输出：有票，请进！</span>
+      </div>
+      <div class="explain-item" data-step="13">
+        <span class="step-num">7</span>
+        <span class="step-text">回到最外层，输出：结束</span>
+      </div>
+      <p style="color:#475569; font-size:12px; margin-top:auto; padding-top:12px;">缩进就像俄罗斯套娃，一层套一层</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetDemo('demo3')">重置</button>
+    <button class="btn primary" onclick="nextStep('demo3')">下一步 ▶</button>
+    <button class="btn" onclick="playAll('demo3')">自动播放</button>
+  </div>
+</div>
+
+<!-- 总结 -->
+<div class="section" style="text-align:center; padding: 40px 0;">
+  <h2 class="section-title" style="text-align:center; font-size:1.6em; margin-bottom:20px;">记住三句话就够了</h2>
+  <div style="display:inline-block; text-align:left; background:#1e293b; padding:30px 40px; border-radius:16px; border:1px solid #334155;">
+    <p style="font-size:1.1em; margin-bottom:12px;">⬇️ <strong>从上往下</strong>读，一行一行来</p>
+    <p style="font-size:1.1em; margin-bottom:12px;">🔀 遇到 <span class="kw" style="font-family:monospace">if</span>，<strong>只走一条路</strong>，其余跳过</p>
+    <p style="font-size:1.1em;">📦 看<strong>缩进</strong>判断谁属于谁</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+const demos = {
+  demo1: { current: 0, steps: [1, 2, 3, 4, 5] },
+  demo2: { current: 0, steps: [1, 3, 5, 6, 12] },
+  demo3: { current: 0, steps: [1, 2, 4, 5, 6, 7, 13] },
+};
+
+function nextStep(demoId) {
+  const demo = demos[demoId];
+  if (demo.current >= demo.steps.length) return;
+
+  const step = demo.steps[demo.current];
+  const codeBlock = document.getElementById(demoId + '-code');
+  const explainPanel = document.getElementById(demoId + '-explain');
+
+  // Highlight code line
+  const lines = codeBlock.querySelectorAll('.code-line');
+  lines.forEach(line => line.classList.remove('active'));
+
+  // Find the line with this step and activate it
+  const targetLine = codeBlock.querySelector(`.code-line[data-step="${step}"]`);
+  if (targetLine) {
+    targetLine.classList.add('active');
+    const badge = targetLine.querySelector('.order');
+    if (badge) badge.style.display = 'inline-flex';
+  }
+
+  // Show skipped lines up to current step
+  lines.forEach(line => {
+    const lineStep = parseInt(line.dataset.step);
+    if (line.dataset.skip === 'true' && lineStep <= step) {
+      line.classList.add('skip', 'active');
+      const badge = line.querySelector('.order');
+      if (badge) badge.style.display = 'inline-flex';
+      setTimeout(() => line.classList.remove('active'), 600);
+    }
+  });
+
+  // Highlight explanation
+  const items = explainPanel.querySelectorAll('.explain-item');
+  items.forEach(item => item.classList.remove('active'));
+  if (items[demo.current]) {
+    items[demo.current].classList.add('active');
+  }
+
+  demo.current++;
+}
+
+function resetDemo(demoId) {
+  const demo = demos[demoId];
+  demo.current = 0;
+
+  const codeBlock = document.getElementById(demoId + '-code');
+  const explainPanel = document.getElementById(demoId + '-explain');
+
+  codeBlock.querySelectorAll('.code-line').forEach(line => {
+    line.classList.remove('active', 'skip');
+    const badge = line.querySelector('.order');
+    if (badge) badge.style.display = 'none';
+  });
+
+  explainPanel.querySelectorAll('.explain-item').forEach(item => {
+    item.classList.remove('active');
+  });
+}
+
+function playAll(demoId) {
+  resetDemo(demoId);
+  const demo = demos[demoId];
+  for (let i = 0; i < demo.steps.length; i++) {
+    setTimeout(() => nextStep(demoId), i * 800);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Loop 代码解析</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 40px 20px;
+    line-height: 1.7;
+  }
+  .container { max-width: 1000px; margin: 0 auto; }
+
+  h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #38bdf8, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle { text-align: center; color: #94a3b8; margin-bottom: 50px; }
+
+  /* === Analogy Section === */
+  .analogy {
+    background: linear-gradient(135deg, #1e293b, #1a2332);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 50px;
+  }
+  .analogy h2 { color: #fbbf24; margin-bottom: 16px; font-size: 1.3em; }
+  .analogy-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .analogy-step {
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .analogy-step .emoji { font-size: 32px; margin-bottom: 6px; }
+  .analogy-step .label { font-size: 13px; color: #94a3b8; }
+  .analogy-step .desc { font-size: 14px; color: #e2e8f0; font-weight: 600; }
+  .analogy-arrow { color: #38bdf8; font-size: 24px; }
+  .analogy-loop-arrow {
+    display: block;
+    text-align: center;
+    color: #a78bfa;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+
+  /* === Flow Diagram === */
+  .flow-section { margin-bottom: 50px; }
+  .flow-section h2 { color: #38bdf8; margin-bottom: 20px; font-size: 1.3em; }
+
+  .flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-node {
+    border-radius: 12px;
+    padding: 16px 28px;
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+    max-width: 400px;
+    width: 100%;
+  }
+  .flow-node:hover { transform: scale(1.03); }
+  .flow-node.active { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+
+  .flow-start { background: #1e3a5f; border: 2px solid #38bdf8; }
+  .flow-process { background: #1e293b; border: 2px solid #475569; }
+  .flow-decision { background: #2d1b4e; border: 2px solid #a78bfa; border-radius: 12px; }
+  .flow-end { background: #1a332a; border: 2px solid #4ade80; }
+  .flow-loop { background: #3b2a1a; border: 2px solid #fb923c; }
+
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #475569;
+    font-size: 20px;
+    padding: 4px 0;
+  }
+  .flow-arrow .arrow-label {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 2px;
+  }
+
+  .flow-branch {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+  }
+  .flow-branch-label {
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  /* === Code walkthrough === */
+  .walkthrough { margin-bottom: 50px; }
+  .walkthrough h2 { color: #38bdf8; margin-bottom: 20px; font-size: 1.3em; }
+
+  .code-container {
+    display: flex;
+    gap: 24px;
+  }
+  @media (max-width: 768px) { .code-container { flex-direction: column; } }
+
+  .code-block {
+    flex: 1;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    font-family: "Fira Code", "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 2;
+    border: 1px solid #334155;
+    overflow-x: auto;
+  }
+  .code-line {
+    display: flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .code-line:hover { background: #334155; }
+  .code-line.active { background: #1e3a5f; box-shadow: inset 3px 0 0 #38bdf8; }
+  .code-line.active-green { background: #1a332a; box-shadow: inset 3px 0 0 #4ade80; }
+  .code-line.active-purple { background: #2d1b4e; box-shadow: inset 3px 0 0 #a78bfa; }
+  .code-line.active-orange { background: #3b2a1a; box-shadow: inset 3px 0 0 #fb923c; }
+
+  .line-num {
+    color: #475569;
+    width: 24px;
+    text-align: right;
+    margin-right: 16px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .line-content { flex: 1; white-space: pre; }
+
+  .kw { color: #c084fc; }
+  .fn { color: #38bdf8; }
+  .str { color: #4ade80; }
+  .num { color: #fb923c; }
+  .cmt { color: #475569; font-style: italic; }
+  .op { color: #f472b6; }
+  .var { color: #e2e8f0; }
+  .param { color: #fbbf24; }
+
+  /* Explanation panel */
+  .explain-panel {
+    flex: 0 0 320px;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #334155;
+  }
+  .explain-panel h3 { color: #38bdf8; margin-bottom: 16px; }
+
+  .step-card {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .step-card:hover { border-color: #334155; }
+  .step-card.active { border-color: #38bdf8; background: #1e3a5f; }
+  .step-card.active-green { border-color: #4ade80; background: #1a332a; }
+  .step-card.active-purple { border-color: #a78bfa; background: #2d1b4e; }
+  .step-card.active-orange { border-color: #fb923c; background: #3b2a1a; }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+    font-family: -apple-system, sans-serif;
+  }
+  .badge-blue { background: #38bdf8; color: #0f172a; }
+  .badge-green { background: #4ade80; color: #0f172a; }
+  .badge-purple { background: #a78bfa; color: #0f172a; }
+  .badge-orange { background: #fb923c; color: #0f172a; }
+
+  .step-title { font-weight: 600; margin-bottom: 4px; }
+  .step-desc { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: #334155; }
+  .btn.primary { background: #38bdf8; color: #0f172a; border-color: #38bdf8; font-weight: 600; }
+  .btn.primary:hover { background: #7dd3fc; }
+
+  /* === Conversation demo === */
+  .chat-section { margin-bottom: 50px; }
+  .chat-section h2 { color: #38bdf8; margin-bottom: 8px; font-size: 1.3em; }
+  .chat-section .desc { color: #94a3b8; margin-bottom: 20px; font-size: 14px; }
+
+  .chat-box {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .chat-msg {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s;
+  }
+  .chat-msg.show { opacity: 1; transform: translateY(0); }
+  .chat-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .avatar-user { background: #1e3a5f; }
+  .avatar-ai { background: #2d1b4e; }
+  .avatar-tool { background: #3b2a1a; }
+  .chat-bubble {
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    max-width: 100%;
+  }
+  .bubble-user { background: #1e3a5f; border: 1px solid #38bdf8; }
+  .bubble-ai { background: #2d1b4e; border: 1px solid #a78bfa; }
+  .bubble-tool { background: #3b2a1a; border: 1px solid #fb923c; }
+  .bubble-ai-final { background: #1a332a; border: 1px solid #4ade80; }
+  .chat-label { font-size: 11px; color: #64748b; margin-bottom: 4px; }
+  .chat-round {
+    text-align: center; color: #475569; font-size: 12px;
+    margin: 20px 0 12px; padding-top: 16px; border-top: 1px solid #1e293b;
+  }
+
+  /* summary */
+  .summary {
+    background: linear-gradient(135deg, #1e293b, #1a2332);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 50px;
+  }
+  .summary h2 { color: #38bdf8; margin-bottom: 16px; text-align: center; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .summary-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .summary-card .icon { font-size: 32px; margin-bottom: 8px; }
+  .summary-card h4 { color: #fbbf24; margin-bottom: 6px; font-size: 14px; }
+  .summary-card p { color: #94a3b8; font-size: 13px; }
+  .summary-card code {
+    background: #334155;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #38bdf8;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Agent Loop 到底在干什么？</h1>
+<p class="subtitle">用最通俗的方式，理解 AI Agent 的核心代码</p>
+
+<!-- ======= 类比 ======= -->
+<div class="analogy">
+  <h2>先用生活类比理解</h2>
+  <p style="color:#94a3b8; margin-bottom:16px;">想象你是老板（用户），Claude 是你的助理，工具是助理手边的设备（计算器、搜索引擎等）</p>
+
+  <div class="analogy-flow">
+    <div class="analogy-step">
+      <div class="emoji">👤</div>
+      <div class="label">你（老板）</div>
+      <div class="desc">"帮我查下天气"</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-step">
+      <div class="emoji">🤖</div>
+      <div class="label">Claude（助理）</div>
+      <div class="desc">我需要用天气工具</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-step">
+      <div class="emoji">🔧</div>
+      <div class="label">工具（天气API）</div>
+      <div class="desc">北京 25°C 晴</div>
+    </div>
+    <div class="analogy-arrow">→</div>
+    <div class="analogy-step">
+      <div class="emoji">🤖</div>
+      <div class="label">Claude（看到结果）</div>
+      <div class="desc">北京今天25度，晴天</div>
+    </div>
+  </div>
+  <div class="analogy-loop-arrow">↻ 如果还需要用工具，就再循环一圈（比如"还需要查明天的"）</div>
+</div>
+
+<!-- ======= 流程图 ======= -->
+<div class="flow-section">
+  <h2>程序执行流程</h2>
+
+  <div class="flowchart">
+    <div class="flow-node flow-start">
+      <strong>开始</strong>：带着对话记录调用 Claude
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node flow-process">
+      <strong>Claude 思考</strong>并返回回复（response）
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node flow-process">
+      把 Claude 的回复<strong>追加到对话记录</strong>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node flow-decision">
+      <strong>判断</strong>：Claude 要用工具吗？<br>
+      <code style="font-size:12px; color:#a78bfa;">stop_reason == "tool_use" ?</code>
+    </div>
+    <div class="flow-arrow">
+      <div style="display:flex; gap: 80px; margin-top: 8px;">
+        <div style="text-align:center;">
+          <div style="color:#4ade80; font-size:13px; font-weight:600;">不用工具</div>
+          <div style="font-size:20px;">↓</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="color:#fb923c; font-size:13px; font-weight:600;">要用工具</div>
+          <div style="font-size:20px;">↓</div>
+        </div>
+      </div>
+    </div>
+    <div class="flow-branch">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+        <div class="flow-node flow-end" style="width:100%;">
+          <strong>结束</strong>，返回最终回答给用户
+        </div>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0;">
+        <div class="flow-node flow-loop" style="width:100%;">
+          <strong>执行工具</strong>，收集结果
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-loop" style="width:100%;">
+          把工具结果<strong>追加到对话记录</strong>
+        </div>
+        <div class="flow-arrow" style="color:#fb923c;">
+          ↑ 回到顶部，再次调用 Claude
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= 逐行代码解析 ======= -->
+<div class="walkthrough">
+  <h2>逐行代码解析</h2>
+  <p style="color:#94a3b8; margin-bottom:20px;">点击"下一步"逐段理解每块代码在做什么</p>
+
+  <div class="code-container">
+    <div class="code-block" id="code-block">
+      <!-- Line 1 -->
+      <div class="code-line" data-group="1">
+        <span class="line-num">1</span>
+        <span class="line-content"><span class="kw">def</span> <span class="fn">agent_loop</span>(<span class="param">messages</span>):</span>
+      </div>
+      <!-- Line 2 -->
+      <div class="code-line" data-group="2">
+        <span class="line-num">2</span>
+        <span class="line-content">    <span class="kw">while</span> <span class="num">True</span>:</span>
+      </div>
+      <!-- Line 3-5 -->
+      <div class="code-line" data-group="3">
+        <span class="line-num">3</span>
+        <span class="line-content">        response = client.messages.<span class="fn">create</span>(</span>
+      </div>
+      <div class="code-line" data-group="3">
+        <span class="line-num">4</span>
+        <span class="line-content">            <span class="param">model</span>=MODEL, <span class="param">system</span>=SYSTEM,</span>
+      </div>
+      <div class="code-line" data-group="3">
+        <span class="line-num">5</span>
+        <span class="line-content">            <span class="param">messages</span>=messages, <span class="param">tools</span>=TOOLS,</span>
+      </div>
+      <div class="code-line" data-group="3">
+        <span class="line-num">6</span>
+        <span class="line-content">        )</span>
+      </div>
+      <!-- Line 7-8 -->
+      <div class="code-line" data-group="4">
+        <span class="line-num">7</span>
+        <span class="line-content">        messages.<span class="fn">append</span>({"<span class="str">role</span>": "<span class="str">assistant</span>",</span>
+      </div>
+      <div class="code-line" data-group="4">
+        <span class="line-num">8</span>
+        <span class="line-content">                         "<span class="str">content</span>": response.content})</span>
+      </div>
+      <!-- Line 9 -->
+      <div class="code-line" data-group="0">
+        <span class="line-num">9</span>
+        <span class="line-content"></span>
+      </div>
+      <!-- Line 10-11 -->
+      <div class="code-line" data-group="5">
+        <span class="line-num">10</span>
+        <span class="line-content">        <span class="kw">if</span> response.stop_reason <span class="op">!=</span> <span class="str">"tool_use"</span>:</span>
+      </div>
+      <div class="code-line" data-group="5">
+        <span class="line-num">11</span>
+        <span class="line-content">            <span class="kw">return</span></span>
+      </div>
+      <!-- Line 12 -->
+      <div class="code-line" data-group="0">
+        <span class="line-num">12</span>
+        <span class="line-content"></span>
+      </div>
+      <!-- Line 13 -->
+      <div class="code-line" data-group="6">
+        <span class="line-num">13</span>
+        <span class="line-content">        results = []</span>
+      </div>
+      <!-- Line 14-20 -->
+      <div class="code-line" data-group="6">
+        <span class="line-num">14</span>
+        <span class="line-content">        <span class="kw">for</span> block <span class="kw">in</span> response.content:</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">15</span>
+        <span class="line-content">            <span class="kw">if</span> block.type <span class="op">==</span> <span class="str">"tool_use"</span>:</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">16</span>
+        <span class="line-content">                output = TOOL_HANDLERS[block.name](</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">17</span>
+        <span class="line-content">                    <span class="op">**</span>block.input)</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">18</span>
+        <span class="line-content">                results.<span class="fn">append</span>({</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">19</span>
+        <span class="line-content">                    "<span class="str">type</span>": "<span class="str">tool_result</span>",</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">20</span>
+        <span class="line-content">                    "<span class="str">tool_use_id</span>": block.id,</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">21</span>
+        <span class="line-content">                    "<span class="str">content</span>": output,</span>
+      </div>
+      <div class="code-line" data-group="6">
+        <span class="line-num">22</span>
+        <span class="line-content">                })</span>
+      </div>
+      <!-- Line 23 -->
+      <div class="code-line" data-group="7">
+        <span class="line-num">23</span>
+        <span class="line-content">        messages.<span class="fn">append</span>({"<span class="str">role</span>": "<span class="str">user</span>",</span>
+      </div>
+      <div class="code-line" data-group="7">
+        <span class="line-num">24</span>
+        <span class="line-content">                         "<span class="str">content</span>": results})</span>
+      </div>
+    </div>
+
+    <div class="explain-panel" id="explain-panel">
+      <h3>代码解读</h3>
+
+      <div class="step-card" data-group="1">
+        <div class="step-title"><span class="step-badge badge-blue">1</span>定义函数</div>
+        <div class="step-desc"><code>messages</code> 是对话记录列表，就像微信聊天记录，记录了你和 AI 说过的所有话</div>
+      </div>
+
+      <div class="step-card" data-group="2">
+        <div class="step-title"><span class="step-badge badge-purple">2</span>无限循环</div>
+        <div class="step-desc"><code>while True</code> = 一直循环。为什么？因为 AI 可能需要连续使用多个工具才能完成任务，每用一次工具就是一轮循环</div>
+      </div>
+
+      <div class="step-card" data-group="3">
+        <div class="step-title"><span class="step-badge badge-blue">3</span>调用 Claude</div>
+        <div class="step-desc">把对话记录和可用工具一起发给 Claude API。Claude 看完后会回复——可能是文字回答，也可能是"我要用某个工具"</div>
+      </div>
+
+      <div class="step-card" data-group="4">
+        <div class="step-title"><span class="step-badge badge-green">4</span>记录 AI 的回复</div>
+        <div class="step-desc">把 Claude 的回复追加到对话记录中，角色标记为 <code>assistant</code>。就像把助理说的话记到聊天记录里</div>
+      </div>
+
+      <div class="step-card" data-group="5">
+        <div class="step-title"><span class="step-badge badge-purple">5</span>判断：要不要用工具？</div>
+        <div class="step-desc">如果 <code>stop_reason</code> 不是 "tool_use"，说明 Claude 已经给出了最终答案，直接 <code>return</code> 结束循环。否则继续往下走</div>
+      </div>
+
+      <div class="step-card" data-group="6">
+        <div class="step-title"><span class="step-badge badge-orange">6</span>执行工具</div>
+        <div class="step-desc">遍历 Claude 回复中的每个工具调用请求，用 <code>TOOL_HANDLERS</code>（工具函数表）找到对应的函数并执行，把结果收集起来</div>
+      </div>
+
+      <div class="step-card" data-group="7">
+        <div class="step-title"><span class="step-badge badge-orange">7</span>把工具结果喂回去</div>
+        <div class="step-desc">把工具执行结果追加到对话记录中，角色标记为 <code>user</code>（API 规定工具结果要以 user 身份发送）。然后回到 while 循环顶部，再次调用 Claude</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetWalkthrough()">重置</button>
+    <button class="btn primary" onclick="nextWalkthrough()">下一步 ▶</button>
+    <button class="btn" onclick="playWalkthrough()">自动播放</button>
+  </div>
+</div>
+
+<!-- ======= 对话模拟 ======= -->
+<div class="chat-section">
+  <h2>模拟一次完整的 Agent Loop</h2>
+  <p class="desc">假设用户问"北京和上海今天谁更热？"，AI 需要调用两次天气工具</p>
+
+  <div class="chat-box" id="chat-box">
+    <div class="chat-msg" data-chat="1">
+      <div class="chat-avatar avatar-user">👤</div>
+      <div>
+        <div class="chat-label">用户 (messages 初始内容)</div>
+        <div class="chat-bubble bubble-user">北京和上海今天谁更热？</div>
+      </div>
+    </div>
+
+    <div class="chat-round" data-chat="2">—— 第1轮循环 ——</div>
+
+    <div class="chat-msg" data-chat="3">
+      <div class="chat-avatar avatar-ai">🤖</div>
+      <div>
+        <div class="chat-label">Claude 回复 (stop_reason = "tool_use")</div>
+        <div class="chat-bubble bubble-ai">
+          我需要查两个城市的天气。先查北京：<br>
+          <code style="color:#fb923c;">→ 调用工具: get_weather("北京")</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-msg" data-chat="4">
+      <div class="chat-avatar avatar-tool">🔧</div>
+      <div>
+        <div class="chat-label">工具执行结果 (追加到 messages)</div>
+        <div class="chat-bubble bubble-tool">北京：32°C，晴</div>
+      </div>
+    </div>
+
+    <div class="chat-round" data-chat="5">—— 第2轮循环 ——</div>
+
+    <div class="chat-msg" data-chat="6">
+      <div class="chat-avatar avatar-ai">🤖</div>
+      <div>
+        <div class="chat-label">Claude 回复 (stop_reason = "tool_use")</div>
+        <div class="chat-bubble bubble-ai">
+          北京的结果拿到了，再查上海：<br>
+          <code style="color:#fb923c;">→ 调用工具: get_weather("上海")</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-msg" data-chat="7">
+      <div class="chat-avatar avatar-tool">🔧</div>
+      <div>
+        <div class="chat-label">工具执行结果 (追加到 messages)</div>
+        <div class="chat-bubble bubble-tool">上海：28°C，多云</div>
+      </div>
+    </div>
+
+    <div class="chat-round" data-chat="8">—— 第3轮循环 ——</div>
+
+    <div class="chat-msg" data-chat="9">
+      <div class="chat-avatar avatar-ai">🤖</div>
+      <div>
+        <div class="chat-label">Claude 回复 (stop_reason = "end_turn") ✅ 循环结束！</div>
+        <div class="chat-bubble bubble-ai-final">
+          北京今天 32°C，上海 28°C。<strong>北京更热</strong>，比上海高 4 度。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetChat()">重置</button>
+    <button class="btn primary" onclick="nextChat()">下一步 ▶</button>
+    <button class="btn" onclick="playChat()">自动播放</button>
+  </div>
+</div>
+
+<!-- ======= 总结 ======= -->
+<div class="summary">
+  <h2>一句话总结</h2>
+  <p style="text-align:center; color:#94a3b8; margin-bottom:24px; font-size:15px;">
+    Agent Loop = <strong style="color:#fbbf24;">不断循环"问 AI → 执行工具 → 把结果告诉 AI"</strong>，直到 AI 不再需要工具为止
+  </p>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="icon">💬</div>
+      <h4>messages 对话记录</h4>
+      <p>所有对话的"记忆"，每轮都往里追加，这样 Claude 能看到完整上下文</p>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🔁</div>
+      <h4>while True 循环</h4>
+      <p>一直转，直到 Claude 说"我不需要工具了"才 <code>return</code> 退出</p>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🔧</div>
+      <h4>工具调用</h4>
+      <p>Claude 不能直接上网/算数，但它可以告诉你"我要用XX工具"，由代码帮它执行</p>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🔑</div>
+      <h4>stop_reason</h4>
+      <p>Claude 的"信号灯"。<code>tool_use</code> = 还要用工具，其他 = 说完了</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// === Code walkthrough ===
+const groups = [1, 2, 3, 4, 5, 6, 7];
+const groupColors = { 1:'active', 2:'active-purple', 3:'active', 4:'active-green', 5:'active-purple', 6:'active-orange', 7:'active-orange' };
+let walkStep = 0;
+
+function nextWalkthrough() {
+  if (walkStep >= groups.length) return;
+  const g = groups[walkStep];
+  const color = groupColors[g];
+
+  // Clear previous
+  document.querySelectorAll('#code-block .code-line').forEach(l => {
+    l.classList.remove('active','active-green','active-purple','active-orange');
+  });
+  document.querySelectorAll('#explain-panel .step-card').forEach(c => {
+    c.classList.remove('active','active-green','active-purple','active-orange');
+  });
+
+  // Highlight code lines
+  document.querySelectorAll(`#code-block .code-line[data-group="${g}"]`).forEach(l => {
+    l.classList.add(color);
+  });
+  // Highlight explain card
+  const card = document.querySelector(`#explain-panel .step-card[data-group="${g}"]`);
+  if (card) {
+    card.classList.add(color);
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  walkStep++;
+}
+
+function resetWalkthrough() {
+  walkStep = 0;
+  document.querySelectorAll('#code-block .code-line').forEach(l => {
+    l.classList.remove('active','active-green','active-purple','active-orange');
+  });
+  document.querySelectorAll('#explain-panel .step-card').forEach(c => {
+    c.classList.remove('active','active-green','active-purple','active-orange');
+  });
+}
+
+function playWalkthrough() {
+  resetWalkthrough();
+  for (let i = 0; i < groups.length; i++) {
+    setTimeout(() => nextWalkthrough(), i * 1000);
+  }
+}
+
+// Clickable step cards
+document.querySelectorAll('#explain-panel .step-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const g = parseInt(card.dataset.group);
+    const idx = groups.indexOf(g);
+    if (idx >= 0) { walkStep = idx; nextWalkthrough(); }
+  });
+});
+
+// === Chat simulation ===
+const chatSteps = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+let chatStep = 0;
+
+function nextChat() {
+  if (chatStep >= chatSteps.length) return;
+  const step = chatSteps[chatStep];
+  const el = document.querySelector(`#chat-box [data-chat="${step}"]`);
+  if (el) {
+    el.classList.add('show');
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  chatStep++;
+}
+
+function resetChat() {
+  chatStep = 0;
+  document.querySelectorAll('#chat-box [data-chat]').forEach(el => {
+    el.classList.remove('show');
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(10px)';
+  });
+}
+
+function playChat() {
+  resetChat();
+  for (let i = 0; i < chatSteps.length; i++) {
+    setTimeout(() => nextChat(), i * 800);
+  }
+}
+
+// Init: hide chat messages
+resetChat();
+</script>
+</body>
+</html>
