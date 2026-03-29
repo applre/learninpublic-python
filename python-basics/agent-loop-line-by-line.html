@@ -3,689 +3,424 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent Loop 逐行中文翻译</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0f172a;
-    color: #e2e8f0;
-    min-height: 100vh;
-  }
-
-  /* Header */
-  .header {
-    text-align: center;
-    padding: 32px 20px 24px;
-    border-bottom: 1px solid #1e293b;
-  }
-  .header h1 {
-    font-size: 1.6em;
-    background: linear-gradient(135deg, #38bdf8, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 6px;
-  }
-  .header p { color: #64748b; font-size: 14px; }
-
-  /* Main layout */
-  .main {
-    display: flex;
-    max-width: 1400px;
-    margin: 0 auto;
-    min-height: calc(100vh - 120px);
-  }
-
-  /* Left panel */
-  .left-panel {
-    flex: 1;
-    border-right: 1px solid #1e293b;
-    display: flex;
-    flex-direction: column;
-  }
-  .panel-title {
-    padding: 16px 24px;
-    font-size: 13px;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #1e293b;
-    background: #0f172a;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .panel-title .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .dot-blue { background: #38bdf8; }
-  .dot-green { background: #4ade80; }
-  .dot-purple { background: #a78bfa; }
-
-  /* Right panel */
-  .right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Code lines */
-  .code-area {
-    flex: 1;
-    padding: 0;
-    font-family: "Fira Code", "SF Mono", Menlo, monospace;
-    font-size: 13px;
-    line-height: 1;
-  }
-
-  .line-pair {
-    display: flex;
-    min-height: 38px;
-  }
-  .line-pair:hover .code-line,
-  .line-pair:hover .explain-line {
-    background: #1e293b;
-  }
-  .line-pair.active .code-line {
-    background: #172554;
-    box-shadow: inset 3px 0 0 #38bdf8;
-  }
-  .line-pair.active .explain-line {
-    background: #172554;
-    box-shadow: inset 3px 0 0 #a78bfa;
-  }
-
-  .code-line, .explain-line {
-    padding: 8px 16px;
-    display: flex;
-    align-items: flex-start;
-    transition: background 0.15s;
-    cursor: pointer;
-    flex: 1;
-    min-height: 38px;
-  }
-
-  .code-line {
-    border-right: 1px solid #1e293b;
-    font-family: "Fira Code", "SF Mono", Menlo, monospace;
-    font-size: 13px;
-  }
-
-  .explain-line {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  .line-num {
-    color: #334155;
-    width: 28px;
-    text-align: right;
-    margin-right: 16px;
-    font-size: 12px;
-    flex-shrink: 0;
-    user-select: none;
-    padding-top: 1px;
-  }
-  .line-code { flex: 1; white-space: pre; line-height: 1.7; }
-  .line-explain { flex: 1; line-height: 1.7; }
-
-  /* Syntax colors */
-  .kw { color: #c084fc; }
-  .fn { color: #38bdf8; }
-  .str { color: #4ade80; }
-  .num { color: #fb923c; }
-  .cmt { color: #475569; font-style: italic; }
-  .op { color: #f472b6; }
-  .var { color: #e2e8f0; }
-  .param { color: #fbbf24; }
-  .meth { color: #38bdf8; }
-  .cls { color: #f472b6; }
-
-  /* Explain text styles */
-  .zh { color: #cbd5e1; }
-  .zh-keyword {
-    display: inline-block;
-    background: #1e1b4b;
-    border: 1px solid #4338ca;
-    color: #a78bfa;
-    padding: 0 6px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-family: "Fira Code", monospace;
-    margin: 0 2px;
-    line-height: 1.8;
-  }
-  .zh-meaning {
-    display: inline-block;
-    background: #172554;
-    border: 1px solid #1e40af;
-    color: #60a5fa;
-    padding: 0 6px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin: 0 2px;
-    line-height: 1.8;
-  }
-  .zh-arrow {
-    color: #475569;
-    margin: 0 4px;
-  }
-  .zh-dim { color: #475569; }
-  .zh-highlight { color: #fbbf24; }
-
-  /* Section divider */
-  .section-divider {
-    display: flex;
-    min-height: 32px;
-    background: #0d1117;
-    border-top: 1px solid #1e293b;
-    border-bottom: 1px solid #1e293b;
-  }
-  .section-divider .code-line,
-  .section-divider .explain-line {
-    min-height: 32px;
-    align-items: center;
-  }
-  .section-label {
-    color: #475569;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* Result panel */
-  .result-section {
-    border-top: 2px solid #1e293b;
-  }
-  .result-box {
-    padding: 20px 24px;
-    font-family: "Fira Code", monospace;
-    font-size: 13px;
-    line-height: 1.8;
-    color: #4ade80;
-    background: #0a0f1a;
-  }
-  .result-comment { color: #475569; }
-  .result-output { color: #4ade80; }
-  .result-label { color: #fbbf24; }
-
-  /* Tooltip */
-  .tooltip-bar {
-    position: sticky;
-    bottom: 0;
-    background: #1e293b;
-    border-top: 1px solid #334155;
-    padding: 12px 24px;
-    font-size: 13px;
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 48px;
-  }
-  .tooltip-bar .tip-icon {
-    color: #fbbf24;
-    font-size: 16px;
-  }
-  .tooltip-bar .tip-text { flex: 1; }
-
-  /* Legend */
-  .legend {
-    display: flex;
-    gap: 16px;
-    padding: 12px 24px;
-    border-bottom: 1px solid #1e293b;
-    background: #0d1117;
-    font-size: 12px;
-    flex-wrap: wrap;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #64748b;
-  }
-  .legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-  }
-
-  /* Column headers row */
-  .col-headers {
-    display: flex;
-    border-bottom: 1px solid #1e293b;
-    background: #0d1117;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .col-header {
-    flex: 1;
-    padding: 12px 24px;
-    font-size: 12px;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .col-header:first-child {
-    border-right: 1px solid #1e293b;
-  }
-</style>
+<title>Agent Loop 逐行解读 | Python 零基础</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="header">
-  <h1>Agent Loop · 逐行中文对照</h1>
-  <p>左边 = Python 代码 ｜ 右边 = 中文翻译（鼠标悬停高亮对应行）</p>
+<nav class="topnav">
+  <a href="../index.html">&larr; 课程首页</a>
+  <a href="../index.html" class="nav-center">Python 零基础入门</a>
+  <span></span>
+</nav>
+
+<div class="lesson-header">
+  <span class="lesson-number">BONUS</span>
+  <h1>Agent Loop 逐行解读</h1>
+  <p class="desc">24 行代码实现 AI 智能体循环：调用 API、判断意图、执行工具、再次对话</p>
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-color" style="background:#c084fc"></div>关键字（def, while, if, for, in）</div>
-  <div class="legend-item"><div class="legend-color" style="background:#38bdf8"></div>函数/方法名</div>
-  <div class="legend-item"><div class="legend-color" style="background:#4ade80"></div>字符串</div>
-  <div class="legend-item"><div class="legend-color" style="background:#fbbf24"></div>参数名</div>
-  <div class="legend-item"><div class="legend-color" style="background:#f472b6"></div>运算符</div>
-  <div class="legend-item"><div class="legend-color" style="background:#e2e8f0"></div>变量</div>
+  <span class="legend-hint">点击可高亮筛选 &rarr;</span>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--purple)"></span> 关键字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span> 函数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> 字符串</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> 数字</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#9a6b28"></span> 参数</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink)"></span> 变量</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> 运算符</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--ink-lighter)"></span> 注释</div>
 </div>
 
 <div class="col-headers">
-  <div class="col-header"><span class="dot dot-blue"></span> Python 代码</div>
-  <div class="col-header"><span class="dot dot-purple"></span> 中文逐行翻译</div>
+  <div class="col-header">代码 CODE</div>
+  <div class="col-header">逐行解释 EXPLANATION</div>
 </div>
 
-<div id="lines-container">
+<div class="lines">
 
-<!-- Line 1 -->
-<div class="line-pair" data-tip="def = define（定义）。这行就像造了一个名叫 agent_loop 的工具，输入是 messages（对话记录）">
-  <div class="code-line">
-    <span class="line-num">1</span>
-    <span class="line-code"><span class="kw">def</span> <span class="fn">agent_loop</span>(<span class="param">messages</span>):</span>
+  <!-- Section: 函数定义 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第一部分：定义函数 &amp; 无限循环</span></div>
+    <div class="explain-side"><span class="section-label">创建智能体循环函数</span></div>
   </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">def</span><span class="zh-arrow">→</span><span class="zh-meaning">定义函数</span>
-      <span class="zh-keyword">agent_loop</span><span class="zh-arrow">→</span><span class="zh-meaning">函数名：智能体循环</span>
-      <span class="zh-keyword">messages</span><span class="zh-arrow">→</span><span class="zh-meaning">参数：对话记录列表</span>
-    </span>
+
+  <!-- Line 1 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">1</span>
+      <span class="line-code"><span class="kw">def</span> <span class="fn">agent_loop</span>(<span class="pa">messages</span>):</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">def</span> <span class="arrow">&rarr;</span> 定义函数 &nbsp; <span class="tag tag-fn">agent_loop</span> <span class="arrow">&rarr;</span> 函数名：智能体循环 &nbsp; <span class="tag tag-pa">messages</span> <span class="arrow">&rarr;</span> 参数：对话记录列表</span>
+    </div>
+  </div>
+
+  <!-- Line 2 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">2</span>
+      <span class="line-code">    <span class="kw">while</span> <span class="bl">True</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">while True</span> <span class="arrow">&rarr;</span> 开始无限循环（直到遇到 <code>return</code> 才退出）</span>
+    </div>
+  </div>
+
+  <!-- Line 3 (blank) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">3</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section: 调用 API -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第二部分：调用 Claude API</span></div>
+    <div class="explain-side"><span class="section-label">把对话记录和工具发给 Claude，等回复</span></div>
+  </div>
+
+  <!-- Line 4 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">4</span>
+      <span class="line-code">        <span class="vr">response</span> <span class="op">=</span> <span class="vr">client</span>.<span class="vr">messages</span>.<span class="fn">create</span>(</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">response</span> <span class="arrow">&rarr;</span> Claude 的回复 &nbsp; <span class="tag tag-op">=</span> <span class="arrow">&rarr;</span> 赋值 &nbsp; <span class="tag tag-fn">client.messages.create</span> <span class="arrow">&rarr;</span> 调用 API 创建消息</span>
+    </div>
+  </div>
+
+  <!-- Line 5 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">5</span>
+      <span class="line-code">            <span class="pa">model</span><span class="op">=</span><span class="vr">MODEL</span>, <span class="pa">system</span><span class="op">=</span><span class="vr">SYSTEM</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-pa">model</span> <span class="arrow">&rarr;</span> 用哪个模型（如 claude-opus-4-6） &nbsp; <span class="tag tag-pa">system</span> <span class="arrow">&rarr;</span> 系统提示词（AI 的角色设定）</span>
+    </div>
+  </div>
+
+  <!-- Line 6 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">6</span>
+      <span class="line-code">            <span class="pa">messages</span><span class="op">=</span><span class="vr">messages</span>, <span class="pa">tools</span><span class="op">=</span><span class="vr">TOOLS</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-pa">messages</span> <span class="arrow">&rarr;</span> 传入对话记录 &nbsp; <span class="tag tag-pa">tools</span> <span class="arrow">&rarr;</span> 传入可用工具列表</span>
+    </div>
+  </div>
+
+  <!-- Line 7 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">7</span>
+      <span class="line-code">        )</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">）&larr; 第4行 create( 的结束括号</span></span>
+    </div>
+  </div>
+
+  <!-- Line 8 (blank) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">8</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section: 保存回复 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第三部分：保存 Claude 的回复</span></div>
+    <div class="explain-side"><span class="section-label">把 AI 回复追加到对话记录</span></div>
+  </div>
+
+  <!-- Line 9 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">9</span>
+      <span class="line-code">        <span class="vr">messages</span>.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"assistant"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">messages.append</span> <span class="arrow">&rarr;</span> 往对话记录末尾追加 &nbsp; <span class="tag tag-st">"role": "assistant"</span> <span class="arrow">&rarr;</span> 角色：AI 助手</span>
+    </div>
+  </div>
+
+  <!-- Line 10 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">10</span>
+      <span class="line-code">                         <span class="st">"content"</span>: <span class="vr">response</span>.<span class="vr">content</span>})</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">"content"</span> <span class="arrow">&rarr;</span> 内容字段 &nbsp; <span class="tag tag-vr">response.content</span> <span class="arrow">&rarr;</span> Claude 回复的具体内容</span>
+    </div>
+  </div>
+
+  <!-- Line 11 (blank) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">11</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section: 关键判断 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第四部分：关键判断 &mdash; Claude 说完了还是要用工具？</span></div>
+    <div class="explain-side"><span class="section-label">这里决定循环继续还是退出</span></div>
+  </div>
+
+  <!-- Line 12 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">12</span>
+      <span class="line-code">        <span class="kw">if</span> <span class="vr">response</span>.<span class="vr">stop_reason</span> <span class="op">!=</span> <span class="st">"tool_use"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> <span class="arrow">&rarr;</span> 如果 &nbsp; <span class="tag tag-vr">response.stop_reason</span> <span class="arrow">&rarr;</span> Claude 停下来的原因 &nbsp; <span class="tag tag-op">!=</span> <span class="arrow">&rarr;</span> 不等于 &nbsp; <span class="tag tag-st">"tool_use"</span> <span class="arrow">&rarr;</span> "要用工具"</span>
+    </div>
+  </div>
+
+  <!-- Line 13 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">13</span>
+      <span class="line-code">            <span class="kw">return</span></span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">return</span> <span class="arrow">&rarr;</span> 结束函数，退出循环 &nbsp; <span class="highlight">&larr; 唯一的出口！</span></span>
+    </div>
+  </div>
+
+  <!-- Line 14 (blank) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">14</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section: 执行工具 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第五部分：执行工具 &amp; 收集结果</span></div>
+    <div class="explain-side"><span class="section-label">走到这里说明 Claude 要用工具</span></div>
+  </div>
+
+  <!-- Line 15 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">15</span>
+      <span class="line-code">        <span class="vr">results</span> <span class="op">=</span> []</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">results</span> <span class="arrow">&rarr;</span> 创建空列表，准备收集工具执行结果</span>
+    </div>
+  </div>
+
+  <!-- Line 16 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">16</span>
+      <span class="line-code">        <span class="kw">for</span> <span class="vr">block</span> <span class="kw">in</span> <span class="vr">response</span>.<span class="vr">content</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">for ... in</span> <span class="arrow">&rarr;</span> 遍历每一块 &nbsp; <span class="tag tag-vr">response.content</span> <span class="arrow">&rarr;</span> Claude 回复中的内容（可能有文字和工具调用）</span>
+    </div>
+  </div>
+
+  <!-- Line 17 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">17</span>
+      <span class="line-code">            <span class="kw">if</span> <span class="vr">block</span>.<span class="vr">type</span> <span class="op">==</span> <span class="st">"tool_use"</span>:</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-kw">if</span> <span class="arrow">&rarr;</span> 如果 &nbsp; <span class="tag tag-vr">block.type</span> <span class="arrow">&rarr;</span> 这块内容的类型 &nbsp; <span class="tag tag-op">==</span> <span class="arrow">&rarr;</span> 等于 &nbsp; <span class="tag tag-st">"tool_use"</span> <span class="arrow">&rarr;</span> "工具调用"</span>
+    </div>
+  </div>
+
+  <!-- Line 18 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">18</span>
+      <span class="line-code">                <span class="vr">output</span> <span class="op">=</span> <span class="vr">TOOL_HANDLERS</span>[<span class="vr">block</span>.<span class="vr">name</span>](</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-vr">TOOL_HANDLERS[block.name]</span> <span class="arrow">&rarr;</span> 从工具函数表（字典）里用工具名找到对应的函数并调用</span>
+    </div>
+  </div>
+
+  <!-- Line 19 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">19</span>
+      <span class="line-code">                    <span class="op">**</span><span class="vr">block</span>.<span class="vr">input</span>)</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-op">**</span> <span class="arrow">&rarr;</span> 字典解包：把 <code>{"city": "北京"}</code> 拆成 <code>city="北京"</code> 传给函数（第7课的知识点）</span>
+    </div>
+  </div>
+
+  <!-- Line 20 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">20</span>
+      <span class="line-code">                <span class="vr">results</span>.<span class="fn">append</span>({</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">results.append</span> <span class="arrow">&rarr;</span> 把工具结果追加到列表（包装成 API 要求的格式）</span>
+    </div>
+  </div>
+
+  <!-- Line 21 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">21</span>
+      <span class="line-code">                    <span class="st">"type"</span>: <span class="st">"tool_result"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">"type": "tool_result"</span> <span class="arrow">&rarr;</span> 类型字段：工具执行结果</span>
+    </div>
+  </div>
+
+  <!-- Line 22 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">22</span>
+      <span class="line-code">                    <span class="st">"tool_use_id"</span>: <span class="vr">block</span>.<span class="vr">id</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">"tool_use_id"</span> <span class="arrow">&rarr;</span> 对应哪次工具调用（配对用的唯一 ID）</span>
+    </div>
+  </div>
+
+  <!-- Line 23 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">23</span>
+      <span class="line-code">                    <span class="st">"content"</span>: <span class="vr">output</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">"content"</span> <span class="arrow">&rarr;</span> 内容字段 &nbsp; <span class="tag tag-vr">output</span> <span class="arrow">&rarr;</span> 工具实际执行后返回的结果</span>
+    </div>
+  </div>
+
+  <!-- Line 24 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">24</span>
+      <span class="line-code">                })</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">}）&larr; 第20行 append({ 的结束</span></span>
+    </div>
+  </div>
+
+  <!-- Line 25 (blank) -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">25</span>
+      <span class="line-code"> </span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="note">空行分隔</span></span>
+    </div>
+  </div>
+
+  <!-- Section: 回传结果 -->
+  <div class="line-pair section-row">
+    <div class="code-side"><span class="section-label">▎第六部分：把结果发回给 Claude</span></div>
+    <div class="explain-side"><span class="section-label">追加到对话记录，回到循环顶部</span></div>
+  </div>
+
+  <!-- Line 26 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">26</span>
+      <span class="line-code">        <span class="vr">messages</span>.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-fn">messages.append</span> <span class="arrow">&rarr;</span> 追加到对话记录 &nbsp; <span class="tag tag-st">"role": "user"</span> <span class="arrow">&rarr;</span> 角色：用户（API 规定工具结果用 user 角色）</span>
+    </div>
+  </div>
+
+  <!-- Line 27 -->
+  <div class="line-pair">
+    <div class="code-side">
+      <span class="line-num">27</span>
+      <span class="line-code">                         <span class="st">"content"</span>: <span class="vr">results</span>})</span>
+    </div>
+    <div class="explain-side">
+      <span class="line-explain"><span class="tag tag-st">"content"</span> <span class="arrow">&rarr;</span> 内容字段 &nbsp; <span class="tag tag-vr">results</span> <span class="arrow">&rarr;</span> 工具结果列表 &nbsp; <span class="highlight">&rarr; 然后回到第2行继续循环</span></span>
+    </div>
+  </div>
+
+</div>
+
+<div class="summary">
+  <h2>知识点总结</h2>
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="card-title">while True 循环</div>
+      <div class="card-desc">无限循环，让 AI 可以连续多轮调用工具。只有遇到 <code>return</code> 才退出。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">API 调用</div>
+      <div class="card-desc"><code>client.messages.create()</code> 把对话记录和工具列表发给 Claude，等待回复。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">stop_reason 判断</div>
+      <div class="card-desc">Claude 停止的原因。<code>"tool_use"</code> = 要用工具，继续循环；其他 = 任务完成，退出。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">** 字典解包</div>
+      <div class="card-desc"><code>**block.input</code> 把字典拆成关键字参数传给函数，如 <code>{"city":"北京"}</code> 变成 <code>city="北京"</code>。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">工具结果格式</div>
+      <div class="card-desc">每个结果需要 <code>type</code>、<code>tool_use_id</code>、<code>content</code> 三个字段，Claude 才能对应上。</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-title">循环流程</div>
+      <div class="card-desc">调用 API &rarr; 保存回复 &rarr; 判断是否要工具 &rarr; 执行工具 &rarr; 结果发回 &rarr; 再次调用 API。</div>
+    </div>
+
   </div>
 </div>
 
-<!-- Line 2 -->
-<div class="line-pair" data-tip="while True = 永远循环。为什么要一直循环？因为 AI 可能需要连续调用多个工具才能完成任务">
-  <div class="code-line">
-    <span class="line-num">2</span>
-    <span class="line-code">    <span class="kw">while</span> <span class="num">True</span>:</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">while True</span><span class="zh-arrow">→</span><span class="zh-meaning">开始无限循环</span>
-      <span class="zh-dim">（直到遇到 return 才退出）</span>
-    </span>
-  </div>
-</div>
+<nav class="bottomnav">
+  <a href="lesson-07.html">&larr; 第7课</a>
+  <span></span>
+</nav>
 
-<!-- Line 3 -->
-<div class="line-pair" data-tip="调用 Claude API，就像给 Claude 发微信。把对话记录和可用工具一起发过去，等 Claude 回复">
-  <div class="code-line">
-    <span class="line-num">3</span>
-    <span class="line-code">        <span class="var">response</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">messages</span>.<span class="fn">create</span>(</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">response</span><span class="zh-arrow">→</span><span class="zh-meaning">Claude 的回复</span>
-      <span class="zh-keyword">=</span><span class="zh-arrow">→</span><span class="zh-meaning">等于</span>
-      <span class="zh-keyword">client.messages.create</span><span class="zh-arrow">→</span><span class="zh-meaning">客户端.消息.创建（调用API）</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 4 -->
-<div class="line-pair" data-tip="告诉 API 用哪个模型、系统提示词是什么">
-  <div class="code-line">
-    <span class="line-num">4</span>
-    <span class="line-code">            <span class="param">model</span>=MODEL, <span class="param">system</span>=SYSTEM,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">model=MODEL</span><span class="zh-arrow">→</span><span class="zh-meaning">用哪个模型（如 claude-opus-4-6）</span>
-      <span class="zh-keyword">system=SYSTEM</span><span class="zh-arrow">→</span><span class="zh-meaning">系统提示词（AI的角色设定）</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 5 -->
-<div class="line-pair" data-tip="把对话记录和可用工具传给 Claude，Claude 看完后决定怎么回复">
-  <div class="code-line">
-    <span class="line-num">5</span>
-    <span class="line-code">            <span class="param">messages</span>=messages, <span class="param">tools</span>=TOOLS,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">messages=messages</span><span class="zh-arrow">→</span><span class="zh-meaning">传入对话记录</span>
-      <span class="zh-keyword">tools=TOOLS</span><span class="zh-arrow">→</span><span class="zh-meaning">传入可用工具列表</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 6 -->
-<div class="line-pair" data-tip="函数调用结束的右括号">
-  <div class="code-line">
-    <span class="line-num">6</span>
-    <span class="line-code">        )</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-dim">）← 第3行 create( 的结束括号</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 7 -->
-<div class="line-pair" data-tip="append = 追加。把 Claude 的回复加到对话记录末尾，就像聊天记录里多了一条消息">
-  <div class="code-line">
-    <span class="line-num">7</span>
-    <span class="line-code">        <span class="var">messages</span>.<span class="fn">append</span>({<span class="str">"role"</span>: <span class="str">"assistant"</span>,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">messages.append</span><span class="zh-arrow">→</span><span class="zh-meaning">往对话记录末尾追加</span>
-      <span class="zh-keyword">"role": "assistant"</span><span class="zh-arrow">→</span><span class="zh-meaning">角色：AI 助手</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 8 -->
-<div class="line-pair" data-tip="把 Claude 回复的具体内容存进去">
-  <div class="code-line">
-    <span class="line-num">8</span>
-    <span class="line-code">                         <span class="str">"content"</span>: <span class="var">response</span>.<span class="var">content</span>})</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">"content": response.content</span><span class="zh-arrow">→</span><span class="zh-meaning">内容：Claude 回复的具体内容</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 9 (blank) -->
-<div class="line-pair">
-  <div class="code-line"><span class="line-num">9</span><span class="line-code"></span></div>
-  <div class="explain-line"><span class="line-explain"></span></div>
-</div>
-
-<!-- Section: 判断是否需要工具 -->
-<div class="line-pair section-divider">
-  <div class="code-line"><span class="line-num"></span><span class="line-code"><span class="section-label">▼ 关键判断：Claude 说完了，还是要用工具？</span></span></div>
-  <div class="explain-line"><span class="line-explain"><span class="section-label">▼ 这里决定循环继续还是退出</span></span></div>
-</div>
-
-<!-- Line 10 -->
-<div class="line-pair" data-tip="stop_reason 是 Claude 的"信号灯"。如果不是 tool_use，说明 Claude 已经给出了最终答案，不需要工具了">
-  <div class="code-line">
-    <span class="line-num">10</span>
-    <span class="line-code">        <span class="kw">if</span> <span class="var">response</span>.<span class="var">stop_reason</span> <span class="op">!=</span> <span class="str">"tool_use"</span>:</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">if</span><span class="zh-arrow">→</span><span class="zh-meaning">如果</span>
-      <span class="zh-keyword">response.stop_reason</span><span class="zh-arrow">→</span><span class="zh-meaning">Claude 停下来的原因</span>
-      <span class="zh-keyword">!= "tool_use"</span><span class="zh-arrow">→</span><span class="zh-meaning">不是"要用工具"</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 11 -->
-<div class="line-pair" data-tip="return 结束函数 = 跳出 while True 循环。Claude 说完了，任务结束！">
-  <div class="code-line">
-    <span class="line-num">11</span>
-    <span class="line-code">            <span class="kw">return</span></span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">return</span><span class="zh-arrow">→</span><span class="zh-meaning">结束函数，退出循环</span>
-      <span class="zh-highlight">← 唯一的出口！</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 12 (blank) -->
-<div class="line-pair">
-  <div class="code-line"><span class="line-num">12</span><span class="line-code"></span></div>
-  <div class="explain-line"><span class="line-explain"></span></div>
-</div>
-
-<!-- Section: 执行工具 -->
-<div class="line-pair section-divider">
-  <div class="code-line"><span class="line-num"></span><span class="line-code"><span class="section-label">▼ 走到这里 = Claude 要用工具，下面执行工具</span></span></div>
-  <div class="explain-line"><span class="line-explain"><span class="section-label">▼ 找到工具 → 执行 → 收集结果</span></span></div>
-</div>
-
-<!-- Line 13 -->
-<div class="line-pair" data-tip="创建一个空列表，用来收集所有工具的执行结果">
-  <div class="code-line">
-    <span class="line-num">13</span>
-    <span class="line-code">        <span class="var">results</span> <span class="op">=</span> []</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">results = []</span><span class="zh-arrow">→</span><span class="zh-meaning">创建空列表，准备收集工具结果</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 14 -->
-<div class="line-pair" data-tip="遍历 Claude 回复的每个内容块。回复里可能有文字，也可能有工具调用请求">
-  <div class="code-line">
-    <span class="line-num">14</span>
-    <span class="line-code">        <span class="kw">for</span> <span class="var">block</span> <span class="kw">in</span> <span class="var">response</span>.<span class="var">content</span>:</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">for block in</span><span class="zh-arrow">→</span><span class="zh-meaning">遍历每一块</span>
-      <span class="zh-keyword">response.content</span><span class="zh-arrow">→</span><span class="zh-meaning">Claude 回复中的内容</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 15 -->
-<div class="line-pair" data-tip="检查这个内容块是不是"工具调用"类型。Claude 的回复里可能混着文字和工具调用">
-  <div class="code-line">
-    <span class="line-num">15</span>
-    <span class="line-code">            <span class="kw">if</span> <span class="var">block</span>.<span class="var">type</span> <span class="op">==</span> <span class="str">"tool_use"</span>:</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">if block.type == "tool_use"</span><span class="zh-arrow">→</span><span class="zh-meaning">如果这块内容是"工具调用"</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 16 -->
-<div class="line-pair" data-tip="这是最复杂的一行！TOOL_HANDLERS 是工具函数表（字典），用工具名找到对应的函数">
-  <div class="code-line">
-    <span class="line-num">16</span>
-    <span class="line-code">                <span class="var">output</span> <span class="op">=</span> <span class="var">TOOL_HANDLERS</span>[<span class="var">block</span>.<span class="var">name</span>](</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">TOOL_HANDLERS[block.name]</span><span class="zh-arrow">→</span><span class="zh-meaning">从工具表里找到对应函数</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 17 -->
-<div class="line-pair" data-tip="** 是解包：把字典 {&quot;city&quot;: &quot;北京&quot;} 拆成 city=&quot;北京&quot; 传给函数。第7课学的！">
-  <div class="code-line">
-    <span class="line-num">17</span>
-    <span class="line-code">                    <span class="op">**</span><span class="var">block</span>.<span class="var">input</span>)</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">**block.input</span><span class="zh-arrow">→</span><span class="zh-meaning">把参数字典拆开传入函数</span>
-      <span class="zh-dim">（第7课：解包语法）</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 18 -->
-<div class="line-pair" data-tip="把工具执行结果包装成 API 要求的格式，加入 results 列表">
-  <div class="code-line">
-    <span class="line-num">18</span>
-    <span class="line-code">                <span class="var">results</span>.<span class="fn">append</span>({</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">results.append</span><span class="zh-arrow">→</span><span class="zh-meaning">把结果追加到列表</span>
-      <span class="zh-dim">（包装成API要求的格式 ↓）</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 19 -->
-<div class="line-pair" data-tip="告诉 API 这是一个工具执行结果">
-  <div class="code-line">
-    <span class="line-num">19</span>
-    <span class="line-code">                    <span class="str">"type"</span>: <span class="str">"tool_result"</span>,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">"type": "tool_result"</span><span class="zh-arrow">→</span><span class="zh-meaning">类型：工具执行结果</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 20 -->
-<div class="line-pair" data-tip="每次工具调用都有一个唯一ID，结果要带上这个ID，这样 Claude 才知道这是哪个工具的结果">
-  <div class="code-line">
-    <span class="line-num">20</span>
-    <span class="line-code">                    <span class="str">"tool_use_id"</span>: <span class="var">block</span>.<span class="var">id</span>,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">"tool_use_id": block.id</span><span class="zh-arrow">→</span><span class="zh-meaning">对应哪次工具调用（配对用的ID）</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 21 -->
-<div class="line-pair" data-tip="工具实际执行后返回的内容，比如天气查询返回的 '北京 32°C 晴'">
-  <div class="code-line">
-    <span class="line-num">21</span>
-    <span class="line-code">                    <span class="str">"content"</span>: <span class="var">output</span>,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">"content": output</span><span class="zh-arrow">→</span><span class="zh-meaning">内容：工具执行的结果</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 22 -->
-<div class="line-pair" data-tip="字典和 append 调用的结束括号">
-  <div class="code-line">
-    <span class="line-num">22</span>
-    <span class="line-code">                })</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-dim">}）← 第18行 append({ 的结束</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 23 -->
-<div class="line-pair" data-tip="把所有工具结果以"用户消息"的身份追加到对话记录。API 规定工具结果必须用 user 角色发送">
-  <div class="code-line">
-    <span class="line-num">23</span>
-    <span class="line-code">        <span class="var">messages</span>.<span class="fn">append</span>({<span class="str">"role"</span>: <span class="str">"user"</span>,</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">messages.append</span><span class="zh-arrow">→</span><span class="zh-meaning">追加到对话记录</span>
-      <span class="zh-keyword">"role": "user"</span><span class="zh-arrow">→</span><span class="zh-meaning">角色：用户（API 规定）</span>
-    </span>
-  </div>
-</div>
-
-<!-- Line 24 -->
-<div class="line-pair" data-tip="把工具结果列表作为消息内容。之后回到 while True 顶部，再次调用 Claude，Claude 看到工具结果后继续思考">
-  <div class="code-line">
-    <span class="line-num">24</span>
-    <span class="line-code">                         <span class="str">"content"</span>: <span class="var">results</span>})</span>
-  </div>
-  <div class="explain-line">
-    <span class="line-explain">
-      <span class="zh-keyword">"content": results</span><span class="zh-arrow">→</span><span class="zh-meaning">内容：工具结果列表</span>
-      <span class="zh-highlight">→ 然后回到第2行继续循环</span>
-    </span>
-  </div>
-</div>
-
-</div>
-
-<!-- Result section -->
-<div class="result-section">
-  <div class="col-headers" style="position:relative;">
-    <div class="col-header"><span class="dot dot-green"></span> 运行效果（模拟）</div>
-  </div>
-  <div class="result-box">
-    <div><span class="result-comment"># 用户问："北京和上海今天谁更热？"</span></div>
-    <div>&nbsp;</div>
-    <div><span class="result-label">━━ 第1轮循环 ━━</span></div>
-    <div><span class="result-comment"># 第3行：调用 Claude API</span></div>
-    <div><span class="result-comment"># 第7行：记录 Claude 回复</span></div>
-    <div><span class="result-comment"># 第10行：stop_reason = "tool_use" → 要用工具，不退出</span></div>
-    <div><span class="result-comment"># 第16行：执行 get_weather("北京")</span></div>
-    <div><span class="result-output">→ 工具返回：北京 32°C 晴</span></div>
-    <div><span class="result-comment"># 第23行：把结果追加到 messages</span></div>
-    <div>&nbsp;</div>
-    <div><span class="result-label">━━ 第2轮循环 ━━</span></div>
-    <div><span class="result-comment"># 第3行：再次调用 Claude（这次 Claude 能看到北京天气了）</span></div>
-    <div><span class="result-comment"># 第16行：执行 get_weather("上海")</span></div>
-    <div><span class="result-output">→ 工具返回：上海 28°C 多云</span></div>
-    <div>&nbsp;</div>
-    <div><span class="result-label">━━ 第3轮循环 ━━</span></div>
-    <div><span class="result-comment"># 第3行：再次调用 Claude（两个城市天气都有了）</span></div>
-    <div><span class="result-comment"># 第10行：stop_reason = "end_turn" → 不是 tool_use</span></div>
-    <div><span class="result-comment"># 第11行：return → 退出循环 ✅</span></div>
-    <div>&nbsp;</div>
-    <div><span class="result-output">最终回答：北京今天 32°C，上海 28°C。北京更热，比上海高 4 度。</span></div>
-  </div>
-</div>
-
-<!-- Tooltip bar -->
-<div class="tooltip-bar">
+<div class="tip-bar">
   <span class="tip-icon">💡</span>
-  <span class="tip-text" id="tip-text">鼠标悬停在任意一行代码上，这里会显示更详细的解释</span>
+  <span>鼠标悬停在任意一行上高亮对照</span>
 </div>
 
-<script>
-const pairs = document.querySelectorAll('.line-pair[data-tip]');
-const tipText = document.getElementById('tip-text');
-const defaultTip = '鼠标悬停在任意一行代码上，这里会显示更详细的解释';
-
-pairs.forEach(pair => {
-  pair.addEventListener('mouseenter', () => {
-    // Clear all active
-    document.querySelectorAll('.line-pair').forEach(p => p.classList.remove('active'));
-    pair.classList.add('active');
-    tipText.textContent = pair.dataset.tip;
-  });
-  pair.addEventListener('mouseleave', () => {
-    pair.classList.remove('active');
-    tipText.textContent = defaultTip;
-  });
-});
-</script>
+<script src="legend-filter.js"></script>
 </body>
 </html>

@@ -5,26 +5,83 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Python 代码阅读指南</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0f172a;
-    color: #e2e8f0;
-    padding: 40px 20px;
-    line-height: 1.6;
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper: #faf6f0;
+    --paper-dark: #f0e9de;
+    --paper-darker: #e6ddd0;
+    --card: #fffdf9;
+    --ink: #2c2416;
+    --ink-light: #5c4f3a;
+    --ink-lighter: #8a7d6b;
+    --accent: #c4652e;
+    --accent-light: #e8a87c;
+    --accent-bg: #fdf0e6;
+    --green: #4a7c59;
+    --green-bg: #ecf4ee;
+    --blue: #3d6b8e;
+    --blue-bg: #e8f0f6;
+    --purple: #6b5278;
+    --purple-bg: #f0eaf4;
+    --red: #a8453e;
+    --red-bg: #fceae8;
+    --code-bg: #fefcf8;
+    --code-border: #e6ddd0;
+    --shadow: 0 1px 3px rgba(44,36,22,0.06);
+    --shadow-hover: 0 4px 12px rgba(44,36,22,0.1);
   }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Noto Serif SC", "PingFang SC", Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 0 20px 40px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Navigation */
+  .topnav {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  .topnav a {
+    color: var(--ink-lighter);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .topnav a:hover { color: var(--accent); }
+  .nav-center {
+    color: var(--ink-lighter);
+    font-size: 13px;
+  }
+  .nav-center a {
+    color: var(--ink-lighter);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-center a:hover { color: var(--accent); }
+
   .container { max-width: 900px; margin: 0 auto; }
+
   h1 {
     text-align: center;
     font-size: 2em;
     margin-bottom: 10px;
-    background: linear-gradient(135deg, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent);
+    font-weight: 700;
   }
   .subtitle {
     text-align: center;
-    color: #94a3b8;
+    color: var(--ink-lighter);
     margin-bottom: 50px;
     font-size: 1.1em;
   }
@@ -36,10 +93,11 @@
   .section-title {
     font-size: 1.4em;
     margin-bottom: 8px;
-    color: #38bdf8;
+    color: var(--accent);
+    font-weight: 600;
   }
   .section-desc {
-    color: #94a3b8;
+    color: var(--ink-lighter);
     margin-bottom: 20px;
   }
 
@@ -55,15 +113,16 @@
 
   .code-block {
     flex: 1;
-    background: #1e293b;
+    background: var(--code-bg);
     border-radius: 12px;
     padding: 24px;
-    font-family: "Fira Code", "SF Mono", "Menlo", monospace;
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", monospace;
     font-size: 14px;
     line-height: 2;
     position: relative;
     overflow: hidden;
-    border: 1px solid #334155;
+    border: 1px solid var(--code-border);
+    box-shadow: var(--shadow);
   }
 
   .code-line {
@@ -76,23 +135,23 @@
     position: relative;
   }
   .code-line:hover {
-    background: #334155;
+    background: var(--paper-dark);
   }
   .code-line.active {
-    background: #1e3a5f;
-    box-shadow: inset 3px 0 0 #38bdf8;
+    background: var(--accent-bg);
+    box-shadow: inset 3px 0 0 var(--accent);
   }
   .code-line.skip {
     opacity: 0.3;
   }
   .code-line.skip.active {
-    background: #3b1a1a;
-    box-shadow: inset 3px 0 0 #ef4444;
+    background: var(--red-bg);
+    box-shadow: inset 3px 0 0 var(--red);
     opacity: 1;
   }
 
   .line-num {
-    color: #475569;
+    color: var(--ink-lighter);
     width: 28px;
     text-align: right;
     margin-right: 16px;
@@ -109,31 +168,32 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: #38bdf8;
-    color: #0f172a;
+    background: var(--accent);
+    color: #fff;
     font-size: 11px;
     font-weight: 700;
     margin-left: 12px;
     flex-shrink: 0;
-    font-family: -apple-system, sans-serif;
+    font-family: "Noto Serif SC", sans-serif;
   }
   .order.red {
-    background: #ef4444;
+    background: var(--red);
     color: #fff;
   }
 
   /* Explanation panel */
   .explain-panel {
     flex: 0 0 280px;
-    background: #1e293b;
+    background: var(--card);
     border-radius: 12px;
     padding: 24px;
-    border: 1px solid #334155;
+    border: 1px solid var(--code-border);
     display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow);
   }
   .explain-panel h3 {
-    color: #38bdf8;
+    color: var(--accent);
     font-size: 1em;
     margin-bottom: 12px;
   }
@@ -147,11 +207,11 @@
     border: 1px solid transparent;
   }
   .explain-item:hover {
-    border-color: #334155;
+    border-color: var(--paper-darker);
   }
   .explain-item.active {
-    background: #1e3a5f;
-    border-color: #38bdf8;
+    background: var(--accent-bg);
+    border-color: var(--accent-light);
   }
   .explain-item .step-num {
     display: inline-flex;
@@ -160,30 +220,30 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #38bdf8;
-    color: #0f172a;
+    background: var(--accent);
+    color: #fff;
     font-size: 11px;
     font-weight: 700;
     margin-right: 8px;
-    font-family: -apple-system, sans-serif;
+    font-family: "Noto Serif SC", sans-serif;
   }
   .explain-item .step-num.red {
-    background: #ef4444;
+    background: var(--red);
     color: #fff;
   }
   .explain-item .step-text {
-    color: #cbd5e1;
+    color: var(--ink-light);
   }
 
   /* Syntax coloring */
-  .kw { color: #c084fc; }       /* keyword: if, else, elif */
-  .fn { color: #38bdf8; }       /* function: print */
-  .str { color: #4ade80; }      /* string */
-  .num { color: #fb923c; }      /* number */
-  .cmt { color: #475569; font-style: italic; }  /* comment */
-  .op { color: #f472b6; }       /* operator */
-  .var { color: #e2e8f0; }      /* variable */
-  .bool { color: #fb923c; }     /* True/False */
+  .kw { color: var(--purple); }
+  .fn { color: var(--blue); }
+  .str { color: var(--green); }
+  .num { color: var(--accent); }
+  .cmt { color: var(--ink-lighter); font-style: italic; }
+  .op { color: var(--red); }
+  .var { color: var(--ink); }
+  .bool { color: var(--accent); }
 
   /* Playback controls */
   .controls {
@@ -195,21 +255,22 @@
   .btn {
     padding: 8px 20px;
     border-radius: 8px;
-    border: 1px solid #334155;
-    background: #1e293b;
-    color: #e2e8f0;
+    border: 1px solid var(--paper-darker);
+    background: var(--card);
+    color: var(--ink);
     cursor: pointer;
     font-size: 14px;
+    font-family: "Noto Serif SC", "PingFang SC", Georgia, serif;
     transition: all 0.2s;
   }
-  .btn:hover { background: #334155; }
+  .btn:hover { background: var(--paper-dark); }
   .btn.primary {
-    background: #38bdf8;
-    color: #0f172a;
-    border-color: #38bdf8;
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
     font-weight: 600;
   }
-  .btn.primary:hover { background: #7dd3fc; }
+  .btn.primary:hover { background: var(--accent-light); color: #fff; }
 
   /* Rules section */
   .rules {
@@ -219,27 +280,32 @@
     margin-top: 20px;
   }
   .rule-card {
-    background: #1e293b;
-    border: 1px solid #334155;
+    background: var(--card);
+    border: 1px solid var(--code-border);
     border-radius: 12px;
     padding: 20px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .rule-card:hover {
+    box-shadow: var(--shadow-hover);
   }
   .rule-card .icon {
     font-size: 28px;
     margin-bottom: 8px;
   }
   .rule-card h4 {
-    color: #38bdf8;
+    color: var(--accent);
     margin-bottom: 6px;
   }
   .rule-card p {
-    color: #94a3b8;
+    color: var(--ink-lighter);
     font-size: 14px;
   }
 
   .arrow-down {
     text-align: center;
-    color: #38bdf8;
+    color: var(--accent);
     font-size: 24px;
     margin: 8px 0;
     animation: bounce 1.5s infinite;
@@ -248,9 +314,48 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(5px); }
   }
+
+  /* Summary box */
+  .summary-box {
+    display: inline-block;
+    text-align: left;
+    background: var(--card);
+    padding: 30px 40px;
+    border-radius: 16px;
+    border: 1px solid var(--code-border);
+    box-shadow: var(--shadow);
+  }
+  .summary-box p {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .summary-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Footer hint text */
+  .hint-text {
+    color: var(--ink-lighter);
+    font-size: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  .red-text {
+    color: var(--red);
+  }
 </style>
 </head>
 <body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a href="../index.html">&larr; 首页</a>
+  <span class="nav-center"><a href="../index.html">Python 零基础入门</a></span>
+  <span></span>
+</nav>
+
 <div class="container">
 
 <h1>Python 代码怎么读？</h1>
@@ -331,7 +436,7 @@
         <span class="step-num">5</span>
         <span class="step-text">输出：今年25岁</span>
       </div>
-      <p style="color:#475569; font-size:12px; margin-top:auto; padding-top:12px;">就是这么简单，1→2→3→4→5，从上到下</p>
+      <p class="hint-text">就是这么简单，1→2→3→4→5，从上到下</p>
     </div>
   </div>
 
@@ -345,7 +450,7 @@
 <!-- 示例2：if/else 分支 -->
 <div class="section">
   <h2 class="section-title">示例2：if/else 只走一条路</h2>
-  <p class="section-desc">score = 85 时，看看程序怎么"选路"。<span style="color:#ef4444">红色</span> = 被跳过的代码</p>
+  <p class="section-desc">score = 85 时，看看程序怎么"选路"。<span class="red-text">红色</span> = 被跳过的代码</p>
 
   <div class="code-demo">
     <div class="code-block" id="demo2-code">
@@ -431,7 +536,7 @@
         <span class="step-num">5</span>
         <span class="step-text">剩下的 elif/else 全跳过，继续往下</span>
       </div>
-      <p style="color:#475569; font-size:12px; margin-top:auto; padding-top:12px;">关键：找到一条满足的路后，剩下的全部跳过！</p>
+      <p class="hint-text">关键：找到一条满足的路后，剩下的全部跳过！</p>
     </div>
   </div>
 
@@ -544,7 +649,7 @@
         <span class="step-num">7</span>
         <span class="step-text">回到最外层，输出：结束</span>
       </div>
-      <p style="color:#475569; font-size:12px; margin-top:auto; padding-top:12px;">缩进就像俄罗斯套娃，一层套一层</p>
+      <p class="hint-text">缩进就像俄罗斯套娃，一层套一层</p>
     </div>
   </div>
 
@@ -558,10 +663,10 @@
 <!-- 总结 -->
 <div class="section" style="text-align:center; padding: 40px 0;">
   <h2 class="section-title" style="text-align:center; font-size:1.6em; margin-bottom:20px;">记住三句话就够了</h2>
-  <div style="display:inline-block; text-align:left; background:#1e293b; padding:30px 40px; border-radius:16px; border:1px solid #334155;">
-    <p style="font-size:1.1em; margin-bottom:12px;">⬇️ <strong>从上往下</strong>读，一行一行来</p>
-    <p style="font-size:1.1em; margin-bottom:12px;">🔀 遇到 <span class="kw" style="font-family:monospace">if</span>，<strong>只走一条路</strong>，其余跳过</p>
-    <p style="font-size:1.1em;">📦 看<strong>缩进</strong>判断谁属于谁</p>
+  <div class="summary-box">
+    <p>⬇️ <strong>从上往下</strong>读，一行一行来</p>
+    <p>🔀 遇到 <span class="kw" style="font-family:'JetBrains Mono',monospace">if</span>，<strong>只走一条路</strong>，其余跳过</p>
+    <p>📦 看<strong>缩进</strong>判断谁属于谁</p>
   </div>
 </div>
 
