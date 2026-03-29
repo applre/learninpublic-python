@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-jingyu 是一名产品经理，正在从零学习编程（Python 起步），并将学习过程公开分享到微信公众号和小红书。本仓库既是学习代码的工作区，也是内容创作的素材库。
+从零学习编程（Python 起步），本仓库既是学习代码的工作区，也是内容创作的素材库。
 
-目标受众：和 jingyu 一样的非技术背景人群（产品、运营、设计等），内容风格需通俗易懂、有趣可视化。
+目标受众：非技术背景人群（产品、运营、设计等），内容风格需通俗易懂、有趣可视化。
 
 ## Structure
 
